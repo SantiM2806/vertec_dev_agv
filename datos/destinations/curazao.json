@@ -1,0 +1,69 @@
+{
+  "active": true,
+  "alt": "Puerto de Willemstad y las casas de colores de Punda, en Curazao",
+  "bookUrl": "",
+  "code": "CUR",
+  "country": "Curazao",
+  "desc": "Junto al puerto histórico de Willemstad, en una zona única de laguna, con parque acuático y toboganes para familias, parejas y amigos.",
+  "hotel": "The Rif at Mangrove Beach Corendon, Curio by Hilton",
+  "img": "img/curazao.webp",
+  "inc": [
+    "3 noches de alojamiento en habitación Premium Deluxe Double",
+    "Alimentación todo incluido",
+    "Traslados aeropuerto – hotel – aeropuerto en servicio regular",
+    "Asistencia médica Assist Card con cobertura hasta 70 mil USD (hasta los 74 años)",
+    "Impuestos hoteleros y fee bancario"
+  ],
+  "info": {
+    "clima": "Seco y soleado todo el año, cerca de 28 °C. Está fuera de la ruta habitual de huracanes.",
+    "docs": "Pasaporte vigente.",
+    "moneda": "Florín del Caribe (XCG). El dólar se acepta ampliamente.",
+    "vacunas": "Consulta las recomendaciones vigentes con tu asesor antes de viajar.",
+    "visa": "Consulta los requisitos vigentes con tu asesor o en el sitio de Cancillería antes de viajar."
+  },
+  "name": "Curazao",
+  "nights": 3,
+  "noInc": [
+    "Tiquetes aéreos",
+    "Gastos y servicios no especificados",
+    "Tours opcionales en destino"
+  ],
+  "offer": null,
+  "order": 4,
+  "region": "Caribe",
+  "seasons": [
+    {
+      "from": "11-01",
+      "to": "12-19",
+      "usd": 1059
+    },
+    {
+      "from": "01-10",
+      "to": "01-31",
+      "usd": 1274
+    },
+    {
+      "from": "02-01",
+      "to": "02-28",
+      "usd": 1524
+    },
+    {
+      "from": "04-01",
+      "to": "04-30",
+      "usd": 1323
+    }
+  ],
+  "stars": 4,
+  "tags": [
+    "Todo incluido",
+    "Traslados",
+    "Asistencia médica"
+  ],
+  "tops": [
+    "Cuatro piscinas y parque acuático",
+    "Actividades para niños",
+    "Centro de buceo y deportes acuáticos",
+    "Cuatro restaurantes temáticos y bufé"
+  ],
+  "tzone": "Curazao"
+}

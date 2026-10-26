@@ -1,0 +1,19 @@
+{
+  "active": true,
+  "cond": {
+    "destinos": [],
+    "soloMarketing": false,
+    "tipos": [
+      "viajero",
+      "busqueda",
+      "tour",
+      "circuito",
+      "grupo",
+      "traslado"
+    ]
+  },
+  "lista": "viajeros",
+  "name": "Confirmar cada solicitud de viaje",
+  "order": 0,
+  "plantilla": "confirmacion"
+}

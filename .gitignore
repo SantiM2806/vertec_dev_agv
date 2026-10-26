@@ -1,0 +1,25 @@
+# Configuración con llaves y contraseñas: nunca al repositorio
+avm-config.php
+**/avm-config.php
+*.env
+credenciales*.txt
+*.xlsx
+
+# Archivos que crea el sitio al funcionar
+produccion/avm-cache/
+produccion/avm-copias/
+produccion/avm-instalado.lock
+*.log
+
+# Paquetes generados (se crean con herramientas/empaquetar.py)
+dist/
+*.zip
+
+# Generados de la propuesta
+propuesta/propuesta-avm-completa.html
+
+# Sistema
+.DS_Store
+Thumbs.db
+__pycache__/
+node_modules/

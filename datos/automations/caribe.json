@@ -1,0 +1,16 @@
+{
+  "active": true,
+  "cond": {
+    "destinos": [
+      "Punta Cana",
+      "Aruba",
+      "Curazao"
+    ],
+    "soloMarketing": false,
+    "tipos": []
+  },
+  "lista": "caribe",
+  "name": "Interesados en el Caribe",
+  "order": 3,
+  "plantilla": ""
+}

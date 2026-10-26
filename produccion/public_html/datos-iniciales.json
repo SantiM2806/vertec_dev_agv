@@ -1,0 +1,595 @@
+{
+ "automations/agencias-nuevas": {
+  "active": true,
+  "cond": {
+   "destinos": [],
+   "soloMarketing": false,
+   "tipos": [
+    "agencia",
+    "famtrip"
+   ]
+  },
+  "lista": "agencias",
+  "name": "Agencias nuevas",
+  "order": 1,
+  "plantilla": "agencia"
+ },
+ "automations/boletin": {
+  "active": true,
+  "cond": {
+   "destinos": [],
+   "soloMarketing": true,
+   "tipos": []
+  },
+  "lista": "boletin",
+  "name": "Suscriptores del boletín",
+  "order": 2,
+  "plantilla": "boletin"
+ },
+ "automations/caribe": {
+  "active": true,
+  "cond": {
+   "destinos": [
+    "Punta Cana",
+    "Aruba",
+    "Curazao"
+   ],
+   "soloMarketing": false,
+   "tipos": []
+  },
+  "lista": "caribe",
+  "name": "Interesados en el Caribe",
+  "order": 3,
+  "plantilla": ""
+ },
+ "automations/confirmar-viajes": {
+  "active": true,
+  "cond": {
+   "destinos": [],
+   "soloMarketing": false,
+   "tipos": [
+    "viajero",
+    "busqueda",
+    "tour",
+    "circuito",
+    "grupo",
+    "traslado"
+   ]
+  },
+  "lista": "viajeros",
+  "name": "Confirmar cada solicitud de viaje",
+  "order": 0,
+  "plantilla": "confirmacion"
+ },
+ "automations/mexico": {
+  "active": true,
+  "cond": {
+   "destinos": [
+    "Cancún",
+    "Riviera Maya"
+   ],
+   "soloMarketing": false,
+   "tipos": []
+  },
+  "lista": "mexico",
+  "name": "Interesados en México",
+  "order": 4,
+  "plantilla": ""
+ },
+ "destinations/aruba": {
+  "active": true,
+  "alt": "Árbol divi-divi en la costa de Aruba",
+  "bookUrl": "",
+  "code": "AUA",
+  "country": "Aruba",
+  "desc": "Sobre la playa de Palm Beach, con todo incluido 24 horas, una amplia oferta gastronómica y el servicio de RIU Hotels & Resorts.",
+  "hotel": "Riu Palace Aruba",
+  "img": "img/aruba.webp",
+  "inc": [
+   "3 noches de alojamiento en habitación Premium Deluxe Double",
+   "Alimentación todo incluido",
+   "Traslados aeropuerto – hotel – aeropuerto en servicio regular",
+   "Asistencia médica Assist Card con cobertura hasta 70 mil USD (hasta los 74 años)",
+   "Impuestos hoteleros y fee bancario"
+  ],
+  "info": {
+   "clima": "Seco y soleado todo el año, cerca de 28 °C. Está fuera de la ruta habitual de huracanes.",
+   "docs": "Pasaporte vigente.",
+   "moneda": "Florín arubeño (AWG). El dólar se acepta en casi todo el país.",
+   "vacunas": "Consulta las recomendaciones vigentes con tu asesor antes de viajar.",
+   "visa": "Consulta los requisitos vigentes con tu asesor o en el sitio de Cancillería antes de viajar."
+  },
+  "name": "Aruba",
+  "nights": 3,
+  "noInc": [
+   "Tiquetes aéreos",
+   "Gastos y servicios no especificados",
+   "Tours opcionales en destino"
+  ],
+  "offer": null,
+  "order": 2,
+  "region": "Caribe",
+  "seasons": [
+   {
+    "from": "11-01",
+    "to": "12-19",
+    "usd": 1059
+   },
+   {
+    "from": "01-10",
+    "to": "01-31",
+    "usd": 1274
+   },
+   {
+    "from": "02-01",
+    "to": "02-28",
+    "usd": 1524
+   },
+   {
+    "from": "04-01",
+    "to": "04-30",
+    "usd": 1323
+   }
+  ],
+  "stars": 5,
+  "tags": [
+   "Todo incluido",
+   "Traslados",
+   "Asistencia médica"
+  ],
+  "tops": [
+   "Hotel para toda la familia (Fun4All)",
+   "Todo incluido 24 horas",
+   "RIU Land: entretenimiento para niños",
+   "Spa & Wellness y piscina infantil con toboganes"
+  ],
+  "tzone": "Aruba"
+ },
+ "destinations/cancun": {
+  "active": true,
+  "alt": "Vista aérea de la zona hotelera de Cancún",
+  "bookUrl": "",
+  "code": "CUN",
+  "country": "México",
+  "desc": "The Entertainment Resort: espectáculos, amplios espacios y mar turquesa en una de las playas más hermosas de Cancún, con áreas exclusivas para adultos.",
+  "hotel": "Grand Oasis Cancún",
+  "img": "img/cancun.webp",
+  "inc": [
+   "Alojamiento las noches confirmadas",
+   "Traslados de llegada y salida del aeropuerto principal en servicio regular diurno",
+   "Desayuno, almuerzo y cena buffet y a la carta",
+   "Snacks y bar abierto con y sin licor las 24 horas",
+   "Asistencia médica internacional hasta los 74 años, cobertura de 70 mil USD"
+  ],
+  "info": {
+   "clima": "Cálido todo el año, entre 24 y 32 °C. Temporada de lluvias y huracanes de junio a noviembre.",
+   "docs": "Pasaporte vigente.",
+   "moneda": "Peso mexicano (MXN). El dólar se acepta en muchos comercios turísticos.",
+   "vacunas": "Consulta las recomendaciones vigentes con tu asesor antes de viajar.",
+   "visa": "Consulta los requisitos vigentes con tu asesor o en el sitio de Cancillería antes de viajar."
+  },
+  "name": "Cancún",
+  "nights": 3,
+  "noInc": [
+   "Tiquetes aéreos",
+   "Gastos y servicios no especificados",
+   "Tours opcionales en destino"
+  ],
+  "offer": null,
+  "order": 5,
+  "region": "México",
+  "seasons": [
+   {
+    "from": "11-01",
+    "to": "12-17",
+    "usd": 399
+   },
+   {
+    "from": "01-10",
+    "to": "02-28",
+    "usd": 463
+   },
+   {
+    "from": "03-01",
+    "to": "04-12",
+    "usd": 583
+   },
+   {
+    "from": "04-13",
+    "to": "07-18",
+    "usd": 445
+   }
+  ],
+  "stars": 5,
+  "tags": [
+   "Todo incluido",
+   "Traslados",
+   "Asistencia médica"
+  ],
+  "tops": [
+   "Entretenimiento de día y de noche",
+   "Áreas exclusivas para adultos",
+   "Gastronomía internacional para toda la familia",
+   "Habitaciones con vista al mar o al atardecer"
+  ],
+  "tzone": "Cancún y Riviera Maya"
+ },
+ "destinations/curazao": {
+  "active": true,
+  "alt": "Puerto de Willemstad y las casas de colores de Punda, en Curazao",
+  "bookUrl": "",
+  "code": "CUR",
+  "country": "Curazao",
+  "desc": "Junto al puerto histórico de Willemstad, en una zona única de laguna, con parque acuático y toboganes para familias, parejas y amigos.",
+  "hotel": "The Rif at Mangrove Beach Corendon, Curio by Hilton",
+  "img": "img/curazao.webp",
+  "inc": [
+   "3 noches de alojamiento en habitación Premium Deluxe Double",
+   "Alimentación todo incluido",
+   "Traslados aeropuerto – hotel – aeropuerto en servicio regular",
+   "Asistencia médica Assist Card con cobertura hasta 70 mil USD (hasta los 74 años)",
+   "Impuestos hoteleros y fee bancario"
+  ],
+  "info": {
+   "clima": "Seco y soleado todo el año, cerca de 28 °C. Está fuera de la ruta habitual de huracanes.",
+   "docs": "Pasaporte vigente.",
+   "moneda": "Florín del Caribe (XCG). El dólar se acepta ampliamente.",
+   "vacunas": "Consulta las recomendaciones vigentes con tu asesor antes de viajar.",
+   "visa": "Consulta los requisitos vigentes con tu asesor o en el sitio de Cancillería antes de viajar."
+  },
+  "name": "Curazao",
+  "nights": 3,
+  "noInc": [
+   "Tiquetes aéreos",
+   "Gastos y servicios no especificados",
+   "Tours opcionales en destino"
+  ],
+  "offer": null,
+  "order": 4,
+  "region": "Caribe",
+  "seasons": [
+   {
+    "from": "11-01",
+    "to": "12-19",
+    "usd": 1059
+   },
+   {
+    "from": "01-10",
+    "to": "01-31",
+    "usd": 1274
+   },
+   {
+    "from": "02-01",
+    "to": "02-28",
+    "usd": 1524
+   },
+   {
+    "from": "04-01",
+    "to": "04-30",
+    "usd": 1323
+   }
+  ],
+  "stars": 4,
+  "tags": [
+   "Todo incluido",
+   "Traslados",
+   "Asistencia médica"
+  ],
+  "tops": [
+   "Cuatro piscinas y parque acuático",
+   "Actividades para niños",
+   "Centro de buceo y deportes acuáticos",
+   "Cuatro restaurantes temáticos y bufé"
+  ],
+  "tzone": "Curazao"
+ },
+ "destinations/panama": {
+  "active": true,
+  "alt": "Edificios de Ciudad de Panamá frente a la bahía",
+  "bookUrl": "",
+  "code": "PTY",
+  "country": "Panamá",
+  "desc": "Resort todo incluido con playa privada, a 20 minutos del centro de Ciudad de Panamá y del Casco Antiguo.",
+  "hotel": "Dreams Playa Bonita",
+  "img": "img/panama.webp",
+  "inc": [
+   "3 noches de alojamiento en habitación Premium Deluxe Double",
+   "Alimentación todo incluido",
+   "Traslados aeropuerto – hotel – aeropuerto en servicio regular",
+   "Asistencia médica Assist Card con cobertura hasta 70 mil USD (hasta los 74 años)",
+   "Impuestos hoteleros y fee bancario"
+  ],
+  "info": {
+   "clima": "Tropical, entre 24 y 31 °C. Temporada seca de diciembre a abril.",
+   "docs": "Pasaporte vigente.",
+   "moneda": "Balboa y dólar estadounidense (USD), que circula como moneda oficial.",
+   "vacunas": "Consulta las recomendaciones vigentes con tu asesor antes de viajar.",
+   "visa": "Consulta los requisitos vigentes con tu asesor o en el sitio de Cancillería antes de viajar."
+  },
+  "name": "Panamá",
+  "nights": 3,
+  "noInc": [
+   "Tiquetes aéreos",
+   "Gastos y servicios no especificados",
+   "Tours opcionales en destino"
+  ],
+  "offer": null,
+  "order": 3,
+  "region": "Centroamérica",
+  "seasons": [
+   {
+    "from": "10-01",
+    "to": "10-31",
+    "usd": 449
+   },
+   {
+    "from": "11-01",
+    "to": "12-20",
+    "usd": 507
+   },
+   {
+    "from": "02-01",
+    "to": "02-28",
+    "usd": 555
+   },
+   {
+    "from": "03-01",
+    "to": "04-30",
+    "usd": 547
+   }
+  ],
+  "stars": 5,
+  "tags": [
+   "Todo incluido",
+   "Traslados",
+   "Asistencia médica"
+  ],
+  "tops": [
+   "Cinco piscinas al aire libre",
+   "Spa con servicio de masajes",
+   "Gimnasio",
+   "Ambiente familiar con actividades para todas las edades"
+  ],
+  "tzone": ""
+ },
+ "destinations/punta-cana": {
+  "active": true,
+  "alt": "Vista aérea de playa Bávaro en Punta Cana, con palmeras y mar turquesa",
+  "bookUrl": "",
+  "code": "PUJ",
+  "country": "República Dominicana",
+  "desc": "Resort de 5 estrellas sobre playa Bávaro, rodeado de vegetación tropical. Todo está incluido con Infinite Indulgence®: piscinas, spa, gastronomía y diversión para toda la familia.",
+  "hotel": "Grand Palladium Punta Cana Resort & Spa",
+  "img": "img/punta-cana.webp",
+  "inc": [
+   "Alojamiento las noches confirmadas",
+   "Traslados de llegada y salida del aeropuerto principal en servicio regular diurno",
+   "Desayuno, almuerzo y cena buffet y a la carta",
+   "Snacks y bar abierto con y sin licor las 24 horas",
+   "Asistencia médica internacional hasta los 74 años, cobertura de 70 mil USD"
+  ],
+  "info": {
+   "clima": "Tropical, entre 25 y 31 °C todo el año. Temporada de huracanes de junio a noviembre.",
+   "docs": "Pasaporte vigente.",
+   "moneda": "Peso dominicano (DOP). El dólar se acepta en la mayoría de hoteles y tiendas turísticas.",
+   "vacunas": "Consulta las recomendaciones vigentes con tu asesor antes de viajar.",
+   "visa": "Consulta los requisitos vigentes con tu asesor o en el sitio de Cancillería antes de viajar."
+  },
+  "name": "Punta Cana",
+  "nights": 3,
+  "noInc": [
+   "Tiquetes aéreos",
+   "Gastos y servicios no especificados",
+   "Tours opcionales en destino"
+  ],
+  "offer": null,
+  "order": 0,
+  "region": "Caribe",
+  "seasons": [
+   {
+    "from": "10-01",
+    "to": "10-31",
+    "usd": 417
+   },
+   {
+    "from": "11-01",
+    "to": "12-20",
+    "usd": 467
+   },
+   {
+    "from": "02-01",
+    "to": "02-28",
+    "usd": 754
+   },
+   {
+    "from": "03-01",
+    "to": "04-30",
+    "usd": 659
+   }
+  ],
+  "stars": 5,
+  "tags": [
+   "Todo incluido",
+   "Traslados",
+   "Asistencia médica"
+  ],
+  "tops": [
+   "22 bares, 5 restaurantes internacionales con show-cooking y 8 restaurantes a la carta",
+   "Menores hasta los 17 años pagan tarifa de niño",
+   "Actividades sin límite, desde yoga hasta voleibol de playa",
+   "Gran variedad de categorías de habitación"
+  ],
+  "tzone": "Punta Cana y República Dominicana"
+ },
+ "destinations/riviera-maya": {
+  "active": true,
+  "alt": "Palmera sobre la playa de Playa del Carmen, en la Riviera Maya",
+  "bookUrl": "",
+  "code": "CUN",
+  "country": "México",
+  "desc": "Resort de 4 estrellas todo incluido en Playa del Carmen, rodeado de jungla, manglares y vistas al mar Caribe. Ideal para familias y parejas.",
+  "hotel": "BlueBay Grand Esmeralda",
+  "img": "img/riviera-maya.webp",
+  "inc": [
+   "Alojamiento las noches confirmadas",
+   "Traslados de llegada y salida del aeropuerto principal en servicio regular diurno",
+   "Desayuno, almuerzo y cena buffet y a la carta",
+   "Snacks y bar abierto con y sin licor las 24 horas",
+   "Asistencia médica internacional hasta los 74 años, cobertura de 70 mil USD"
+  ],
+  "info": {
+   "clima": "Cálido todo el año, entre 24 y 32 °C. Temporada de lluvias y huracanes de junio a noviembre.",
+   "docs": "Pasaporte vigente.",
+   "moneda": "Peso mexicano (MXN). El dólar se acepta en muchos comercios turísticos.",
+   "vacunas": "Consulta las recomendaciones vigentes con tu asesor antes de viajar.",
+   "visa": "Consulta los requisitos vigentes con tu asesor o en el sitio de Cancillería antes de viajar."
+  },
+  "name": "Riviera Maya",
+  "nights": 3,
+  "noInc": [
+   "Tiquetes aéreos",
+   "Gastos y servicios no especificados",
+   "Tours opcionales en destino"
+  ],
+  "offer": null,
+  "order": 1,
+  "region": "México",
+  "seasons": [
+   {
+    "from": "10-01",
+    "to": "10-17",
+    "usd": 295
+   },
+   {
+    "from": "12-01",
+    "to": "12-20",
+    "usd": 320
+   }
+  ],
+  "stars": 4,
+  "tags": [
+   "Todo incluido",
+   "Traslados",
+   "Asistencia médica"
+  ],
+  "tops": [
+   "Playa privada y 3 piscinas grandes",
+   "6 restaurantes",
+   "Instalaciones deportivas",
+   "Miniclub para los más pequeños"
+  ],
+  "tzone": "Cancún y Riviera Maya"
+ },
+ "lists/agencias": {
+  "desc": "Agencias que pidieron usuario o se inscribieron a un Fam Trip.",
+  "marketing": false,
+  "name": "Agencias"
+ },
+ "lists/boletin": {
+  "desc": "Solo personas que aceptaron recibir promociones.",
+  "marketing": true,
+  "name": "Boletín de promociones"
+ },
+ "lists/caribe": {
+  "desc": "Cotizaron Punta Cana, Aruba o Curazao.",
+  "marketing": false,
+  "name": "Interesados en el Caribe"
+ },
+ "lists/mexico": {
+  "desc": "Cotizaron Cancún o Riviera Maya.",
+  "marketing": false,
+  "name": "Interesados en México"
+ },
+ "lists/viajeros": {
+  "desc": "Todas las personas que cotizaron un viaje, un tour o una salida grupal.",
+  "marketing": false,
+  "name": "Viajeros"
+ },
+ "site/content": {
+  "contact": {
+   "email": "comercial@avolarporelmundo.co",
+   "emergency": [
+    "313 666 0320",
+    "310 362 1741"
+   ],
+   "hours": [
+    [
+     "Lunes a viernes",
+     "8:00 a. m. – 12:00 m. · 2:00 – 6:00 p. m."
+    ],
+    [
+     "Sábado",
+     "9:00 a. m. – 12:00 m."
+    ],
+    [
+     "Domingos y festivos",
+     "Cerrado"
+    ]
+   ],
+   "portal": "https://avmoperadoresmayoristas.paquetedinamico.com/home",
+   "sales": [
+    "320 508 1068",
+    "315 470 3065",
+    "318 518 2295"
+   ],
+   "sched": [
+    "",
+    "08:00-12:00, 14:00-18:00",
+    "08:00-12:00, 14:00-18:00",
+    "08:00-12:00, 14:00-18:00",
+    "08:00-12:00, 14:00-18:00",
+    "08:00-12:00, 14:00-18:00",
+    "09:00-12:00"
+   ],
+   "sedes": [
+    [
+     "Pereira",
+     "Av. Circunvalar #11-80, Of. 702"
+    ],
+    [
+     "Barranquilla",
+     "Calle 77B #57-103, Piso 10, Of. 135"
+    ]
+   ],
+   "waMain": "573205081068"
+  },
+  "txt": {
+   "aboutLead": "Diseñamos el viaje. *Tú solo lo disfrutas.*",
+   "aboutText": "Somos un operador mayorista de turismo. Desde 2014 creamos oferta turística vacacional, personal y corporativa, para que nuestros clientes vivan experiencias memorables de alto nivel.\nNos reconocen por trabajar con proveedores de calidad en Colombia y el exterior, y por dar soluciones confiables y oportunas.",
+   "agencyBar": "¿Eres agencia de viajes? Vende con AVM: condiciones preferenciales, plataforma 24/7 y asesores que te acompañan.",
+   "contactSub": "Escríbenos por WhatsApp y un asesor te responde con la cotización.",
+   "contactTitle": "Hablemos de tu *próximo viaje*",
+   "destNote": "*Cada paquete incluye* hotel seleccionado por AVM, traslados aeropuerto – hotel – aeropuerto y asistencia médica. No incluye tiquetes aéreos. Un asesor confirma disponibilidad y tarifa vigente al cotizar.",
+   "destSub": "Los destinos más visitados por nuestros viajeros. Cada paquete incluye alojamiento todo incluido, traslados y asistencia médica.",
+   "destTitle": "Paquetes *por destino*",
+   "facts": "2014 | Creando viajes desde\n2 sedes | Pereira y Barranquilla\n6 | Destinos más visitados",
+   "heroAlt": "Playa Bávaro en Punta Cana vista desde el aire",
+   "heroEyebrow": "Operador mayorista desde 2014",
+   "heroImg": "img/portada.webp",
+   "heroSub": "Alojamiento todo incluido, traslados y asistencia médica en un solo paquete.",
+   "heroTitle": "Viajes completos, *listos para disfrutar*",
+   "nlSub": "Las mejores tarifas de temporada, antes que nadie.",
+   "nlTitle": "Recibe nuestras *promociones por correo*",
+   "quick": [],
+   "reasons": "Orientación experta | Nuestros asesores cuidan cada detalle de tu viaje.\nPrecios justos | Paquetes con excelente relación calidad-precio.\nViajes sostenibles | Apoyamos el turismo que cuida el medio ambiente y a las comunidades locales.\nPara agencias | Plataforma de reservas 24/7, condiciones preferenciales y asesores que acompañan cada venta."
+  }
+ },
+ "templates/agencia": {
+  "asunto": "Recibimos la solicitud de {{agencia}}",
+  "cuerpo": "Hola {{nombre}},\n\nGracias por querer trabajar con AVM. Recibimos la solicitud de usuario para {{agencia}} ({{numero}}).\n\nUn asesor valida los datos de la agencia y te escribe para activar tu acceso al portal de agencias, con tarifa neta y tu comisión visible en cada cotización.\n\nCualquier duda: {{correo_avm}} o WhatsApp {{asesor_whatsapp}}.\n\nEquipo AVM Operadores Mayoristas",
+  "name": "Bienvenida a agencias",
+  "tipo": "transaccional"
+ },
+ "templates/boletin": {
+  "asunto": "Bienvenido al boletín de AVM",
+  "cuerpo": "Hola {{nombre}},\n\nYa estás en nuestra lista: te enviaremos las mejores tarifas de temporada y las salidas grupales antes que nadie.\n\nPuedes darte de baja cuando quieras respondiendo este correo.\n\nEquipo AVM · A volar por el mundo",
+  "name": "Bienvenida al boletín",
+  "tipo": "marketing"
+ },
+ "templates/confirmacion": {
+  "asunto": "Recibimos tu solicitud {{numero}}",
+  "cuerpo": "Hola {{nombre}},\n\nGracias por escribirnos. Recibimos tu solicitud {{numero}} para {{destino}}.\n\nUn asesor de AVM revisa la disponibilidad y te envía la cotización con el precio final. Si quieres adelantar la conversación, escríbenos por WhatsApp al {{asesor_whatsapp}}.\n\nUn saludo,\nEquipo AVM · A volar por el mundo",
+  "name": "Confirmación de solicitud",
+  "tipo": "transaccional"
+ }
+}

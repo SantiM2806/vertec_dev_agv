@@ -1,0 +1,370 @@
+<title>Propuesta sitio web AVM</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700&family=Hanken+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap">
+<style>
+/* Layout: una página corta y escaneable; bloques en rejilla, cronograma en banda ancha */
+:root {
+  --paper: #F6F7F2; --card: #FFFFFF; --ink: #161B1F; --muted: #5B6560; --line: #DCE0D6; --soft: #ECEFE4;
+  --signal: #BBCF26; --signal-ink: #1F2508; --signal-text: #5E6B05; --todo: #9A6A12; --ok: #2F7D4F; --danger: #B4372B; --pad: #FFFFFF; --pad-ink: #14181D; --pad-line: #C9CEC2;
+  --f-display: "Outfit", "Segoe UI", system-ui, sans-serif;
+  --f-body: "Hanken Grotesk", "Segoe UI", system-ui, sans-serif;
+  --f-mono: "JetBrains Mono", ui-monospace, Consolas, monospace;
+  --logo-c: block; --logo-w: none;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #111518; --card: #182024; --ink: #EEF1EA; --muted: #A2ACA6; --line: #2C353A; --soft: #20292D;
+    --signal-text: #C9DB4A; --todo: #E2A94A; --ok: #5CC48A; --danger: #E06A5C; --pad: #F4F5F0; --pad-line: #8E968F; --logo-c: none; --logo-w: block; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #111518; --card: #182024; --ink: #EEF1EA; --muted: #A2ACA6; --line: #2C353A; --soft: #20292D;
+  --signal-text: #C9DB4A; --todo: #E2A94A; --ok: #5CC48A; --danger: #E06A5C; --pad: #F4F5F0; --pad-line: #8E968F; --logo-c: none; --logo-w: block; color-scheme: dark;
+}
+* { box-sizing: border-box }
+body { background: var(--paper); color: var(--ink); font: 400 16px/1.55 var(--f-body); padding-inline: 16px; padding-block: 0 56px }
+.doc { max-width: 960px; margin: 0 auto }
+h1, h2, h3 { font-family: var(--f-display); text-wrap: balance; margin: 0 }
+h2 { font-weight: 300; font-size: clamp(24px, 3vw, 32px); line-height: 1.1; letter-spacing: -.02em }
+h2 strong { font-weight: 700 }
+h3 { font-weight: 500; font-size: 17px; line-height: 1.3 }
+p { margin: 0 }
+ul { margin: 0; padding: 0; list-style: none }
+.eyebrow { font: 700 11px/1 var(--f-mono); letter-spacing: .14em; text-transform: uppercase; color: var(--signal-text) }
+section { padding-block: 44px 0; display: grid; gap: 16px }
+.card { border: 1px solid var(--line); background: var(--card); border-radius: 16px; padding: 18px 20px; display: grid; gap: 10px; align-content: start; min-width: 0 }
+
+/* Portada */
+.cover { padding-block: 36px 32px; display: grid; gap: 20px; border-bottom: 1px solid var(--line) }
+.brandrow { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap }
+.brandrow img { height: 40px; width: auto }
+.logo-c { display: var(--logo-c) } .logo-w { display: var(--logo-w) }
+.meta { font: 500 12.5px/1.4 var(--f-mono); color: var(--muted) }
+.cover h1 { font-weight: 300; font-size: clamp(32px, 5.4vw, 54px); line-height: 1.04; letter-spacing: -.03em; max-width: 18ch }
+.cover h1 strong { font-weight: 700; background: linear-gradient(transparent 62%, color-mix(in srgb, var(--signal) 70%, transparent) 62%) }
+.goal { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px }
+.goal .card b { font: 700 11px/1 var(--f-mono); letter-spacing: .1em; text-transform: uppercase; color: var(--muted) }
+.goal .card.now b { color: var(--signal-text) }
+.goal .card p { font-size: 17px; font-family: var(--f-display); font-weight: 500; line-height: 1.35 }
+
+/* Qué se hace */
+.what { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px 12px }
+.what li { border-top: 3px solid var(--signal); padding-top: 12px; display: grid; gap: 4px; align-content: start }
+.what li > span { color: var(--muted); font-size: 14.5px }
+.nw { font: 700 10px/1 var(--f-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--todo); margin-left: 6px; white-space: nowrap }
+.note { font-size: 14.5px; color: var(--muted) }
+.note b { color: var(--ink) }
+
+/* Cronograma */
+.gantt-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 16px; background: var(--card) }
+.gantt { display: grid; grid-template-columns: minmax(220px, 1.4fr) repeat(5, minmax(76px, 1fr)); min-width: 700px; font-size: 14.5px }
+.gantt > div { padding: 10px 8px; border-top: 1px solid var(--line); min-width: 0 }
+.gantt .hd { border-top: 0; font: 700 11px/1.25 var(--f-mono); color: var(--muted); text-align: center; font-variant-numeric: tabular-nums }
+.gantt .hd b { display: block; color: var(--ink); font-size: 13px }
+.gantt .hd.wk { text-align: left; padding-left: 16px }
+.gantt .task { padding-left: 16px; font-weight: 600 }
+.gantt .cell { position: relative }
+.gantt .bar { position: absolute; left: 0; right: 0; top: 50%; height: 22px; transform: translateY(-50%); background: var(--signal) }
+.gantt .bar.s { border-radius: 6px 0 0 6px; left: 3px }
+.gantt .bar.e { border-radius: 0 6px 6px 0; right: 3px }
+.gantt .bar.s.e { border-radius: 6px }
+.gantt .bar.gate { background: var(--ink) }
+.gantt .sep { border-left: 1px dashed var(--line) }
+.dates { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px }
+.dates li { padding: 14px 16px; border-radius: 14px; background: var(--soft); display: grid; gap: 2px }
+.dates time { font: 700 12px/1 var(--f-mono); color: var(--signal-text); letter-spacing: .06em; text-transform: uppercase }
+.dates b { font: 500 16px/1.3 var(--f-display) }
+
+/* Integraciones */
+.integ { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px }
+.integ li { border: 1px solid var(--line); background: var(--card); border-radius: 14px; padding: 14px 16px; display: grid; gap: 6px; align-content: start }
+.integ li .src { font: 700 10.5px/1.2 var(--f-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted) }
+.integ li b { font: 600 16px/1.3 var(--f-display) }
+.integ li span.d { color: var(--muted); font-size: 13.5px; line-height: 1.45 }
+.integ li .tag { justify-self: start }
+.integ li .tag.ok { background: var(--signal); color: var(--signal-ink) }
+@media (max-width: 760px) { .integ { grid-template-columns: 1fr 1fr } }
+@media (max-width: 460px) { .integ { grid-template-columns: 1fr } }
+
+/* Caminos */
+.paths { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px }
+.path.inc { border-color: var(--signal); box-shadow: 0 0 0 1px var(--signal) inset }
+.path .top { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap }
+.letter { font: 700 13px/1 var(--f-mono); width: 28px; height: 28px; border-radius: 8px; display: grid; place-items: center; background: var(--soft) }
+.path.inc .letter { background: var(--signal); color: var(--signal-ink) }
+.tag { font: 700 10.5px/1 var(--f-mono); letter-spacing: .08em; text-transform: uppercase; padding: 5px 7px; border-radius: 6px; background: var(--soft); color: var(--muted) }
+.path.inc .tag { background: var(--signal); color: var(--signal-ink) }
+.path dl { margin: 0; display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 6px 12px; font-size: 14.5px }
+.path dt { font: 700 11px/1.6 var(--f-mono); letter-spacing: .06em; text-transform: uppercase; color: var(--muted) }
+.path dd { margin: 0 }
+
+/* Decisiones y pendientes */
+.two { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px }
+.dec { counter-reset: d; display: grid; gap: 10px }
+.dec li { counter-increment: d; display: grid; grid-template-columns: 28px minmax(0, 1fr); gap: 10px; font-size: 15px }
+.dec li::before { content: counter(d); font: 700 12px/1 var(--f-mono); width: 24px; height: 24px; border-radius: 7px; display: grid; place-items: center; background: var(--ink); color: var(--paper) }
+.dec li small, .need li small { display: block; color: var(--muted); font-size: 13px }
+.need { display: grid; gap: 8px }
+.need li { display: grid; grid-template-columns: 18px minmax(0, 1fr); gap: 10px; font-size: 15px }
+.need li::before { content: ""; width: 14px; height: 14px; margin-top: 4px; border: 1.5px solid var(--muted); border-radius: 4px }
+.out { font-size: 14.5px; color: var(--muted); padding: 14px 18px; border-radius: 14px; border: 1px dashed var(--line) }
+.out b { color: var(--ink) }
+
+/* Crecimiento */
+.grow .card ul { display: grid; gap: 6px; font-size: 14.5px }
+.grow .card li { display: grid; grid-template-columns: 14px minmax(0, 1fr); gap: 8px }
+.grow .card li::before { content: ""; width: 6px; height: 6px; margin-top: 8px; border-radius: 50%; background: var(--signal) }
+.grow .when { font-size: 13.5px; color: var(--muted); padding-top: 10px; border-top: 1px dashed var(--line) }
+.grow .when b { color: var(--ink) }
+/* Administración de Travel Compositor */
+.hours { margin-top: 12px }
+.hours dl { margin: 0; display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 8px 18px; font-size: 15px; align-items: baseline }
+.hours dt { color: var(--muted) }
+.hours dd { margin: 0 }
+.hours b { font: 600 16px/1.3 var(--f-display); font-variant-numeric: tabular-nums }
+@media (max-width: 460px) { .hours dl { grid-template-columns: 1fr; gap: 2px } .hours dd { margin-bottom: 8px } }
+.admin-tc { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px }
+.admin-tc li { border: 1px solid var(--line); background: var(--card); border-radius: 14px; padding: 14px 16px; display: grid; gap: 4px; align-content: start }
+.admin-tc li b { font: 600 15px/1.3 var(--f-display) }
+.admin-tc li span { color: var(--muted); font-size: 13.5px; line-height: 1.45 }
+@media (max-width: 760px) { .admin-tc { grid-template-columns: 1fr 1fr } }
+@media (max-width: 460px) { .admin-tc { grid-template-columns: 1fr } }
+
+/* Aceptación y firmas */
+.signs { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 40px; margin-top: 56px }
+.sign { display: grid; gap: 8px; font-size: 14px; color: var(--muted) }
+.sign .sline { display: block; border-top: 1.5px solid var(--ink); margin-bottom: 4px }
+.sign b { font: 600 15px/1.3 var(--f-display); color: var(--ink) }
+.sign strong { color: var(--ink); font-weight: 600; margin-left: 4px }
+.sign span:not(.sline) { padding-bottom: 6px; border-bottom: 1px solid var(--line) }
+@media (max-width: 640px) { .signs { grid-template-columns: 1fr; gap: 56px } }
+.price .amount { font: 700 clamp(30px, 4vw, 40px)/1 var(--f-display); letter-spacing: -.02em; font-variant-numeric: tabular-nums }
+.price .amount span { font: 500 16px/1 var(--f-body); color: var(--muted); letter-spacing: 0 }
+.terms { margin: 0; padding-left: 20px; display: grid; gap: 6px; font-size: 15px; max-width: 72ch }
+.cond { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px }
+.cond label, .party label { display: grid; gap: 6px; font: 600 12.5px/1.2 var(--f-body); color: var(--muted) }
+.cond input, .cond select, .party input { font: 400 15px/1.3 var(--f-body); color: var(--ink); background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; width: 100%; min-width: 0 }
+.cond input:focus-visible, .cond select:focus-visible, .party input:focus-visible, .btn:focus-visible, .choice input:focus-visible + span { outline: 2px solid var(--signal); outline-offset: 2px }
+.cond input[readonly], .party input[readonly] { background: var(--soft); border-color: transparent }
+.choices { display: flex; gap: 8px; flex-wrap: wrap }
+.choice { position: relative }
+.choice input { position: absolute; opacity: 0; inset: 0 }
+.choice span { display: inline-flex; padding: 9px 12px; border: 1px solid var(--line); border-radius: 10px; font: 600 14px/1 var(--f-body); color: var(--ink); background: var(--card); cursor: pointer }
+.choice input:checked + span { background: var(--signal); color: var(--signal-ink); border-color: var(--signal) }
+.choice input:disabled + span { cursor: default }
+.parties { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px }
+.party { gap: 12px }
+.party .who { display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap }
+.state { font: 700 10.5px/1 var(--f-mono); letter-spacing: .08em; text-transform: uppercase; padding: 5px 7px; border-radius: 6px; background: var(--soft); color: var(--muted) }
+.state.on { background: color-mix(in srgb, var(--ok) 16%, transparent); color: var(--ok) }
+.pad { position: relative; border: 1.5px dashed var(--pad-line); border-radius: 12px; background: var(--pad); height: 150px; touch-action: none; overflow: hidden }
+.pad canvas { position: absolute; inset: 0; width: 100%; height: 100%; cursor: crosshair }
+.pad img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain }
+.pad .hint { position: absolute; left: 12px; bottom: 30px; right: 12px; border-top: 1px solid var(--pad-line); padding-top: 6px; font: 500 11.5px/1 var(--f-mono); color: #6B726C; pointer-events: none }
+.row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center }
+.btn { font: 600 14px/1 var(--f-body); padding: 11px 14px; border-radius: 10px; border: 1px solid var(--line); background: var(--card); color: var(--ink); cursor: pointer }
+.btn.go { background: var(--ink); color: var(--paper); border-color: var(--ink) }
+.btn.warn { color: var(--danger) }
+.btn:disabled { opacity: .5; cursor: default }
+.chk { display: grid; grid-template-columns: 18px minmax(0, 1fr); gap: 8px; font-size: 14px; color: var(--ink) }
+.chk input { margin: 2px 0 0 }
+.msg { font-size: 13.5px; color: var(--muted); min-height: 1.2em }
+.msg.err { color: var(--danger) }
+.signed { font-size: 13.5px; color: var(--muted) }
+.signed b { color: var(--ink) }
+.legal { font-size: 13px; color: var(--muted); max-width: 72ch }
+
+@media (max-width: 760px) {
+  .cond, .parties { grid-template-columns: 1fr }
+}
+@media (max-width: 760px) {
+  .goal, .what, .paths, .two { grid-template-columns: 1fr }
+  .dates { grid-template-columns: 1fr 1fr }
+}
+</style>
+
+<main class="doc">
+
+  <header class="cover">
+    <div class="brandrow">
+      <span><img class="logo-c" src="img/logo-color.png" alt="AVM Operadores Mayoristas" width="121" height="40"><img class="logo-w" src="img/logo-blanco.png" alt="AVM Operadores Mayoristas" width="121" height="40"></span>
+      <span class="meta">Propuesta · 19 oct 2026</span>
+    </div>
+    <h1>Sitio web AVM: <strong>precios reales, ningún lead se pierde</strong></h1>
+    <div class="goal">
+      <div class="card"><b>Hoy</b><p>Para comprar con AVM hay que tener usuario en Travel Compositor.</p></div>
+      <div class="card now"><b>Con el sitio</b><p>Cualquier persona ve precios reales y cotiza sin registro, y AVM se queda con sus datos.</p></div>
+    </div>
+  </header>
+
+  <section id="que">
+    <span class="eyebrow">Qué se hace</span>
+    <h2>Seis piezas, <strong>un solo sitio</strong></h2>
+    <ul class="what">
+      <li><h3>Producto propio</h3><span>Paquetes, traslados, tours y salidas, cargados desde el backoffice.</span></li>
+      <li><h3>Buscador que captura</h3><span>Fechas en un solo paso, sin login. Pide celular y correo al buscar.</span></li>
+      <li><h3>Precios en vivo<span class="nw">+ nuevo</span></h3><span>Hoteles, vuelos y actividades con el precio real de LiteAPI para cada búsqueda.</span></li>
+      <li><h3>Base de prospectos</h3><span>Cada consulta queda guardada para recontactar por WhatsApp o correo.</span></li>
+      <li><h3>Automatizaciones<span class="nw">+ nuevo</span></h3><span>Correo al viajero, aviso al asesor y campañas a listas.</span></li>
+      <li><h3>Backoffice</h3><span>Contenido, solicitudes, correos y tu margen: markup, fee general, fee bancario y comisión.</span></li>
+    </ul>
+    <p class="note">El sitio ya está en línea en el subdominio de prueba. El cliente ya no sale a Travel Compositor: ve el precio real, elige y cotiza en una página propia; el asesor confirma y reserva. Las agencias siguen ingresando a Travel Compositor con su enlace; no hay desarrollo para ellas.</p>
+  </section>
+
+  <section id="integraciones">
+    <span class="eyebrow">Integraciones</span>
+    <h2>Cinco productos <strong>y tu margen</strong></h2>
+    <ul class="integ">
+      <li><span class="src">LiteAPI · Hotels</span><b>Hoteles</b><span class="d">Precio según destino, fechas y huéspedes. Ficha con fotos, habitaciones, régimen y cancelación.</span><span class="tag ok">Listo · 30 oct</span></li>
+      <li><span class="src">LiteAPI · Flights API</span><b>Vuelos</b><span class="d">Tarifas en vivo por ruta, fechas, pasajeros y clase, con aerolínea, escalas y equipaje.</span><span class="tag">6 nov</span></li>
+      <li><span class="src">LiteAPI · Experiences API</span><b>Actividades</b><span class="d">Tours, excursiones y entradas con precio por persona según destino y fechas.</span><span class="tag">13 nov</span></li>
+      <li><span class="src">API del proveedor</span><b>Asistencia médica</b><span class="d">Planes y precio por días y viajeros, del proveedor que elija AVM (con API).</span><span class="tag">13 nov</span></li>
+      <li><span class="src">Producto propio</span><b>Traslados</b><span class="d">Tarifas por zona cargadas en el backoffice. El asesor confirma y AVM opera el servicio.</span><span class="tag">20 nov</span></li>
+      <li><span class="src">Backoffice</span><b>Markup y fees</b><span class="d">Margen por producto, fee general, fee bancario y comisión del operador sobre todos los precios en línea.</span><span class="tag ok">Listo · 30 oct</span></li>
+    </ul>
+    <p class="note">Vuelos y actividades requieren que LiteAPI habilite el acceso en la cuenta de AVM. La asistencia requiere contrato y credenciales del proveedor. Si alguna llega tarde, su fecha se corre los mismos días.</p>
+  </section>
+
+  <section id="fechas">
+    <span class="eyebrow">Cronograma</span>
+    <h2>19 de octubre al 20 de noviembre · <strong>5 semanas</strong></h2>
+    <div class="gantt-wrap">
+      <div class="gantt" role="table" aria-label="Cronograma por semana">
+        <div class="hd wk">Actividad</div>
+        <div class="hd"><b>19–23</b>oct</div><div class="hd"><b>26–30</b>oct</div><div class="hd"><b>3–6</b>nov</div><div class="hd"><b>9–13</b>nov</div><div class="hd"><b>17–20</b>nov</div>
+
+        <div class="task">Producción, contenido y correos</div>
+        <div class="cell"><i class="bar s e"></i></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div>
+        <div class="task">Hoteles en vivo, fechas y cotización</div>
+        <div class="cell"><i class="bar s"></i></div><div class="cell"><i class="bar e"></i></div><div class="cell"></div><div class="cell"></div><div class="cell"></div>
+        <div class="task">Markup, fees y campañas</div>
+        <div class="cell"></div><div class="cell"><i class="bar s e"></i></div><div class="cell"></div><div class="cell"></div><div class="cell"></div>
+        <div class="task">Salida a producción</div>
+        <div class="cell"></div><div class="cell"><i class="bar gate s e"></i></div><div class="cell"></div><div class="cell"></div><div class="cell"></div>
+        <div class="task">Vuelos · Flights API</div>
+        <div class="cell"></div><div class="cell"></div><div class="cell"><i class="bar s e"></i></div><div class="cell"></div><div class="cell"></div>
+        <div class="task">Actividades y asistencia · API</div>
+        <div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"><i class="bar s e"></i></div><div class="cell"></div>
+        <div class="task">Traslados propios y capacitación</div>
+        <div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"><i class="bar s e"></i></div>
+        <div class="task">Salida de integraciones</div>
+        <div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"><i class="bar gate s e"></i></div>
+      </div>
+    </div>
+    <ul class="dates">
+      <li><time>Vie 30 oct</time><b>En producción con hoteles en vivo</b></li>
+      <li><time>Vie 6 nov</time><b>Vuelos con precio en línea</b></li>
+      <li><time>Vie 13 nov</time><b>Actividades y asistencia</b></li>
+      <li><time>Vie 20 nov</time><b>Traslados y entrega final</b></li>
+    </ul>
+    <p class="note">23 días hábiles: el 2 y el 16 de noviembre son festivos.</p>
+  </section>
+
+  <section id="compra">
+    <span class="eyebrow">Cómo compra el cliente</span>
+    <h2>Dos caminos, <strong>AVM elige</strong></h2>
+    <div class="paths">
+      <div class="card path inc">
+        <div class="top"><span class="letter">A</span><span class="tag">Incluido · 30 oct</span></div>
+        <h3>Cotización con asesor</h3>
+        <dl>
+          <dt>Cómo</dt><dd>Elige con precio real y envía la solicitud desde la página de cotización.</dd>
+          <dt>Pago</dt><dd>El asesor confirma, reserva y cobra por transferencia o enlace de pago.</dd>
+          <dt>Ventaja</dt><dd>Sin costos de pasarela y con un asesor que acompaña la venta.</dd>
+        </dl>
+      </div>
+      <div class="card path">
+        <div class="top"><span class="letter">B</span><span class="tag">Adicional · 2 semanas</span></div>
+        <h3>Reserva y pago en el sitio</h3>
+        <dl>
+          <dt>Cómo</dt><dd>El cliente reserva y paga sin salir del sitio: hoteles, vuelos y actividades.</dd>
+          <dt>Pago</dt><dd>Pagos de LiteAPI o pasarela local (Wompi, ePayco, PayU o Mercado Pago), con comisión por transacción.</dd>
+          <dt>Ojo</dt><dd>Requiere aprobación de pagos en LiteAPI y términos de compra.</dd>
+        </dl>
+      </div>
+    </div>
+    <p class="note"><b>Recomendación:</b> salir el 30 de octubre con A y activar B cuando LiteAPI apruebe los pagos.</p>
+  </section>
+
+  <section id="crecimiento">
+    <span class="eyebrow">Para crecer</span>
+    <h2>Más clientes y <strong>más producto</strong></h2>
+    <div class="two grow">
+      <div class="card">
+        <h3>Posicionamiento en Google y redes</h3>
+        <ul>
+          <li><span><b>Orgánico (SEO):</b> una página por destino y producto, títulos y descripciones, mapa del sitio y carga rápida.</span></li>
+          <li><span><b>Pago:</b> campañas en Google Ads y Meta (Facebook e Instagram) que llevan al buscador.</span></li>
+          <li><span>Cada cotización se mide como conversión, para saber cuánto cuesta cada lead.</span></li>
+        </ul>
+        <p class="when"><b>Desde el 30 oct</b> el sitio queda listo para pautar. La pauta no está incluida: AVM debe tener a una persona o agencia que cree y maneje las campañas, con su propio presupuesto.</p>
+      </div>
+      <div class="card">
+        <h3>Integración con Dingus</h3>
+        <ul>
+          <li><span><b>Cadena hotelera RIU:</b> integración de Dingus para conectar el inventario de RIU Hotels &amp; Resorts.</span></li>
+        </ul>
+        <p class="when"><b>Adicional.</b> Se acuerda por separado.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="administracion">
+    <span class="eyebrow">Funciones adicionales</span>
+    <h2>Administración de <strong>Travel Compositor</strong></h2>
+    <p class="note">Además del sitio, me encargo de la operación del portal de reservas de AVM.</p>
+    <ul class="admin-tc">
+      <li><b>Configuración de agencias</b><span>Alta y ajustes de cada agencia en el portal.</span></li>
+      <li><b>Creación de usuarios</b><span>Usuarios para agencias y para el equipo de AVM.</span></li>
+      <li><b>Configuración de tarifas</b><span>Márgenes, comisiones y condiciones por agencia o producto.</span></li>
+      <li><b>Integración de proveedores</b><span>Conexión de nuevos proveedores de hoteles, traslados y servicios.</span></li>
+      <li><b>Productos propios</b><span>Carga y actualización de los paquetes y servicios de AVM.</span></li>
+      <li><b>Tickets con el proveedor</b><span>Reporte y seguimiento de incidencias con Travel Compositor.</span></li>
+      <li><b>Soporte a AVM</b><span>Acompañamiento al equipo en el uso diario del portal.</span></li>
+    </ul>
+    <div class="card hours">
+      <span class="eyebrow">Horario</span>
+      <dl>
+        <dt>Lunes, miércoles y viernes</dt><dd><b>8:00 a. m. – 12:00 m.</b></dd>
+        <dt>Si no es posible en la mañana</dt><dd><b>1:00 – 5:00 p. m.</b>, los mismos días</dd>
+      </dl>
+    </div>
+  </section>
+
+  <section id="decisiones">
+    <div class="card">
+      <span class="eyebrow">Decisiones de AVM · 19 oct</span>
+      <ul class="dec">
+        <li><span>Aprobar el alcance y el cronograma</span></li>
+        <li><span>Activar LiteAPI en producción<small>Tarjeta en el panel de LiteAPI y solicitud de acceso a Flights y Experiences.</small></span></li>
+        <li><span>Proveedor de asistencia médica<small>Con API, contrato y credenciales a nombre de AVM.</small></span></li>
+        <li><span>Margen inicial<small>Markup por producto, fee general, fee bancario y comisión del operador.</small></span></li>
+      </ul>
+    </div>
+    <p class="out"><b>Fuera de alcance:</b> API de Travel Compositor (precios en vivo y reservas automáticas).</p>
+  </section>
+
+  <section id="firma">
+    <span class="eyebrow">Aceptación</span>
+    <h2>Firma de <strong>la propuesta</strong></h2>
+    <ol class="terms">
+      <li>Las partes aceptan el alcance, el cronograma, las responsabilidades y lo que queda fuera de alcance, tal como están descritos en esta propuesta.</li>
+      <li>Las fechas dependen de que AVM entregue a tiempo los accesos, las cuentas y el contenido. Un retraso en esas entregas corre la fecha de salida en los mismos días.</li>
+      <li>Los servicios de terceros (dominio, Resend, LiteAPI, proveedor de asistencia, pasarelas, Travel Compositor y pauta) se contratan y pagan a nombre de AVM.</li>
+      <li>Cambios de alcance después de la firma se acuerdan por escrito, con su ajuste de tiempo y valor.</li>
+    </ol>
+
+    <div class="card price">
+      <span class="eyebrow">Valor</span>
+      <p class="amount">$3.500.000 <span>COP mensuales</span></p>
+    </div>
+
+    <div class="signs">
+      <div class="sign"><span class="sline"></span><b>Por AVM Operadores Mayoristas</b><span>Nombre:</span><span>C.C. / NIT:</span><span>Fecha:</span></div>
+      <div class="sign"><span class="sline"></span><b>Por el desarrollador</b><span>Nombre: <strong>Santiago Martínez</strong></span><span>C.C. / NIT: <strong>1.076.623.993</strong></span><span>Fecha: <strong>19 de octubre de 2026</strong></span></div>
+    </div>
+  </section>
+
+</main>
+

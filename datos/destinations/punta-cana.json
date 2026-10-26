@@ -1,0 +1,69 @@
+{
+  "active": true,
+  "alt": "Vista aérea de playa Bávaro en Punta Cana, con palmeras y mar turquesa",
+  "bookUrl": "",
+  "code": "PUJ",
+  "country": "República Dominicana",
+  "desc": "Resort de 5 estrellas sobre playa Bávaro, rodeado de vegetación tropical. Todo está incluido con Infinite Indulgence®: piscinas, spa, gastronomía y diversión para toda la familia.",
+  "hotel": "Grand Palladium Punta Cana Resort & Spa",
+  "img": "img/punta-cana.webp",
+  "inc": [
+    "Alojamiento las noches confirmadas",
+    "Traslados de llegada y salida del aeropuerto principal en servicio regular diurno",
+    "Desayuno, almuerzo y cena buffet y a la carta",
+    "Snacks y bar abierto con y sin licor las 24 horas",
+    "Asistencia médica internacional hasta los 74 años, cobertura de 70 mil USD"
+  ],
+  "info": {
+    "clima": "Tropical, entre 25 y 31 °C todo el año. Temporada de huracanes de junio a noviembre.",
+    "docs": "Pasaporte vigente.",
+    "moneda": "Peso dominicano (DOP). El dólar se acepta en la mayoría de hoteles y tiendas turísticas.",
+    "vacunas": "Consulta las recomendaciones vigentes con tu asesor antes de viajar.",
+    "visa": "Consulta los requisitos vigentes con tu asesor o en el sitio de Cancillería antes de viajar."
+  },
+  "name": "Punta Cana",
+  "nights": 3,
+  "noInc": [
+    "Tiquetes aéreos",
+    "Gastos y servicios no especificados",
+    "Tours opcionales en destino"
+  ],
+  "offer": null,
+  "order": 0,
+  "region": "Caribe",
+  "seasons": [
+    {
+      "from": "10-01",
+      "to": "10-31",
+      "usd": 417
+    },
+    {
+      "from": "11-01",
+      "to": "12-20",
+      "usd": 467
+    },
+    {
+      "from": "02-01",
+      "to": "02-28",
+      "usd": 754
+    },
+    {
+      "from": "03-01",
+      "to": "04-30",
+      "usd": 659
+    }
+  ],
+  "stars": 5,
+  "tags": [
+    "Todo incluido",
+    "Traslados",
+    "Asistencia médica"
+  ],
+  "tops": [
+    "22 bares, 5 restaurantes internacionales con show-cooking y 8 restaurantes a la carta",
+    "Menores hasta los 17 años pagan tarifa de niño",
+    "Actividades sin límite, desde yoga hasta voleibol de playa",
+    "Gran variedad de categorías de habitación"
+  ],
+  "tzone": "Punta Cana y República Dominicana"
+}

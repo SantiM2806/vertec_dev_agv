@@ -1,0 +1,15 @@
+{
+  "active": true,
+  "cond": {
+    "destinos": [
+      "Cancún",
+      "Riviera Maya"
+    ],
+    "soloMarketing": false,
+    "tipos": []
+  },
+  "lista": "mexico",
+  "name": "Interesados en México",
+  "order": 4,
+  "plantilla": ""
+}

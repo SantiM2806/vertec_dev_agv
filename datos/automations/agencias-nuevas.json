@@ -1,0 +1,15 @@
+{
+  "active": true,
+  "cond": {
+    "destinos": [],
+    "soloMarketing": false,
+    "tipos": [
+      "agencia",
+      "famtrip"
+    ]
+  },
+  "lista": "agencias",
+  "name": "Agencias nuevas",
+  "order": 1,
+  "plantilla": "agencia"
+}

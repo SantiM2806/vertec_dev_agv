@@ -1,0 +1,12 @@
+{
+  "active": true,
+  "cond": {
+    "destinos": [],
+    "soloMarketing": true,
+    "tipos": []
+  },
+  "lista": "boletin",
+  "name": "Suscriptores del boletín",
+  "order": 2,
+  "plantilla": "boletin"
+}

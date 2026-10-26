@@ -1,0 +1,45 @@
+SITIO AVM EN DONGEE — PASOS DE INSTALACIÓN
+==========================================
+
+Requisitos: hosting con cPanel, PHP 8.0 o superior y MySQL (Dongee lo incluye).
+
+1. BASE DE DATOS
+   cPanel → "Bases de datos MySQL":
+   - Crea una base de datos (p. ej. avm).
+   - Crea un usuario con contraseña segura.
+   - Agrega el usuario a la base de datos con "Todos los privilegios".
+   Anota el nombre completo de la base y del usuario (cPanel les pone un prefijo, p. ej. tuusuario_avm).
+
+2. SUBIR LOS ARCHIVOS
+   cPanel → "Administrador de archivos":
+   - Sube el contenido de la carpeta public_html de este paquete a la carpeta del sitio
+     (public_html, o la carpeta del subdominio si primero quieres probar en uno).
+     Activa "Mostrar archivos ocultos" para ver que se subió .htaccess.
+
+3. CONFIGURACIÓN
+   - Sube avm-config.example.php a la carpeta que está POR ENCIMA de la carpeta del sitio
+     (normalmente /home/tuusuario/) y renómbralo a avm-config.php.
+   - Edítalo y llena db_name, db_user y db_pass. Por ahora puedes dejar vacías las llaves
+     de LiteAPI y Resend; el sitio funciona sin ellas.
+
+4. INSTALAR
+   - Abre en el navegador: https://tudominio/instalar.php
+   - Crea tu usuario administrador (correo y contraseña de al menos 10 caracteres).
+   - Al terminar, BORRA instalar.php desde el Administrador de archivos.
+
+5. ENTRAR AL BACKOFFICE
+   - https://tudominio/ingresar.php
+
+6. CORREOS AUTOMÁTICOS (cuando tengas Resend)
+   - resend.com → Domains → agrega tu dominio y copia los registros DNS en
+     cPanel → "Zone Editor". Espera a que Resend lo marque como verificado.
+   - resend.com → API Keys → crea una llave y pégala en avm-config.php (resend_key).
+   - Llena mail_from (p. ej. AVM Operadores Mayoristas <reservas@tudominio>) y mail_reply_to.
+   - cPanel → "Trabajos de cron" → cada 5 minutos:
+       php /home/tuusuario/public_html/api/cron.php
+     (ajusta la ruta si el sitio está en otra carpeta)
+
+7. HOTELES EN EL BUSCADOR (cuando tengas LiteAPI)
+   - Pega la llave de producción en avm-config.php (liteapi_key). No hace falta nada más.
+
+No compartas avm-config.php ni sus llaves por chat o correo.

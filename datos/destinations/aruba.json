@@ -1,0 +1,69 @@
+{
+  "active": true,
+  "alt": "Árbol divi-divi en la costa de Aruba",
+  "bookUrl": "",
+  "code": "AUA",
+  "country": "Aruba",
+  "desc": "Sobre la playa de Palm Beach, con todo incluido 24 horas, una amplia oferta gastronómica y el servicio de RIU Hotels & Resorts.",
+  "hotel": "Riu Palace Aruba",
+  "img": "img/aruba.webp",
+  "inc": [
+    "3 noches de alojamiento en habitación Premium Deluxe Double",
+    "Alimentación todo incluido",
+    "Traslados aeropuerto – hotel – aeropuerto en servicio regular",
+    "Asistencia médica Assist Card con cobertura hasta 70 mil USD (hasta los 74 años)",
+    "Impuestos hoteleros y fee bancario"
+  ],
+  "info": {
+    "clima": "Seco y soleado todo el año, cerca de 28 °C. Está fuera de la ruta habitual de huracanes.",
+    "docs": "Pasaporte vigente.",
+    "moneda": "Florín arubeño (AWG). El dólar se acepta en casi todo el país.",
+    "vacunas": "Consulta las recomendaciones vigentes con tu asesor antes de viajar.",
+    "visa": "Consulta los requisitos vigentes con tu asesor o en el sitio de Cancillería antes de viajar."
+  },
+  "name": "Aruba",
+  "nights": 3,
+  "noInc": [
+    "Tiquetes aéreos",
+    "Gastos y servicios no especificados",
+    "Tours opcionales en destino"
+  ],
+  "offer": null,
+  "order": 2,
+  "region": "Caribe",
+  "seasons": [
+    {
+      "from": "11-01",
+      "to": "12-19",
+      "usd": 1059
+    },
+    {
+      "from": "01-10",
+      "to": "01-31",
+      "usd": 1274
+    },
+    {
+      "from": "02-01",
+      "to": "02-28",
+      "usd": 1524
+    },
+    {
+      "from": "04-01",
+      "to": "04-30",
+      "usd": 1323
+    }
+  ],
+  "stars": 5,
+  "tags": [
+    "Todo incluido",
+    "Traslados",
+    "Asistencia médica"
+  ],
+  "tops": [
+    "Hotel para toda la familia (Fun4All)",
+    "Todo incluido 24 horas",
+    "RIU Land: entretenimiento para niños",
+    "Spa & Wellness y piscina infantil con toboganes"
+  ],
+  "tzone": "Aruba"
+}

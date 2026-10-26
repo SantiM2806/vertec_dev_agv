@@ -1,0 +1,59 @@
+{
+  "active": true,
+  "alt": "Palmera sobre la playa de Playa del Carmen, en la Riviera Maya",
+  "bookUrl": "",
+  "code": "CUN",
+  "country": "México",
+  "desc": "Resort de 4 estrellas todo incluido en Playa del Carmen, rodeado de jungla, manglares y vistas al mar Caribe. Ideal para familias y parejas.",
+  "hotel": "BlueBay Grand Esmeralda",
+  "img": "img/riviera-maya.webp",
+  "inc": [
+    "Alojamiento las noches confirmadas",
+    "Traslados de llegada y salida del aeropuerto principal en servicio regular diurno",
+    "Desayuno, almuerzo y cena buffet y a la carta",
+    "Snacks y bar abierto con y sin licor las 24 horas",
+    "Asistencia médica internacional hasta los 74 años, cobertura de 70 mil USD"
+  ],
+  "info": {
+    "clima": "Cálido todo el año, entre 24 y 32 °C. Temporada de lluvias y huracanes de junio a noviembre.",
+    "docs": "Pasaporte vigente.",
+    "moneda": "Peso mexicano (MXN). El dólar se acepta en muchos comercios turísticos.",
+    "vacunas": "Consulta las recomendaciones vigentes con tu asesor antes de viajar.",
+    "visa": "Consulta los requisitos vigentes con tu asesor o en el sitio de Cancillería antes de viajar."
+  },
+  "name": "Riviera Maya",
+  "nights": 3,
+  "noInc": [
+    "Tiquetes aéreos",
+    "Gastos y servicios no especificados",
+    "Tours opcionales en destino"
+  ],
+  "offer": null,
+  "order": 1,
+  "region": "México",
+  "seasons": [
+    {
+      "from": "10-01",
+      "to": "10-17",
+      "usd": 295
+    },
+    {
+      "from": "12-01",
+      "to": "12-20",
+      "usd": 320
+    }
+  ],
+  "stars": 4,
+  "tags": [
+    "Todo incluido",
+    "Traslados",
+    "Asistencia médica"
+  ],
+  "tops": [
+    "Playa privada y 3 piscinas grandes",
+    "6 restaurantes",
+    "Instalaciones deportivas",
+    "Miniclub para los más pequeños"
+  ],
+  "tzone": "Cancún y Riviera Maya"
+}
