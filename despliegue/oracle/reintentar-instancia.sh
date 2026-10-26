@@ -18,7 +18,9 @@ IMG="$(oci compute image list -c "$C" --operating-system "Canonical Ubuntu" --sh
 mapfile -t ADS < <(oci iam availability-domain list -c "$C" | jq -r '.data[].name')
 
 # Llave SSH: queda en Cloud Shell (~/.ssh/plataforma); desde aquí mismo puedes entrar a la máquina
-[ -f ~/.ssh/plataforma ] || ssh-keygen -t ed25519 -f ~/.ssh/plataforma -N "" -C plataforma -q
+mkdir -p ~/.ssh && chmod 700 ~/.ssh
+[ -f ~/.ssh/plataforma.pub ] || { rm -f ~/.ssh/plataforma; ssh-keygen -t ed25519 -f ~/.ssh/plataforma -N "" -C plataforma -q; }
+[ -f ~/.ssh/plataforma.pub ] || { echo "No pude crear la llave SSH en ~/.ssh/plataforma.pub"; exit 1; }
 
 echo "Subred: ${SUBNET:0:40}…  Imagen: ${IMG:0:40}…  Dominios: ${ADS[*]}"
 echo "Intentando crear '$NOMBRE' ($OCPUS OCPU, $MEM GB) cada $ESPERA s. Ctrl+C para detener."
