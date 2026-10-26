@@ -26,6 +26,25 @@ Tiempo aproximado: 30 a 45 minutos la primera vez.
 6. **SSH keys**: *Generate a key pair for me* y descarga **las dos llaves**. Guárdalas: sin ellas no puedes entrar.
 7. **Create**. Cuando esté en verde (*Running*), copia la **Public IP address**.
 
+### Si sale "Out of capacity" (sin capacidad)
+
+Es común: las máquinas A1 gratuitas se agotan por región. En vez de reintentar a mano, deja que Cloud Shell lo haga cada minuto:
+
+1. Crea la red primero: Menú ☰ → **Networking → Virtual cloud networks → Start VCN Wizard → Create VCN with Internet Connectivity**, nombre `red-plataforma`, **Create**.
+2. Abre **Cloud Shell** (ícono `>_` arriba a la derecha de la consola).
+3. En el menú de Cloud Shell (engranaje o ☰) → **Upload** → sube `despliegue/oracle/reintentar-instancia.sh` desde tu computador.
+4. Ejecútalo en segundo plano, para que siga aunque cierres el navegador:
+   ```bash
+   nohup bash reintentar-instancia.sh > reintentos.log 2>&1 &
+   ```
+5. Revisa cuando quieras:
+   ```bash
+   tail -f reintentos.log
+   ```
+   Cuando lo logre, muestra la IP pública y el comando para entrar.
+
+La llave SSH queda en Cloud Shell (`~/.ssh/plataforma`): entra a la máquina desde ahí mismo con `ssh -i ~/.ssh/plataforma ubuntu@TU_IP` y sigue desde el paso 5 de esta guía. Cloud Shell cierra las sesiones inactivas tras un rato; si el log deja de avanzar, vuelve a ejecutar el paso 4.
+
 ## 3. Abrir los puertos 80 y 443
 
 1. En la instancia: **Primary VNIC → Subnet** → la *Security List* por defecto → **Add Ingress Rules**.
