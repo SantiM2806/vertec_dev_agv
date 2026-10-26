@@ -19,14 +19,14 @@ const AVM_HOTEL_GEO = [
 const AVM_TCCODE = ['punta-cana' => 'puj', 'riviera-maya' => 'pcm', 'aruba' => 'aua', 'panama' => 'pan-1', 'curazao' => 'cua', 'cancun' => 'cun'];
 
 function avm_lite_get(string $path, array $params, int $ttl): array {
-    $c = avm_config();
-    $key = (string) ($c['liteapi_key'] ?? getenv('LITEAPI_KEY') ?: '');
+    $key = (string) avm_cfg('liteapi_key', '');
     if ($key === '') return ['ok' => false, 'error' => 'sin_configurar', 'status' => 503];
-    $base = rtrim((string) ($c['liteapi_base'] ?? 'https://api.liteapi.travel/v3.0'), '/');
+    $base = rtrim((string) avm_cfg('liteapi_base', 'https://api.liteapi.travel/v3.0'), '/');
     $url = $base . $path . ($params ? '?' . http_build_query($params) : '');
     $dir = dirname(__DIR__, 2) . '/avm-cache';
     if (!is_dir($dir)) @mkdir($dir, 0700, true);
-    $file = $dir . '/lite-' . hash('sha256', $url) . '.json';
+    // Cada cuenta de LiteAPI tiene su caché (las comisiones cambian de una a otra)
+    $file = $dir . '/lite-' . hash('sha256', $key . '|' . $url) . '.json';
     if (is_file($file) && time() - filemtime($file) < $ttl) {
         $j = json_decode((string) file_get_contents($file), true);
         if (is_array($j)) return ['ok' => true, 'data' => $j, 'cache' => true];
@@ -46,14 +46,13 @@ function avm_lite_get(string $path, array $params, int $ttl): array {
 
 /** Consulta POST con caché (tarifas: 3 horas). */
 function avm_lite_post(string $path, array $body, int $ttl): array {
-    $c = avm_config();
-    $key = (string) ($c['liteapi_key'] ?? getenv('LITEAPI_KEY') ?: '');
+    $key = (string) avm_cfg('liteapi_key', '');
     if ($key === '') return ['ok' => false, 'error' => 'sin_configurar', 'status' => 503];
-    $base = rtrim((string) ($c['liteapi_base'] ?? 'https://api.liteapi.travel/v3.0'), '/');
+    $base = rtrim((string) avm_cfg('liteapi_base', 'https://api.liteapi.travel/v3.0'), '/');
     $json = json_encode($body, JSON_UNESCAPED_SLASHES);
     $dir = dirname(__DIR__, 2) . '/avm-cache';
     if (!is_dir($dir)) @mkdir($dir, 0700, true);
-    $file = $dir . '/lite-post-' . hash('sha256', $path . '|' . $json) . '.json';
+    $file = $dir . '/lite-post-' . hash('sha256', $key . '|' . $path . '|' . $json) . '.json';
     if (is_file($file) && time() - filemtime($file) < $ttl && is_array($j = json_decode((string) file_get_contents($file), true))) return ['ok' => true, 'data' => $j];
     $ch = curl_init($base . $path);
     curl_setopt_array($ch, [CURLOPT_RETURNTRANSFER => true, CURLOPT_TIMEOUT => 20, CURLOPT_POST => true, CURLOPT_POSTFIELDS => $json,
@@ -71,9 +70,10 @@ function avm_lite_post(string $path, array $body, int $ttl): array {
  * Es la misma fórmula del simulador del backoffice (precioCliente en index.html).
  */
 function avm_tarifas_cfg(): array {
-    static $c = null;
-    if ($c === null) { try { $c = avm_get('system/tarifas') ?? []; } catch (Throwable $e) { $c = []; } }
-    return $c;
+    static $c = [];
+    $t = avm_tid();
+    if (!isset($c[$t])) { try { $c[$t] = avm_get('system/tarifas') ?? []; } catch (Throwable $e) { $c[$t] = []; } }
+    return $c[$t];
 }
 function avm_precio(float $neto, string $prod, bool $conFijo = true): float {
     return $neto <= 0 ? $neto : avm_liquidacion($neto, $prod, $conFijo)['total'];

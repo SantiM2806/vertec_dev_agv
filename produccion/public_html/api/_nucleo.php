@@ -1,17 +1,17 @@
 <?php
 /**
- * Núcleo del sitio AVM en producción (Dongee: PHP + MySQL).
+ * Núcleo de la plataforma (PHP + MySQL), multi-agencia: ver _tenant.php.
  *
- * Guarda el contenido como documentos JSON en una sola tabla (`avm_docs`), con las mismas rutas
- * que usaba el prototipo: site/content, destinations/<id>, leads/<visitante>, prospects/<clave>…
- * Así la página funciona igual y el backoffice no cambia.
+ * Guarda el contenido como documentos JSON en una sola tabla (`avm_docs`), con rutas
+ * site/content, destinations/<id>, leads/<visitante>, prospects/<clave>…, siempre dentro de una agencia.
  *
  * Configuración: avm-config.php UN NIVEL POR ENCIMA de public_html (nunca dentro).
  */
 
-if (basename($_SERVER['SCRIPT_FILENAME'] ?? '') === '_lib.php') { http_response_code(404); exit; }
+if (basename($_SERVER['SCRIPT_FILENAME'] ?? '') === '_nucleo.php') { http_response_code(404); exit; }
 
 date_default_timezone_set('America/Bogota');
+require_once __DIR__ . '/_tenant.php';
 require_once __DIR__ . '/_correo.php';
 require_once __DIR__ . '/_campanas.php';
 require_once __DIR__ . '/_liteapi.php';
@@ -61,7 +61,19 @@ function avm_session(): void {
     session_start();
 }
 function avm_https(): bool { return (($_SERVER['HTTPS'] ?? '') !== '' && $_SERVER['HTTPS'] !== 'off') || (($_SERVER['HTTP_X_FORWARDED_PROTO'] ?? '') === 'https'); }
-function avm_is_admin(): bool { avm_session(); return !empty($_SESSION['admin_id']); }
+function avm_is_admin(): bool {
+    avm_session();
+    $t = avm_tenant_opt();
+    return !empty($_SESSION['admin_id']) && $t && (int) ($_SESSION['admin_tenant'] ?? -1) === $t['id'];
+}
+/** Dueño de la plataforma (panel plataforma.php). */
+function avm_is_super(): bool {
+    avm_session();
+    if (empty($_SESSION['super_id'])) return false;
+    static $ok = null;
+    if ($ok === null) { $st = avm_db()->prepare("SELECT COUNT(*) FROM avm_users WHERE id = ? AND tenant = 0 AND role = 'super'"); $st->execute([$_SESSION['super_id']]); $ok = (bool) $st->fetchColumn(); }
+    return $ok;
+}
 
 /** Identificador anónimo del visitante (cookie). Solo sirve para que vea y agregue sus propias solicitudes. */
 function avm_visitor(): string {
@@ -100,8 +112,8 @@ function avm_can_read(string $path, bool $admin, string $vid): bool {
 
 /* ---------- Documentos ---------- */
 function avm_get(string $path): ?array {
-    $st = avm_db()->prepare('SELECT data FROM avm_docs WHERE path = ? AND deleted = 0');
-    $st->execute([$path]);
+    $st = avm_db()->prepare('SELECT data FROM avm_docs WHERE tenant = ? AND path = ? AND deleted = 0');
+    $st->execute([avm_tid(), $path]);
     $row = $st->fetch();
     return $row ? json_decode($row['data'], true) : null;
 }
@@ -109,19 +121,19 @@ function avm_put(string $path, array $data): int {
     [$coll, $id] = avm_split($path);
     $ts = avm_now_ms();
     $json = json_encode((object) $data, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
-    $st = avm_db()->prepare('INSERT INTO avm_docs (path, coll, id, data, updated, deleted) VALUES (?, ?, ?, ?, ?, 0)
+    $st = avm_db()->prepare('INSERT INTO avm_docs (tenant, path, coll, id, data, updated, deleted) VALUES (?, ?, ?, ?, ?, ?, 0)
         ON DUPLICATE KEY UPDATE data = VALUES(data), updated = VALUES(updated), deleted = 0');
-    $st->execute([$path, $coll, $id, $json, $ts]);
+    $st->execute([avm_tid(), $path, $coll, $id, $json, $ts]);
     return $ts;
 }
 function avm_del(string $path): int {
     $ts = avm_now_ms();
-    avm_db()->prepare('UPDATE avm_docs SET deleted = 1, data = "{}", updated = ? WHERE path = ?')->execute([$ts, $path]);
+    avm_db()->prepare('UPDATE avm_docs SET deleted = 1, data = "{}", updated = ? WHERE tenant = ? AND path = ?')->execute([$ts, avm_tid(), $path]);
     return $ts;
 }
 function avm_coll(string $coll): array {
-    $st = avm_db()->prepare('SELECT id, data FROM avm_docs WHERE coll = ? AND deleted = 0');
-    $st->execute([$coll]);
+    $st = avm_db()->prepare('SELECT id, data FROM avm_docs WHERE tenant = ? AND coll = ? AND deleted = 0');
+    $st->execute([avm_tid(), $coll]);
     $out = [];
     foreach ($st as $r) $out[$r['id']] = json_decode($r['data'], true);
     return $out;
@@ -178,7 +190,7 @@ function avm_process_lead(array $l, array $autos, array $lists, array $tpls, arr
     $vars = [
         'nombre' => explode(' ', $p['nombre'] ?: ($l['nombre'] ?? ''))[0] ?: 'viajero', 'nombre_completo' => $p['nombre'],
         'numero' => $l['numero'] ?? '', 'destino' => avm_dest_of($l) ?: 'tu próximo viaje', 'agencia' => $l['agencia']['razonSocial'] ?? '',
-        'asesor_whatsapp' => '+' . $wa, 'correo_avm' => $contact['email'] ?? '',
+        'asesor_whatsapp' => '+' . $wa, 'correo_avm' => $contact['email'] ?? '', 'correo_agencia' => $contact['email'] ?? '', 'marca' => avm_marca()['name'],
     ];
     $fi = avm_ficha($l);
     $vars += ['producto' => mb_strtolower($fi['productoCorto'], 'UTF-8'), 'titulo' => $fi['titulo'], 'resumen' => $fi['resumen']];
@@ -265,7 +277,7 @@ function avm_notify_team(array $l, array $contact, ?array $liq = null): void {
     foreach ((array) ($l['viaje'] ?? []) as $k => $v) if ($v !== '' && $v !== '0' && !is_array($v)) $viaje[] = "  $k: $v";
     $tel = preg_replace('/\D/', '', (string) ($l['celular'] ?? ''));
     if (strlen($tel) === 10 && $tel[0] === '3') $tel = '57' . $tel;
-    $site = !empty($_SERVER['HTTP_HOST']) ? (avm_https() ? 'https://' : 'http://') . $_SERVER['HTTP_HOST'] : rtrim((string) (avm_config()['site_url'] ?? ''), '/');
+    $site = avm_tenant_url();
     $cuerpo = "Nueva solicitud " . ($l['numero'] ?? '') . " · $tipo" . ($dest ? " · $dest" : '') . "\n\n"
         . "Nombre: " . (($l['nombre'] ?? '') ?: 'sin nombre') . "\nCelular: " . ($l['celular'] ?? '') . "\nCorreo: " . ($l['correo'] ?? '') . "\n"
         . ($viaje ? "\nViaje:\n" . implode("\n", $viaje) . "\n" : '')
@@ -274,7 +286,7 @@ function avm_notify_team(array $l, array $contact, ?array $liq = null): void {
         . "Ver en el backoffice: $site/#admin\n";
     foreach ($to as $m) {
         avm_put('outbox/' . bin2hex(random_bytes(10)), [
-            'para' => $m, 'nombre' => 'Equipo AVM', 'asunto' => 'Nueva solicitud: ' . ($fi = avm_ficha($l))['productoCorto'] . ($fi['destino'] ? ' en ' . $fi['destino'] : '') . ' · ' . ($l['numero'] ?? ''),
+            'para' => $m, 'nombre' => 'Equipo ' . avm_marca()['name'], 'asunto' => 'Nueva solicitud: ' . ($fi = avm_ficha($l))['productoCorto'] . ($fi['destino'] ? ' en ' . $fi['destino'] : '') . ' · ' . ($l['numero'] ?? ''),
             'cuerpo' => $cuerpo, 'plantilla' => 'Aviso al equipo', 'tipo' => 'interno', 'automatizacion' => 'Aviso al equipo',
             'solicitud' => $l['numero'] ?? '', 'prospecto' => avm_prospect_key($l), 'ficha' => avm_ficha($l), 'estado' => 'pendiente', 'creado' => avm_iso(),
             ...($liq ? ['liq' => $liq] : []),
@@ -295,11 +307,7 @@ function avm_update_trm(): string {
     if (($sys['checked'] ?? 0) > time() - ($alDia ? 6 * 3600 : 1800)) return 'TRM al día';
     avm_put('system/trm', ['checked' => time()]);
     if (!empty($txt['trmManual'])) return 'TRM manual (no se actualiza)';
-    $q = http_build_query(['$where' => "vigenciadesde <= '{$hoy}T00:00:00' AND vigenciahasta >= '{$hoy}T00:00:00'", '$order' => 'vigenciadesde DESC', '$limit' => 1]);
-    $ch = curl_init('https://www.datos.gov.co/resource/32sa-8pi3.json?' . $q);
-    curl_setopt_array($ch, [CURLOPT_RETURNTRANSFER => true, CURLOPT_TIMEOUT => 15, CURLOPT_HTTPHEADER => ['Accept: application/json']]);
-    $resp = curl_exec($ch); $err = curl_error($ch); curl_close($ch);
-    $row = json_decode((string) $resp, true)[0] ?? null;
+    [$row, $err] = avm_trm_fuente($hoy);
     if (!$row || !is_numeric($row['valor'] ?? null)) return 'TRM: sin respuesta de la fuente' . ($err ? " ($err)" : '');
     $txt['trm'] = round((float) $row['valor'], 2);
     $txt['trmDate'] = $hoy;
@@ -311,14 +319,30 @@ function avm_update_trm(): string {
     return "TRM {$txt['trm']} vigente hoy {$hoy}";
 }
 
-/* ---------- Copia de seguridad diaria (fuera de la carpeta pública, se guardan 14 días) ---------- */
+/** TRM vigente hoy en datos.gov.co; la respuesta se guarda 30 minutos para no consultarla por cada agencia. */
+function avm_trm_fuente(string $hoy): array {
+    $dir = dirname(__DIR__, 2) . '/avm-cache';
+    if (!is_dir($dir)) @mkdir($dir, 0700, true);
+    $file = $dir . '/trm-' . $hoy . '.json';
+    if (is_file($file) && time() - filemtime($file) < 1800 && ($j = json_decode((string) file_get_contents($file), true))) return [$j, ''];
+    $q = http_build_query(['$where' => "vigenciadesde <= '{$hoy}T00:00:00' AND vigenciahasta >= '{$hoy}T00:00:00'", '$order' => 'vigenciadesde DESC', '$limit' => 1]);
+    $ch = curl_init('https://www.datos.gov.co/resource/32sa-8pi3.json?' . $q);
+    curl_setopt_array($ch, [CURLOPT_RETURNTRANSFER => true, CURLOPT_TIMEOUT => 15, CURLOPT_HTTPHEADER => ['Accept: application/json']]);
+    $resp = curl_exec($ch); $err = curl_error($ch); curl_close($ch);
+    $row = json_decode((string) $resp, true)[0] ?? null;
+    if ($row) @file_put_contents($file, json_encode($row));
+    return [$row, $err];
+}
+
+/* ---------- Copia de seguridad diaria por agencia (fuera de la carpeta pública, se guardan 14 días) ---------- */
 function avm_backup(): string {
-    $dir = dirname(__DIR__, 2) . '/avm-copias';
+    $dir = dirname(__DIR__, 2) . '/avm-copias/' . avm_tenant()['slug'];
     if (!is_dir($dir)) @mkdir($dir, 0700, true);
     $file = $dir . '/avm-' . date('Y-m-d') . '.json.gz';
     if (is_file($file)) return 'copia del día ya existe';
     $out = [];
-    foreach (avm_db()->query('SELECT path, data FROM avm_docs WHERE deleted = 0') as $r) $out[$r['path']] = json_decode($r['data'], true);
+    $st = avm_db()->prepare('SELECT path, data FROM avm_docs WHERE tenant = ? AND deleted = 0'); $st->execute([avm_tid()]);
+    foreach ($st as $r) $out[$r['path']] = json_decode($r['data'], true);
     file_put_contents($file, gzencode(json_encode($out, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES), 9), LOCK_EX);
     @chmod($file, 0600);
     foreach (glob($dir . '/avm-*.json.gz') ?: [] as $f) if (filemtime($f) < time() - 14 * 86400) @unlink($f);
@@ -327,18 +351,19 @@ function avm_backup(): string {
 
 /* ---------- Correos con Resend ---------- */
 function avm_send_outbox(int $max = 20): array {
-    $c = avm_config();
+    $c = ['resend_key' => (string) avm_cfg('resend_key', ''), 'mail_from' => avm_mail_from(), 'mail_reply_to' => (string) avm_cfg('mail_reply_to', ''), 'mail_daily_limit' => avm_cfg('mail_daily_limit', 100)];
     if (empty($c['resend_key']) || empty($c['mail_from'])) return ['enviados' => 0, 'errores' => 0, 'nota' => 'Resend sin configurar'];
     $contact = (avm_get('site/content') ?? [])['contact'] ?? [];
     $ok = 0; $err = 0;
     // Límite diario del plan de Resend (100 en el gratuito). Las campañas dejan 20 de margen para las cotizaciones.
     $limite = (int) ($c['mail_daily_limit'] ?? 100);
-    $hoy = avm_db()->prepare("SELECT COUNT(*) FROM avm_docs WHERE coll = 'outbox' AND deleted = 0 AND JSON_UNQUOTE(JSON_EXTRACT(data, '$.estado')) = 'enviado' AND LEFT(JSON_UNQUOTE(JSON_EXTRACT(data, '$.enviado')), 10) = ?");
-    $hoy->execute([gmdate('Y-m-d')]);
+    $hoy = avm_db()->prepare("SELECT COUNT(*) FROM avm_docs WHERE tenant = ? AND coll = 'outbox' AND deleted = 0 AND JSON_UNQUOTE(JSON_EXTRACT(data, '$.estado')) = 'enviado' AND LEFT(JSON_UNQUOTE(JSON_EXTRACT(data, '$.enviado')), 10) = ?");
+    $hoy->execute([avm_tid(), gmdate('Y-m-d')]);
     $enviadosHoy = (int) $hoy->fetchColumn();
     $campanas = avm_coll('campaigns');
-    $st = avm_db()->query("SELECT path, data FROM avm_docs WHERE coll = 'outbox' AND deleted = 0 AND JSON_UNQUOTE(JSON_EXTRACT(data, '$.estado')) = 'pendiente'
+    $st = avm_db()->prepare("SELECT path, data FROM avm_docs WHERE tenant = ? AND coll = 'outbox' AND deleted = 0 AND JSON_UNQUOTE(JSON_EXTRACT(data, '$.estado')) = 'pendiente'
         ORDER BY (JSON_UNQUOTE(JSON_EXTRACT(data, '$.tipo')) = 'marketing'), updated LIMIT " . (int) ($max * 4));
+    $st->execute([avm_tid()]);
     $n = 0;
     foreach ($st->fetchAll() as $row) {
         if ($n >= $max || $enviadosHoy >= $limite) break;

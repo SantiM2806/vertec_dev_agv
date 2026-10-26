@@ -7,7 +7,7 @@ s = open(src, encoding="utf-8").read()
 def rep(a, b, n=1):
     global s
     c = s.count(a); assert c == n, (a[:70], c); s = s.replace(a, b)
-rep("<title>Terminal AVM</title>", '<title>AVM Operadores Mayoristas · Viajes completos</title>\n<meta name="description" content="Paquetes con hotel, traslados y asistencia médica. Operador mayorista de turismo en Pereira y Barranquilla desde 2014.">\n<link rel="icon" type="image/png" href="img/logo-color.png">')
+rep("<title>Terminal AVM</title>", '<title>Agencia de viajes</title>\n<meta name="description" content="Cotiza en línea tu viaje: hoteles, traslados, actividades y asistencia médica.">')
 s = '<!doctype html>\n<html lang="es">\n<head>\n<meta charset="utf-8">\n<meta name="viewport" content="width=device-width,initial-scale=1">\n' + s
 rep("\n<script>\n", '\n<script src="avm-db.js"></script>\n<script>\n')
 rep("async function runEngine() {\n", "async function runEngine() {\n  if (window.AVM_SERVER_ENGINE) return; // en producción las automatizaciones corren en el servidor\n")

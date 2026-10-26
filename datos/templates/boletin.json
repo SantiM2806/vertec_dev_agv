@@ -1,6 +1,6 @@
 {
-  "asunto": "Bienvenido al boletín de AVM",
-  "cuerpo": "Hola {{nombre}},\n\nYa estás en nuestra lista: te enviaremos las mejores tarifas de temporada y las salidas grupales antes que nadie.\n\nPuedes darte de baja cuando quieras respondiendo este correo.\n\nEquipo AVM · A volar por el mundo",
+  "asunto": "Bienvenido al boletín de {{marca}}",
+  "cuerpo": "Hola {{nombre}},\n\nYa estás en nuestra lista: te enviaremos las mejores tarifas de temporada y las salidas grupales antes que nadie.\n\nPuedes darte de baja cuando quieras desde el enlace al final de cada correo.\n\nEquipo {{marca}}",
   "name": "Bienvenida al boletín",
   "tipo": "marketing"
 }

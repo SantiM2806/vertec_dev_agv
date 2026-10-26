@@ -5,7 +5,7 @@ os.chdir(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 os.makedirs("dist", exist_ok=True)
 zipname = "dist/actualizacion-" + (sys.argv[1] if len(sys.argv) > 1 else "nueva") + ".zip"
 root = 'produccion/public_html'
-files = ['index.html', 'index.php', 'sitemap.php', 'robots.php', '.htaccess', 'baja.php', 'api/_lib.php', 'api/_correo.php', 'api/_campanas.php', 'api/_liteapi.php', 'api/campana.php', 'api/catalogo.php', 'api/hoteles.php', 'api/cron.php', 'api/buscar.php']
+files = ['index.html', 'index.php', 'sitemap.php', 'robots.php', '.htaccess', 'baja.php', 'api/_nucleo.php', 'api/_correo.php', 'api/_campanas.php', 'api/_liteapi.php', 'api/campana.php', 'api/catalogo.php', 'api/hoteles.php', 'api/tareas.php', 'api/buscar.php', 'api/_tenant.php', 'api/marca.php', 'plataforma.php', 'ingresar.php', 'instalar.php', 'api/db.php', 'avm-db.js', 'datos-iniciales.json']
 files += ['img/correo/' + os.path.basename(f) for f in sorted(glob.glob(root + '/img/correo/*.jpg'))]
 with zipfile.ZipFile(zipname, 'w', zipfile.ZIP_DEFLATED) as z:
     for f in files:

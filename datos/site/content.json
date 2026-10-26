@@ -1,69 +1,7 @@
 {
-  "contact": {
-    "email": "comercial@avolarporelmundo.co",
-    "emergency": [
-      "313 666 0320",
-      "310 362 1741"
-    ],
-    "hours": [
-      [
-        "Lunes a viernes",
-        "8:00 a. m. – 12:00 m. · 2:00 – 6:00 p. m."
-      ],
-      [
-        "Sábado",
-        "9:00 a. m. – 12:00 m."
-      ],
-      [
-        "Domingos y festivos",
-        "Cerrado"
-      ]
-    ],
-    "portal": "https://avmoperadoresmayoristas.paquetedinamico.com/home",
-    "sales": [
-      "320 508 1068",
-      "315 470 3065",
-      "318 518 2295"
-    ],
-    "sched": [
-      "",
-      "08:00-12:00, 14:00-18:00",
-      "08:00-12:00, 14:00-18:00",
-      "08:00-12:00, 14:00-18:00",
-      "08:00-12:00, 14:00-18:00",
-      "08:00-12:00, 14:00-18:00",
-      "09:00-12:00"
-    ],
-    "sedes": [
-      [
-        "Pereira",
-        "Av. Circunvalar #11-80, Of. 702"
-      ],
-      [
-        "Barranquilla",
-        "Calle 77B #57-103, Piso 10, Of. 135"
-      ]
-    ],
-    "waMain": "573205081068"
-  },
   "txt": {
-    "aboutLead": "Diseñamos el viaje. *Tú solo lo disfrutas.*",
-    "aboutText": "Somos un operador mayorista de turismo. Desde 2014 creamos oferta turística vacacional, personal y corporativa, para que nuestros clientes vivan experiencias memorables de alto nivel.\nNos reconocen por trabajar con proveedores de calidad en Colombia y el exterior, y por dar soluciones confiables y oportunas.",
-    "agencyBar": "¿Eres agencia de viajes? Vende con AVM: condiciones preferenciales, plataforma 24/7 y asesores que te acompañan.",
-    "contactSub": "Escríbenos por WhatsApp y un asesor te responde con la cotización.",
-    "contactTitle": "Hablemos de tu *próximo viaje*",
-    "destNote": "*Cada paquete incluye* hotel seleccionado por AVM, traslados aeropuerto – hotel – aeropuerto y asistencia médica. No incluye tiquetes aéreos. Un asesor confirma disponibilidad y tarifa vigente al cotizar.",
-    "destSub": "Los destinos más visitados por nuestros viajeros. Cada paquete incluye alojamiento todo incluido, traslados y asistencia médica.",
-    "destTitle": "Paquetes *por destino*",
-    "facts": "2014 | Creando viajes desde\n2 sedes | Pereira y Barranquilla\n6 | Destinos más visitados",
-    "heroAlt": "Playa Bávaro en Punta Cana vista desde el aire",
-    "heroEyebrow": "Operador mayorista desde 2014",
-    "heroImg": "img/portada.webp",
-    "heroSub": "Alojamiento todo incluido, traslados y asistencia médica en un solo paquete.",
-    "heroTitle": "Viajes completos, *listos para disfrutar*",
-    "nlSub": "Las mejores tarifas de temporada, antes que nadie.",
-    "nlTitle": "Recibe nuestras *promociones por correo*",
-    "quick": [],
-    "reasons": "Orientación experta | Nuestros asesores cuidan cada detalle de tu viaje.\nPrecios justos | Paquetes con excelente relación calidad-precio.\nViajes sostenibles | Apoyamos el turismo que cuida el medio ambiente y a las comunidades locales.\nPara agencias | Plataforma de reservas 24/7, condiciones preferenciales y asesores que acompañan cada venta."
-  }
+    "trmSample": true
+  },
+  "contact": {},
+  "brand": {}
 }

@@ -3,12 +3,13 @@
  * Mapa del sitio para Google (/sitemap.xml): inicio, páginas fijas, cada destino visible y los
  * hoteles y actividades que el sitio muestra en cada destino.
  */
-require __DIR__ . '/api/_lib.php';
+require __DIR__ . '/api/_nucleo.php';
+avm_tenant(); // agencia de esta dirección (404 si no existe)
 header('Content-Type: application/xml; charset=utf-8');
 header('Cache-Control: public, max-age=3600');
 $site = avm_site_url();
 $hoy = date('Y-m-d');
-$urls = [['', '1.0', 'weekly'], ['agencias', '0.6', 'monthly'], ['traslados', '0.5', 'monthly']];
+$urls = [['', '1.0', 'weekly'], ['traslados', '0.5', 'monthly']];
 foreach (avm_coll('destinations') as $slug => $d) {
     if (empty($d['active'])) continue;
     $urls[] = ['destino/' . $slug, '0.9', 'weekly'];

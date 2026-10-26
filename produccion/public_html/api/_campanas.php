@@ -59,7 +59,7 @@ function avm_campana_mensaje(array $camp, string $campId, string $key, array $p,
     $vars = [
         'nombre' => explode(' ', trim((string) ($p['nombre'] ?? '')))[0] ?: 'viajero', 'nombre_completo' => (string) ($p['nombre'] ?? ''),
         'destino' => $ficha['destino'] ?? 'tu próximo viaje', 'hotel' => $ficha['hotel'] ?? '', 'noches' => $ficha['noches'] ?? '',
-        'oferta' => $ficha['oferta'] ?? '', 'correo_avm' => $contact['email'] ?? '',
+        'oferta' => $ficha['oferta'] ?? '', 'correo_avm' => $contact['email'] ?? '', 'correo_agencia' => $contact['email'] ?? '', 'marca' => avm_marca()['name'],
         'asesor_whatsapp' => '+' . preg_replace('/^(\d{2})(\d{3})(\d{3})(\d{4})$/', '$1 $2 $3 $4', (string) ($contact['waMain'] ?? '')),
     ];
     return [
@@ -121,8 +121,8 @@ function avm_campanas_avance(): string {
 
 /** Envía un solo correo ya armado (para la prueba de una campaña). */
 function avm_enviar_uno(array $m, array $contact): array {
-    $c = avm_config();
-    if (empty($c['resend_key']) || empty($c['mail_from'])) return ['ok' => false, 'error' => 'Resend no está configurado en avm-config.php.'];
+    $c = ['resend_key' => (string) avm_cfg('resend_key', ''), 'mail_from' => avm_mail_from(), 'mail_reply_to' => (string) avm_cfg('mail_reply_to', '')];
+    if (empty($c['resend_key']) || empty($c['mail_from'])) return ['ok' => false, 'error' => 'El envío de correos no está configurado para esta agencia.'];
     $payload = ['from' => $c['mail_from'], 'to' => [$m['para']], 'subject' => '[Prueba] ' . ($m['asunto'] ?? ''), 'html' => avm_email_html($m, $contact), 'text' => $m['cuerpo'] ?? ''];
     if (!empty($c['mail_reply_to'])) $payload['reply_to'] = $c['mail_reply_to'];
     $ch = curl_init('https://api.resend.com/emails');

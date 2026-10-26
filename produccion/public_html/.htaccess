@@ -1,17 +1,17 @@
-# Sitio AVM en Dongee (Apache)
+# Plataforma en Apache (Dongee, Oracle Cloud o cualquier hosting con PHP)
 DirectoryIndex index.php index.html
 Options -Indexes
 
 # Siempre por HTTPS
 RewriteEngine On
 RewriteCond %{HTTPS} off
-RewriteCond %{HTTP_HOST} !^(localhost|127\.0\.0\.1)(:\d+)?$
+RewriteCond %{HTTP_HOST} !^((.+\.)?localhost|127\.0\.0\.1)(:\d+)?$
 RewriteCond %{HTTP:X-Forwarded-Proto} !https
 RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
 # Direcciones limpias para Google y para compartir
 RewriteRule ^(destino|hotel|actividad)/([A-Za-z0-9_~-]+)/?$ index.php?ruta=$1&id=$2 [L,QSA]
-RewriteRule ^(agencias|traslados|privacidad)/?$ index.php?ruta=$1 [L,QSA]
+RewriteRule ^(traslados|privacidad)/?$ index.php?ruta=$1 [L,QSA]
 RewriteRule ^sitemap\.xml$ sitemap.php [L]
 RewriteRule ^robots\.txt$ robots.php [L]
 

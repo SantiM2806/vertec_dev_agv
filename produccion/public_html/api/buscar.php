@@ -9,7 +9,8 @@
  * GET ?tipo=actividades&place=…&q=…&d1=…&d2=…&people=2
  * La llave de LiteAPI vive en el servidor; cada respuesta se guarda un rato en caché.
  */
-require __DIR__ . '/_lib.php';
+require __DIR__ . '/_nucleo.php';
+avm_tenant(); // agencia de esta dirección (404 si no existe)
 if ($_SERVER['REQUEST_METHOD'] !== 'GET') avm_fail(405, 'metodo');
 $g = fn($k, $d = '') => trim((string) ($_GET[$k] ?? $d));
 $kids = array_values(array_filter(explode(',', $g('kids')), fn($x) => $x !== ''));

@@ -1,6 +1,0 @@
-{
-  "asunto": "Recibimos la solicitud de {{agencia}}",
-  "cuerpo": "Hola {{nombre}},\n\nGracias por querer trabajar con AVM. Recibimos la solicitud de usuario para {{agencia}} ({{numero}}).\n\nUn asesor valida los datos de la agencia y te escribe para activar tu acceso al portal de agencias, con tarifa neta y tu comisión visible en cada cotización.\n\nCualquier duda: {{correo_avm}} o WhatsApp {{asesor_whatsapp}}.\n\nEquipo AVM Operadores Mayoristas",
-  "name": "Bienvenida a agencias",
-  "tipo": "transaccional"
-}

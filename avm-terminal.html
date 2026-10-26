@@ -19,10 +19,10 @@
 }
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
   --paper:#0E1114; --card:#161A1F; --ink:#EEF0F2; --muted:#9AA1A9; --line:#272C33; --soft:#1D2228;
-  --signal:#BBCF26; --ok:#4CC08A; --danger:#E06A5C; --logo-c:none; --logo-w:block; color-scheme:dark}}
+  --ok:#4CC08A; --danger:#E06A5C; --logo-c:none; --logo-w:block; color-scheme:dark}}
 :root[data-theme="dark"]{
   --paper:#0E1114; --card:#161A1F; --ink:#EEF0F2; --muted:#9AA1A9; --line:#272C33; --soft:#1D2228;
-  --signal:#BBCF26; --ok:#4CC08A; --danger:#E06A5C; --logo-c:none; --logo-w:block; color-scheme:dark}
+  --ok:#4CC08A; --danger:#E06A5C; --logo-c:none; --logo-w:block; color-scheme:dark}
 
 *{box-sizing:border-box}
 [hidden]{display:none!important}
@@ -44,6 +44,9 @@ button{font:inherit;cursor:pointer;color:inherit}
 .logo .logo-c{display:var(--logo-c)} .logo .logo-w{display:var(--logo-w)}
 footer .logo img{height:52px}
 .ftag{margin:12px 0 14px;font-size:13.5px;max-width:30ch}
+.brandmark{display:inline-flex;align-items:center;height:var(--bh,40px)}.brandmark img{height:100%;width:auto;max-width:220px;object-fit:contain}
+.brandmark .wm{font:700 calc(var(--bh,40px) * .5)/1 var(--f-display);letter-spacing:-.015em;color:var(--ink);white-space:nowrap}
+.brandmark .wm::before{content:"";display:inline-block;width:.55em;height:.55em;border-radius:50%;background:var(--signal);margin-right:.35em;vertical-align:.05em}
 .nav{display:flex;gap:2px;margin-left:auto;align-items:center}
 .nav a{font:500 14px/1 var(--f-body);text-decoration:none;padding:10px 12px;border-radius:999px;color:var(--muted);white-space:nowrap}
 .nav a:hover{color:var(--ink);background:var(--soft)}
@@ -315,7 +318,7 @@ footer .logo img{height:52px}
 .pass-note{font-size:12.5px;color:var(--muted);padding:0 clamp(16px,2.4vw,28px) 16px;margin-top:-4px}
 .pass-note a{color:var(--ink);font-weight:600}
 
-/* Barra de agencias */
+/* Barra superior (sin uso) */
 .agency-bar{background:var(--ink);color:var(--paper);font-size:13.5px}
 .agency-bar .wrap{display:flex;gap:6px 14px;align-items:center;justify-content:center;flex-wrap:wrap;padding-block:8px;text-align:center}
 .agency-bar a{color:var(--signal);font-weight:600}
@@ -399,7 +402,7 @@ section.block{padding-block:clamp(56px,7vw,96px) 0}
 .pack .more{font:600 14px/1 var(--f-body);display:inline-flex;gap:6px;align-items:center;white-space:nowrap}
 
 /* Nosotros */
-/* Nosotros: banda oscura con postales que rotan, cifras en verde AVM y cinta de destinos */
+/* Nosotros: banda oscura con postales que rotan, cifras en el color de la marca y cinta de destinos */
 .band-frame{padding-inline:var(--gutter)}
 .about-band{max-width:1400px;margin-inline:auto;border-radius:28px;background:var(--bar-bg);color:var(--bar-ink);overflow:hidden;padding-top:clamp(36px,5vw,72px);position:relative;isolation:isolate}
 .about-band::before{content:"";position:absolute;right:-12%;top:-30%;width:60%;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle,color-mix(in srgb,var(--signal) 22%,transparent),transparent 65%);z-index:-1}
@@ -771,8 +774,12 @@ body.is-admin .admin{max-width:none;padding:0}
 .dash{display:grid;grid-template-columns:260px minmax(0,1fr);min-height:100vh}
 .dside{position:sticky;top:0;align-self:start;height:100vh;overflow:auto;background:var(--bar-bg);color:var(--bar-ink);padding:20px 14px;display:flex;flex-direction:column;gap:18px}
 .dbrand{display:flex;align-items:center;gap:10px;padding:2px 8px 12px;border-bottom:1px solid var(--bar-line)}
-.dbrand img{height:28px;width:auto}.dbrand .logo-c{display:none}.dbrand .logo-w{display:block}
+.dbrand .brandmark .logo-c{display:none}.dbrand .brandmark .logo-w{display:block}.dbrand .brandmark .wm{color:var(--bar-ink)}
 .dbrand span{font:600 13px/1.2 var(--f-body);color:var(--bar-soft)}
+.bcolor{display:flex;gap:8px;align-items:center}.bcolor input[type=color]{width:46px;height:40px;padding:2px;border:1px solid var(--line);border-radius:10px;background:var(--card)}.bcolor input[type=text]{max-width:120px;font-family:var(--f-mono)}
+.blogo{height:96px;border:1px dashed var(--line);border-radius:12px;display:grid;place-items:center;background:var(--card);padding:10px}.blogo.dark{background:#12161B}.blogo img{max-height:76px;max-width:100%;object-fit:contain}.blogo span{color:var(--muted);font-size:13px}
+.bprev{margin-top:14px}.bp{border:1px solid var(--line);border-radius:16px;overflow:hidden;color:#12161B}.bp-top{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 16px;font-size:13px}.bp-top img{height:28px;width:auto;max-width:160px;object-fit:contain}
+.bp-body{display:grid;gap:10px;padding:18px 16px 20px}.bp-body b{font-size:24px;line-height:1.2}.bp-btn{justify-self:start;padding:10px 16px;border-radius:10px;font-weight:700;font-size:14px}
 .dnav{display:grid;gap:16px}
 .dgroup{display:grid;gap:2px}
 .dgl{font:700 10px/1 var(--f-mono);letter-spacing:.14em;text-transform:uppercase;color:var(--bar-soft);padding:0 10px 6px;opacity:.75}
@@ -956,19 +963,16 @@ label.btn{cursor:pointer}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 
-<div class="agency-bar"><div class="wrap"><span id="agencyBarText">¿Eres agencia de viajes? Vende con AVM: condiciones preferenciales, plataforma 24/7 y asesores que te acompañan.</span><a class="portal-link" href="https://avmoperadoresmayoristas.paquetedinamico.com/home" target="_blank" rel="noopener">Ingreso agencias →</a></div></div>
 <header class="top">
   <div class="wrap">
-    <a class="logo" href="#inicio" aria-label="AVM Operadores Mayoristas, inicio"><img class="logo-c" src="img/logo-color.png" alt="AVM Operadores Mayoristas" width="121" height="40"><img class="logo-w" src="img/logo-blanco.png" alt="AVM Operadores Mayoristas" width="121" height="40"></a>
+    <a class="logo" href="#inicio" aria-label="Inicio"><span class="brandmark" style="--bh:40px"></span></a>
     <div class="trm" id="trmBox" role="status" aria-label="Tasa de cambio del día" hidden></div>
     <nav class="nav" aria-label="Principal">
       <a href="#destinos">Destinos</a>
       <a href="#ofertas">Ofertas</a>
       <a href="#tours">Tours</a>
       <a href="#salidas">Salidas grupales</a>
-      <a href="#agencias">Agencias</a>
       <a href="#contacto">Contacto</a>
-      <a class="agency portal-link" href="https://avmoperadoresmayoristas.paquetedinamico.com/home" target="_blank" rel="noopener">Ingreso agencias</a>
     </nav>
   </div>
 </header>
@@ -1007,7 +1011,7 @@ label.btn{cursor:pointer}
         <button class="go" id="go" type="button" disabled>Ver precios y disponibilidad
           <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8h10M9 4l4 4-4 4"/></svg></button>
       </div>
-      <p class="pass-note">Al consultar autorizas a AVM a tratar tus datos para responder tu solicitud, según la <a href="#privacidad">política de tratamiento de datos</a>. <button type="button" class="linkbtn" id="goAdvisor" disabled>Prefiero que un asesor me cotice</button></p>
+      <p class="pass-note">Al consultar autorizas a la agencia a tratar tus datos para responder tu solicitud, según la <a href="#privacidad">política de tratamiento de datos</a>. <button type="button" class="linkbtn" id="goAdvisor" disabled>Prefiero que un asesor me cotice</button></p>
     </form>
   </section>
 
@@ -1126,7 +1130,7 @@ label.btn{cursor:pointer}
 <div class="modal" id="leadModal" hidden>
   <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="leadTitle">
     <div class="sheet-head">
-      <div><h2 id="leadTitle">Solicita tu cotización</h2><p>Déjanos tus datos y un asesor de AVM te contacta con disponibilidad y precio final.</p></div>
+      <div><h2 id="leadTitle">Solicita tu cotización</h2><p>Déjanos tus datos y un asesor te contacta con disponibilidad y precio final.</p></div>
       <button class="x" type="button" id="leadClose" aria-label="Cerrar">×</button>
     </div>
     <div id="leadBody">
@@ -1136,11 +1140,11 @@ label.btn{cursor:pointer}
         <div class="f"><label for="lPhone">Celular / WhatsApp</label><input id="lPhone" type="tel" inputmode="tel" autocomplete="tel" placeholder="300 123 4567" required><span class="err" id="lPhone-err"></span></div>
         <div class="f"><label for="lMail">Correo</label><input id="lMail" type="email" autocomplete="email" placeholder="tu@correo.com" required><span class="err" id="lMail-err"></span></div>
         <div class="xf f full"><label for="lNotes">Comentarios (opcional)</label><textarea id="lNotes" placeholder="Opcional: celebración, edades de los niños, tipo de habitación…"></textarea></div>
-        <label class="consent full"><input type="checkbox" id="lConsent"> <span>Autorizo a AVM Operadores Mayoristas a tratar mis datos para responder esta solicitud, según su <a href="#privacidad" data-closelead>política de tratamiento de datos</a> (Ley 1581 de 2012).</span></label>
+        <label class="consent full"><input type="checkbox" id="lConsent"> <span>Autorizo a la agencia a tratar mis datos para responder esta solicitud, según su <a href="#privacidad" data-closelead>política de tratamiento de datos</a> (Ley 1581 de 2012).</span></label>
         <span class="err full" id="lConsent-err"></span>
       </form>
       <div class="sheet-foot">
-        <small>Prototipo: en el sitio real esta solicitud crea la oportunidad en AVM CRM y la asigna a un asesor.</small>
+        <small>Tu solicitud llega directo a un asesor.</small>
         <button class="go" type="submit" form="leadForm">Enviar solicitud</button>
       </div>
     </div>
@@ -1156,14 +1160,13 @@ label.btn{cursor:pointer}
 <footer>
   <div class="wrap">
     <div class="fgrid">
-      <div><a class="logo" href="#inicio" aria-label="AVM Operadores Mayoristas, inicio"><img class="logo-c" src="img/logo-color.png" alt="AVM Operadores Mayoristas" width="157" height="52"><img class="logo-w" src="img/logo-blanco.png" alt="AVM Operadores Mayoristas" width="157" height="52"></a><p class="ftag">Operador mayorista de turismo desde 2014. Pereira y Barranquilla.</p><ul><li><a href="#nosotros">Nosotros</a></li><li><a href="#destinos">Destinos</a></li><li><a href="#contacto">Contacto</a></li><li id="admLi" hidden><a href="#admin">Backoffice</a></li></ul></div>
+      <div><a class="logo" href="#inicio" aria-label="Inicio"><span class="brandmark" style="--bh:52px"></span></a><p class="ftag" id="fTag"></p><ul><li><a href="#nosotros">Nosotros</a></li><li><a href="#destinos">Destinos</a></li><li><a href="#contacto">Contacto</a></li><li id="admLi" hidden><a href="#admin">Backoffice</a></li></ul></div>
       <div><h4>Destinos</h4><ul id="fDest"></ul></div>
-      <div><h4>Agencias</h4><ul><li><a class="portal-link" href="https://avmoperadoresmayoristas.paquetedinamico.com/home" target="_blank" rel="noopener">Ingreso agencias</a></li><li><a href="#agencias">Trabaja con AVM</a></li></ul></div>
       <div><h4>Legal</h4><ul><li><a href="#privacidad">Política de tratamiento de datos</a></li><li><a href="#traslados">Traslados</a></li></ul></div>
     </div>
     <div class="legal">
-      <span>© <span id="year"></span> A volar por el mundo · AVM Operadores Mayoristas · Registro Nacional de Turismo: por definir</span>
-      <span>En cumplimiento del artículo 17 de la Ley 679 de 2001, AVM advierte que la explotación y el abuso sexual de menores de edad en el país son sancionados penal y administrativamente.</span>
+      <span>© <span id="year"></span> <span id="legalLine"></span></span>
+      <span id="legalNote"></span>
     </div>
   </div>
 </footer>
@@ -1182,43 +1185,45 @@ const CHECK = '<svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke
 const CROSS = '<svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 5l8 8M13 5l-8 8"/></svg>';
 
 /* ---------- Contenido editable ----------
-   Todo lo que el backoffice puede cambiar. Estos valores por defecto (los del sitio actual de AVM) se usan
+   Todo lo que el backoffice puede cambiar. Estos valores por defecto (genéricos, con {{marca}}) se usan
    mientras la base de datos de la página no responde o todavía está vacía. */
 const DEFAULT_CONTACT = {
-  waMain: "573205081068",
-  sales: ["320 508 1068", "315 470 3065", "318 518 2295"],
-  emergency: ["313 666 0320", "310 362 1741"],
-  email: "comercial@avolarporelmundo.co",
-  sedes: [["Pereira", "Av. Circunvalar #11-80, Of. 702"], ["Barranquilla", "Calle 77B #57-103, Piso 10, Of. 135"]],
-  hours: [["Lunes a viernes", "8:00 a. m. – 12:00 m. · 2:00 – 6:00 p. m."], ["Sábado", "9:00 a. m. – 12:00 m."], ["Domingos y festivos", "Cerrado"]],
+  waMain: "573000000000",
+  sales: ["300 000 0000"],
+  emergency: [],
+  email: "ventas@tuagencia.com",
+  sedes: [["Tu ciudad", "Dirección de tu oficina"]],
+  hours: [["Lunes a viernes", "8:00 a. m. – 6:00 p. m."], ["Sábado", "9:00 a. m. – 1:00 p. m."], ["Domingos y festivos", "Cerrado"]],
   // Franjas para "Abierto ahora", hora de Colombia; índice 0 = domingo. Vacío = cerrado.
-  sched: ["", "08:00-12:00, 14:00-18:00", "08:00-12:00, 14:00-18:00", "08:00-12:00, 14:00-18:00", "08:00-12:00, 14:00-18:00", "08:00-12:00, 14:00-18:00", "09:00-12:00"],
-  portal: "https://avmoperadoresmayoristas.paquetedinamico.com/home",
-  // Servidor del sitio que consulta LiteAPI (la llave vive allá, nunca en esta página)
+  sched: ["", "08:00-18:00", "08:00-18:00", "08:00-18:00", "08:00-18:00", "08:00-18:00", "09:00-13:00"],
+  // Servidor del sitio que consulta los proveedores (las llaves viven allá, nunca en esta página)
   hotelApi: "",
   // WhatsApp flotante: zona | número con indicativo
-  zones: [["Eje Cafetero", "573205081068"], ["Valle", "573174444430"], ["Costa", "573157910333"]],
+  zones: [["Ventas", "573000000000"]],
   // Correos del equipo que reciben un aviso por cada solicitud nueva
   notify: []
 };
+// Marca de la agencia (backoffice → Marca). index.php la deja en window.AVM_BRAND para pintar sin parpadeo.
+const DEFAULT_BRAND = { name: "Tu agencia", legal: "", rnt: "", tagline: "Agencia de viajes", accent: "#BBCF26", dark: "#12161B", paper: "#F3F4F1", fonts: "moderna", logo: "", logoDark: "", icon: "" };
+let BRAND = { ...DEFAULT_BRAND, ...(window.AVM_BRAND || {}) };
+const BN = () => BRAND.name || "la agencia";
 const DEFAULT_TXT = {
-  agencyBar: "¿Eres agencia de viajes? Vende con AVM: condiciones preferenciales, plataforma 24/7 y asesores que te acompañan.",
-  heroEyebrow: "Operador mayorista desde 2014",
+  heroEyebrow: "Agencia de viajes",
   heroTitle: "Viajes completos, *listos para disfrutar*",
-  heroSub: "Alojamiento todo incluido, traslados y asistencia médica en un solo paquete.",
+  heroSub: "Alojamiento, traslados, actividades y asistencia médica en un solo lugar.",
   heroImg: "img/portada.webp",
-  heroAlt: "Playa Bávaro en Punta Cana vista desde el aire",
+  heroAlt: "Playa vista desde el aire",
   quick: [],
   popTitle: "Destinos *más populares*",
   popSub: "Elige un destino y mira hoteles con precios en línea para tus fechas.",
   popular: "Punta Cana | República Dominicana | puj | img/pop-punta-cana.webp\nCancún | México | cun | img/pop-cancun.webp\nCartagena | Colombia | ctg | img/pop-cartagena.webp\nSan Andrés | Colombia | sai-123 | img/pop-san-andres.webp\nMedellín | Colombia | mde | img/pop-medellin.webp",
   destTitle: "Paquetes *por destino*",
-  destSub: "Los destinos más visitados por nuestros viajeros. Cada paquete incluye alojamiento todo incluido, traslados y asistencia médica.",
-  destNote: "*Cada paquete incluye* hotel seleccionado por AVM, traslados aeropuerto – hotel – aeropuerto y asistencia médica. No incluye tiquetes aéreos. Un asesor confirma disponibilidad y tarifa vigente al cotizar.",
+  destSub: "Nuestros destinos más vendidos. Cada paquete incluye alojamiento, traslados y asistencia médica.",
+  destNote: "*Cada paquete incluye* hotel seleccionado por {{marca}}, traslados aeropuerto – hotel – aeropuerto y asistencia médica. No incluye tiquetes aéreos. Un asesor confirma disponibilidad y tarifa vigente al cotizar.",
   aboutLead: "Diseñamos el viaje. *Tú solo lo disfrutas.*",
-  aboutText: "Somos un operador mayorista de turismo. Desde 2014 creamos oferta turística vacacional, personal y corporativa, para que nuestros clientes vivan experiencias memorables de alto nivel.\nNos reconocen por trabajar con proveedores de calidad en Colombia y el exterior, y por dar soluciones confiables y oportunas.",
-  facts: "2014 | Creando viajes desde\n2 sedes | Pereira y Barranquilla\n6 | Destinos más visitados",
-  reasons: "Orientación experta | Nuestros asesores cuidan cada detalle de tu viaje.\nPrecios justos | Paquetes con excelente relación calidad-precio.\nViajes sostenibles | Apoyamos el turismo que cuida el medio ambiente y a las comunidades locales.\nPara agencias | Plataforma de reservas 24/7, condiciones preferenciales y asesores que acompañan cada venta.",
+  aboutText: "En {{marca}} armamos viajes vacacionales, personales y corporativos a la medida de cada viajero.\nTrabajamos con proveedores de calidad en Colombia y el exterior, y te acompañamos antes, durante y después del viaje.",
+  facts: "+10 | Años de experiencia\n24/7 | Atención por WhatsApp\n+30 | Destinos",
+  reasons: "Orientación experta | Nuestros asesores cuidan cada detalle de tu viaje.\nPrecios justos | Paquetes con excelente relación calidad-precio.\nViajes sostenibles | Apoyamos el turismo que cuida el medio ambiente y a las comunidades locales.\nAcompañamiento | Te ayudamos antes, durante y después de tu viaje.",
   contactTitle: "Hablemos de tu *próximo viaje*",
   contactSub: "Escríbenos por WhatsApp y un asesor te responde con la cotización.",
   nlTitle: "Recibe nuestras *promociones por correo*",
@@ -1229,35 +1234,28 @@ const DEFAULT_TXT = {
   toursTitle: "Tours y *circuitos*",
   toursSub: "Agrega experiencias a tu viaje o recorre varias ciudades en un circuito con guía.",
   groupsTitle: "Salidas *grupales*",
-  groupsSub: "Viajes con fecha fija y acompañamiento de AVM. Los Fam Trips son para agencias aliadas.",
+  groupsSub: "Viajes con fecha fija y acompañamiento de {{marca}}.",
   partnersTitle: "Cadenas y *aliados*",
-  partners: "Palladium Hotel Group\nRIU Hotels & Resorts\nBlueBay Hotels\nDreams Resorts & Spas\nCurio Collection by Hilton\nOasis Hotels & Resorts\nAssist Card",
-  agTitle: "Tu operador mayorista *para vender más viajes*",
-  agSub: "Hoteles, paquetes, traslados, actividades, circuitos y asistencia médica en una sola plataforma, con condiciones preferenciales para agencias y asesores que te acompañan en cada venta.",
-  agBadges: "Afiliación sin costo\nActivación el mismo día hábil\nAsesores AVM de tu región",
-  agPerks: "Portafolio amplio | Caribe, México, Colombia, Sudamérica, Norteamérica y Europa en un solo lugar.\nCondiciones preferenciales | Tarifas negociadas con cadenas hoteleras y proveedores aliados.\nPlataforma fácil de usar | Cotiza, compara y reserva en minutos, a cualquier hora.\nAcompañamiento experto | Un asesor AVM contigo antes, durante y después del viaje.",
-  agProducts: "paquetes | Paquetes | Hotel, traslados y asistencia médica en una sola reserva.\nhoteles | Hoteles | Alojamiento en los principales destinos vacacionales y de negocios.\ntraslados | Traslados | Aeropuerto – hotel – aeropuerto, en servicio regular o privado.\nactividades | Actividades y entradas | Tours, parques y experiencias para completar el viaje.\ncircuitos | Circuitos | Itinerarios con guía, listos para vender.\nasistencia | Asistencia médica | Coberturas de viaje para tus pasajeros.",
-  agWhy: "Reservas 24/7 | Tu agencia cotiza y confirma sin esperar respuesta, cualquier día.\nComisiones competitivas | Rentabilidad en cada venta y pagos oportunos.\nCapacitación y Fam Trips | Conoce destinos y productos antes de venderlos.\nMaterial de marketing | Piezas listas para tus redes y tus clientes.",
-  agSteps: "Regístrate | Envía los datos de tu agencia en el formulario de esta página.\nActiva tu usuario | Validamos la información comercial y te enviamos el acceso.\nVende con respaldo | Cotiza y reserva en la plataforma con el apoyo de tu asesor.",
-  agFaq: "¿La afiliación tiene costo? | No. Registrar tu agencia en AVM es gratis.\n¿Cuánto tarda la activación? | Normalmente el mismo día hábil, después de validar los datos comerciales.\n¿Qué necesito para registrarme? | Razón social, NIT, Registro Nacional de Turismo vigente y un contacto comercial.\n¿Qué soporte recibo? | Tu asesor AVM te ayuda con cotizaciones, cambios, confirmaciones y cualquier novedad durante el viaje.",
-  agCta: "Empieza a vender *con el respaldo de AVM*",
-  privacy: "## Política de tratamiento de datos personales\n\n*Borrador para revisión jurídica.* AVM Operadores Mayoristas y Representantes S.A.S. (en adelante, AVM), NIT por definir, con domicilio en la Av. Circunvalar #11-80, Of. 702, Pereira (Colombia), y correo comercial@avolarporelmundo.co, es responsable del tratamiento de los datos personales que recibe a través de este sitio, en cumplimiento de la Ley 1581 de 2012 y el Decreto 1074 de 2015.\n\n## Datos que recogemos\n\n- Nombre, celular, correo y ciudad de residencia.\n- Datos del viaje que solicitas: destino, fechas, número de viajeros y presupuesto.\n- Para agencias: razón social, NIT, Registro Nacional de Turismo y datos del contacto.\n\n## Para qué los usamos\n\n- Responder tu solicitud de cotización y contactarte por el canal que elijas.\n- Gestionar reservas con hoteles, operadores de traslados, tours y asistencia en viaje.\n- Enviarte promociones, solo si lo autorizas.\n- Cumplir obligaciones legales, contables y del Registro Nacional de Turismo.\n\n## Con quién los compartimos\n\nSolo con los proveedores necesarios para prestar el servicio que solicitas (hoteles, operadores en destino y aseguradoras de asistencia), que pueden estar fuera de Colombia, y con las autoridades cuando la ley lo exija.\n\n## Tus derechos\n\n- Conocer, actualizar y rectificar tus datos.\n- Pedir prueba de la autorización que nos diste.\n- Saber cómo hemos usado tus datos.\n- Revocar la autorización o pedir que eliminemos tus datos cuando no exista un deber legal de conservarlos.\n- Presentar quejas ante la Superintendencia de Industria y Comercio.\n\n## Cómo ejercerlos\n\nEscribe a comercial@avolarporelmundo.co indicando tu nombre, documento y lo que solicitas. Respondemos las consultas en un máximo de 10 días hábiles y los reclamos en un máximo de 15 días hábiles, según los plazos de la ley.\n\n## Vigencia\n\nEsta política rige desde su publicación. Conservamos los datos mientras sean necesarios para las finalidades descritas y para cumplir obligaciones legales."
+  partners: "",
+  legalNote: "En cumplimiento del artículo 17 de la Ley 679 de 2001, {{marca}} advierte que la explotación y el abuso sexual de menores de edad en el país son sancionados penal y administrativamente.",
+  privacy: "## Política de tratamiento de datos personales\n\n*Borrador para revisión jurídica.* {{legal}} (en adelante, {{marca}}), con correo {{correo}}, es responsable del tratamiento de los datos personales que recibe a través de este sitio, en cumplimiento de la Ley 1581 de 2012 y el Decreto 1074 de 2015.\n\n## Datos que recogemos\n\n- Nombre, celular, correo y ciudad de residencia.\n- Datos del viaje que solicitas: destino, fechas, número de viajeros y presupuesto.\n\n## Para qué los usamos\n\n- Responder tu solicitud de cotización y contactarte por el canal que elijas.\n- Gestionar reservas con hoteles, operadores de traslados, tours y asistencia en viaje.\n- Enviarte promociones, solo si lo autorizas.\n- Cumplir obligaciones legales, contables y del Registro Nacional de Turismo.\n\n## Con quién los compartimos\n\nSolo con los proveedores necesarios para prestar el servicio que solicitas (hoteles, operadores en destino y aseguradoras de asistencia), que pueden estar fuera de Colombia, y con las autoridades cuando la ley lo exija.\n\n## Tus derechos\n\n- Conocer, actualizar y rectificar tus datos.\n- Pedir prueba de la autorización que nos diste.\n- Saber cómo hemos usado tus datos.\n- Revocar la autorización o pedir que eliminemos tus datos cuando no exista un deber legal de conservarlos.\n- Presentar quejas ante la Superintendencia de Industria y Comercio.\n\n## Cómo ejercerlos\n\nEscribe a {{correo}} indicando tu nombre, documento y lo que solicitas. Respondemos las consultas en un máximo de 10 días hábiles y los reclamos en un máximo de 15 días hábiles, según los plazos de la ley.\n\n## Vigencia\n\nEsta política rige desde su publicación. Conservamos los datos mientras sean necesarios para las finalidades descritas y para cumplir obligaciones legales."
 };
 const clone = o => JSON.parse(JSON.stringify(o));
 let TXT = clone(DEFAULT_TXT), CONTACT = clone(DEFAULT_CONTACT);
-const rich = s => esc(s).replace(/\*([^*]+)\*/g, "<strong>$1</strong>");
+const mk = s => String(s ?? "").replace(/\{\{\s*marca\s*\}\}/g, BN()).replace(/\{\{\s*legal\s*\}\}/g, BRAND.legal || BN()).replace(/\{\{\s*correo\s*\}\}/g, CONTACT.email || "");
+const rich = s => esc(mk(s)).replace(/\*([^*]+)\*/g, "<strong>$1</strong>");
 const lines = s => String(s || "").split("\n").map(x => x.trim()).filter(Boolean);
 const pairs = s => lines(s).map(l => l.split("|").map(x => x.trim()));
 const waLink = (num, text) => `https://wa.me/${num}${text ? "?text=" + encodeURIComponent(text) : ""}`;
 
 /* ---------- Imágenes ----------
-   Las 7 fotos originales son archivos del sitio (banco de stock de Freepik/Magnific, licencia Premium de AVM).
+   Las 7 fotos originales son archivos del sitio (fotos de ejemplo; cada agencia debe usar fotos con licencia propia).
    Las que se suben desde el backoffice se guardan comprimidas en la base de datos: su referencia es "db:<id>". */
 const IMGS = {};
 const imgSrc = ref => !ref ? "" : ref.startsWith("db:") ? (IMGS[ref.slice(3)] || "") : ref;
 const scene = d => { const s = imgSrc(d.img); return s ? `<img src="${esc(s)}" alt="${esc(d.alt || d.name)}" loading="lazy" decoding="async">` : ""; };
 
-/* ---------- Paquetes (fuente: web actual de AVM) ----------
+/* ---------- Paquetes de ejemplo (cada agencia los cambia en el backoffice) ----------
    seasons: [inicio MM-DD, fin MM-DD, USD por persona en acomodación doble]; se repiten cada año. */
 const INC_A = ["Alojamiento las noches confirmadas", "Traslados de llegada y salida del aeropuerto principal en servicio regular diurno", "Desayuno, almuerzo y cena buffet y a la carta", "Snacks y bar abierto con y sin licor las 24 horas", "Asistencia médica internacional hasta los 74 años, cobertura de 70 mil USD"];
 const INC_B = ["3 noches de alojamiento en habitación Premium Deluxe Double", "Alimentación todo incluido", "Traslados aeropuerto – hotel – aeropuerto en servicio regular", "Asistencia médica Assist Card con cobertura hasta 70 mil USD (hasta los 74 años)", "Impuestos hoteleros y fee bancario"];
@@ -1521,7 +1519,7 @@ drawTabs();
 $("#ptabs").addEventListener("click", e => { const b = e.target.closest(".ptab"); if (b) setProd(b.dataset.p); });
 function setProd(k) { if (k !== prod) LIVE.prod = ""; prod = k; $$(".ptab").forEach(b => b.setAttribute("aria-selected", String(b.dataset.p === k))); renderPanel(); update(); }
 
-const placeSub = p => `${p.c} · ${p.k}${p.avm ? " · paquete AVM" : ""}`;
+const placeSub = p => `${p.c} · ${p.k}${p.avm ? " · nuestro paquete" : ""}`;
 function fieldHTML(f, v) {
   const val = v[f.id] ?? "", id = "f-" + f.id, cls = "box" + (f.wide ? " wide" : "");
   if (f.type === "range") {
@@ -1644,7 +1642,7 @@ function setupCombo(input) {
     items = PLACES.filter(p => !q || norm(p.c).startsWith(q) || norm(p.n).includes(q) || norm(p.k).includes(q)).slice(0, 9);
     idx = items.length ? 0 : -1;
     const firstOther = items.findIndex(p => !p.avm);
-    list.innerHTML = items.map((p, k) => `${k === 0 && p.avm ? '<li class="grp" role="presentation">Paquetes AVM</li>' : ""}${k === firstOther && k > 0 ? '<li class="grp" role="presentation">Otros destinos</li>' : ""}<li role="option" id="${input.id}-o${k}" aria-selected="${k === idx}" data-k="${k}"><b>${p.c}</b><span>${esc(p.n)}<small>${esc(p.k)}</small></span></li>`).join("");
+    list.innerHTML = items.map((p, k) => `${k === 0 && p.avm ? '<li class="grp" role="presentation">Nuestros paquetes</li>' : ""}${k === firstOther && k > 0 ? '<li class="grp" role="presentation">Otros destinos</li>' : ""}<li role="option" id="${input.id}-o${k}" aria-selected="${k === idx}" data-k="${k}"><b>${p.c}</b><span>${esc(p.n)}<small>${esc(p.k)}</small></span></li>`).join("");
     list.hidden = !items.length; input.setAttribute("aria-expanded", String(!list.hidden));
   };
   const mark = () => $$("li[role=option]", list).forEach(li => { const k = +li.dataset.k; li.setAttribute("aria-selected", String(k === idx)); if (k === idx) { li.scrollIntoView({ block: "nearest" }); input.setAttribute("aria-activedescendant", li.id); } });
@@ -1737,7 +1735,7 @@ function searchLead(who, tipo, mode, extra, quiet) {
   saveLead(lead);
   if (quiet || mode) return lead;
   $("#searchForm .who-ok")?.remove();
-  $("#whoErr").insertAdjacentHTML("afterend", `<p class="who-ok" role="status">${`Gracias. Un asesor de AVM te escribe por WhatsApp con disponibilidad y precio final. Solicitud ${esc(lead.numero)}.`}</p>`);
+  $("#whoErr").insertAdjacentHTML("afterend", `<p class="who-ok" role="status">${`Gracias. Un asesor te escribe por WhatsApp con disponibilidad y precio final. Solicitud ${esc(lead.numero)}.`}</p>`);
 }
 $("#go").addEventListener("click", () => {
   if (!searchCtx) return; const who = readWho(); if (!who) return;
@@ -1824,7 +1822,7 @@ function renderQuote() {
   q.viaje = { ...q.viaje, adicionales: q.extras.map(x => x.name).join("; "), extras: q.extras.map(({ key, name, trip }) => ({ key, name, ...(trip ? { trip } : {}) })) };
   if (!q.extras.length) { delete q.viaje.adicionales; delete q.viaje.extras; }
   box.innerHTML = `<div class="wrap qv"><nav class="crumbs" aria-label="Ruta"><a href="#inicio">Inicio</a><span>/</span><a href="${q.back}">${esc(q.backLabel)}</a><span>/</span><span>Cotización</span></nav>
-    <div id="qMain">${hotelQ ? qSteps("datos") : ""}<h1>Solicita tu cotización</h1><p class="qlead">Revisa lo que elegiste y déjanos tus datos. Un asesor de AVM confirma disponibilidad y precio, y te ayuda a reservar.</p>
+    <div id="qMain">${hotelQ ? qSteps("datos") : ""}<h1>Solicita tu cotización</h1><p class="qlead">Revisa lo que elegiste y déjanos tus datos. Un asesor confirma disponibilidad y precio, y te ayuda a reservar.</p>
     <div class="qgrid">
       <article class="qcard">${q.photo ? `<div class="qph"><img src="${esc(q.photo)}" alt="" referrerpolicy="no-referrer"></div>` : ""}<div class="qb">
         <span class="eyebrow">${esc(q.product)}</span><h2>${esc(q.title)}</h2>${q.sub ? `<p class="qsub">${esc(q.sub)}</p>` : ""}
@@ -1842,7 +1840,7 @@ function renderQuote() {
         <div class="box"><label for="qMsg">Comentarios (opcional)</label><textarea id="qMsg" placeholder="Edades de los niños, celebraciones, preferencias…"></textarea></div>
         <p class="who-err" id="qErr" role="alert" style="margin:0;padding:0"></p>
         <button class="go" type="submit">Enviar solicitud ${ARROW}</button>
-        <p class="fine">Sin costo ni compromiso. Al enviar autorizas a AVM a tratar tus datos para responder tu solicitud, según la <a href="#privacidad">política de tratamiento de datos</a>.</p>
+        <p class="fine">Sin costo ni compromiso. Al enviar autorizas a ${esc(BN())} a tratar tus datos para responder tu solicitud, según la <a href="#privacidad">política de tratamiento de datos</a>.</p>
       </form>
     </div></div><div id="qDone" hidden></div></div>`;
   $("#qExtras")?.addEventListener("click", () => { q.step = "extras"; renderQuote(); scrollTo(0, 0); });
@@ -1867,7 +1865,7 @@ function renderQuote() {
     $("#qDone").hidden = false;
     $("#qDone").innerHTML = `<div class="qdone" tabindex="-1" id="qDoneIn"><span class="eyebrow">Solicitud ${esc(lead.numero)}</span><h2>${first ? "¡Listo, " + esc(first) + "!" : "¡Listo!"} Recibimos tu solicitud</h2>
       <p>${esc(q.product)}: <b>${esc(q.title)}</b>${q.total ? ` · ${usdL(q.total)}` : ""}${q.extras.length ? `<br>Adicionales: ${esc(q.extras.map(x => x.name).join("; "))}` : ""}</p>
-      <ol><li>Un asesor de AVM revisa disponibilidad y precio final.</li><li>Te escribe por WhatsApp al ${esc(lead.celular)} y te envía la cotización a ${esc(lead.correo)}.</li><li>Si estás de acuerdo, te ayuda a reservar y pagar.</li></ol>
+      <ol><li>Un asesor revisa disponibilidad y precio final.</li><li>Te escribe por WhatsApp al ${esc(lead.celular)} y te envía la cotización a ${esc(lead.correo)}.</li><li>Si estás de acuerdo, te ayuda a reservar y pagar.</li></ol>
       <div class="row"><a class="go" href="${waLink(CONTACT.waMain, `Hola, acabo de enviar la solicitud ${lead.numero}: ${q.title}${q.total ? " (" + usdL(q.total) + ")" : ""}${q.extras.length ? ", con " + q.extras.map(x => x.name.split(",")[0].split(" (")[0].toLowerCase()).join(", ") : ""}.`)}" target="_blank" rel="noopener">Escribir por WhatsApp ${ARROW}</a>
         ${q.back === "#resultados" ? `<a class="ghost" href="#resultados">Volver a los resultados</a>` : ""}<a class="ghost" href="#buscar">Hacer otra búsqueda</a></div></div>`;
     scrollTo(0, 0); $("#qDoneIn").focus();
@@ -1912,7 +1910,7 @@ async function runLive(who) {
   const items = j.flights || j.hotels || j.tours || [];
   $("#resCount").textContent = items.length ? `${items.length} ${items.length === 1 ? "opción" : "opciones"} para tu búsqueda` : "";
   if (j.error || !items.length) {
-    $("#resList").innerHTML = `<div class="rmsg"><b>${esc(LIVE_ERR[j.error] || (j.error ? "No pudimos traer precios en línea en este momento." : "No encontramos opciones con esos datos."))}</b><span class="muted">Un asesor de AVM te cotiza con estos mismos datos.</span><button class="go" type="button" id="resAdvisor">Cotizar con un asesor ${ARROW}</button></div>`;
+    $("#resList").innerHTML = `<div class="rmsg"><b>${esc(LIVE_ERR[j.error] || (j.error ? "No pudimos traer precios en línea en este momento." : "No encontramos opciones con esos datos."))}</b><span class="muted">Un asesor te cotiza con estos mismos datos.</span><button class="go" type="button" id="resAdvisor">Cotizar con un asesor ${ARROW}</button></div>`;
     $("#resAdvisor").addEventListener("click", () => quoteFromSearch(LIVE.crit ? { ...LIVE.crit } : null));
     return;
   }
@@ -2162,7 +2160,7 @@ function renderDest(d) {
   v.innerHTML = `<div class="wrap dv">
     <nav class="crumbs" aria-label="Ruta"><a href="#inicio">Inicio</a><span>/</span><a href="#destinos">Destinos</a><span>/</span><span>${esc(d.name)}</span></nav>
     <div class="dv-banner"><div class="scene">${scene(d)}</div><div class="in">
-      <div class="eyebrow" style="color:var(--hero-soft);margin-bottom:10px">${esc(d.country)} · Paquete AVM</div>
+      <div class="eyebrow" style="color:var(--hero-soft);margin-bottom:10px">${esc(d.country)} · Paquete</div>
       <h1>${esc(d.name)}</h1><p class="sub">${esc(d.hotel)} <span aria-label="${d.stars} estrellas" style="color:var(--signal)">${stars}</span></p>
       <div class="pills">${showP() && offerOf(d) ? `<span class="pill" style="background:var(--signal);color:var(--signal-ink)">Oferta −${offerOf(d).pct}% · ${esc(leftText(offerOf(d).until))}</span>` : ""}<span class="pill">${d.nights} noches</span>${d.tags.map(t => `<span class="pill">${esc(t)}</span>`).join("")}</div></div></div>
     <div class="dv-grid">
@@ -2175,7 +2173,7 @@ function renderDest(d) {
         ${showP() ? `<section class="dv-sec"><h2>Tarifas por temporada</h2>
           <div style="overflow-x:auto"><table class="rates"><thead><tr><th>Temporada</th><th>Por persona en doble</th></tr></thead>
           <tbody>${d.seasons.length ? d.seasons.map((s, i) => `<tr data-i="${i}"><td>${seasonLabel(s)}</td><td><b>${usd(withOff(d, s[2]))}</b>${offerOf(d) ? `<s class="was">${usd(s[2])}</s>` : ""}${trm() ? `<small class="cop">${copOf(withOff(d, s[2]))}</small>` : ""}</td></tr>`).join("") : `<tr><td>Temporadas por publicar</td><td><b>Por confirmar</b></td></tr>`}</tbody></table></div>
-          <p class="note" style="margin-top:14px"><span>Tarifas de referencia publicadas por AVM, por ${d.nights} noches. Un asesor confirma la tarifa vigente y la disponibilidad.${trm() ? ` Pesos aproximados con TRM de $${NF2.format(trm())}.` : ""}</span></p></section>` : ""}
+          <p class="note" style="margin-top:14px"><span>Tarifas de referencia, por ${d.nights} noches. Un asesor confirma la tarifa vigente y la disponibilidad.${trm() ? ` Pesos aproximados con TRM de $${NF2.format(trm())}.` : ""}</span></p></section>` : ""}
         <section class="dv-sec"><h2>Antes de viajar</h2><div class="info">${INFO_FIELDS.filter(([k]) => d.info?.[k]).map(([k, l]) => `<div><span class="ih">${INFO_ICONS[k]}${l}</span><p>${esc(d.info[k])}</p></div>`).join("")}</div></section>
         <section class="dv-sec" id="dvHotels" hidden><h2>Hoteles en ${esc(d.name)}</h2><p style="margin-bottom:14px">Fotos, servicios y opiniones de cada hotel.</p><div class="cards-row" id="dvHotelList"></div></section>
         <section class="dv-sec" id="dvTours" hidden><h2>Tours y actividades en ${esc(d.name)}</h2><p style="margin-bottom:14px">Experiencias para completar tu viaje. Te las cotizamos junto con el paquete.</p><div class="cards-row" id="dvTourList"></div></section>
@@ -2222,7 +2220,7 @@ function renderDest(d) {
   $(".others .packs").addEventListener("click", e => { if (e.target.closest(".pack")) scrollTo(0, 0); });
   upd();
   loadDestCatalog(d);
-  setSeo(`Paquete a ${d.name} todo incluido | AVM Operadores Mayoristas`, d.desc);
+  setSeo(`Paquete a ${d.name} todo incluido | ${BN()}`, d.desc);
 }
 function bookUpdate(d) {
   const a = $("#bkIn").value, b = $("#bkOut").value, ok = a && b && b > a;
@@ -2239,7 +2237,7 @@ function bookUpdate(d) {
   else if (!a) q.innerHTML = isFinite(fromPrice(d)) ? `${o ? `Oferta −${o.pct}% · desde` : "Desde"}<b>${usd(finalPrice(d))}</b>por persona en acomodación doble, ${d.nights} noches.${cp(finalPrice(d))}` : `Tarifa<b>Por confirmar</b>Un asesor te cotiza la temporada.`;
   else if (s) { const v = withOff(d, s[2]); q.innerHTML = `Temporada <strong>${seasonLabel(s)}</strong>${o ? ` · oferta −${o.pct}%` : ""}<b>${usd(v)}</b>por persona en doble, ${d.nights} noches.${cp(v)} ${ad > 1 ? `Referencia para ${ad} adultos: <strong>${usd(v * ad)}</strong>${ch ? ", más tarifa de niño" : ""}.` : ""}`; }
   else q.innerHTML = `Para esa fecha no hay tarifa publicada.<b>Por confirmar</b>Un asesor te cotiza la temporada.`;
-  const msg = `Hola, quiero cotizar el paquete AVM a ${d.name} (${d.hotel})` + (ok ? ` del ${fmt(a)} al ${fmt(b)} (${nights(a, b)} noches)` : "") + `, ${occ}.`;
+  const msg = `Hola, quiero cotizar el paquete a ${d.name} (${d.hotel})` + (ok ? ` del ${fmt(a)} al ${fmt(b)} (${nights(a, b)} noches)` : "") + `, ${occ}.`;
   $("#bkWa").href = waLink(CONTACT.waMain, msg);
 }
 
@@ -2247,7 +2245,7 @@ function bookUpdate(d) {
 // Direcciones limpias (/destino/punta-cana, /hotel/lp1~puj, /actividad/123): se convierten a la ruta interna
 function pathToHash() {
   if (location.hash) return;
-  const m = location.pathname.match(/\/(destino|hotel|actividad)\/([A-Za-z0-9_~-]+)\/?$/) || location.pathname.match(/\/(agencias|traslados|privacidad)\/?$/);
+  const m = location.pathname.match(/\/(destino|hotel|actividad)\/([A-Za-z0-9_~-]+)\/?$/) || location.pathname.match(/\/(traslados|privacidad)\/?$/);
   if (!m) return;
   const base = document.querySelector("base")?.href || location.href.replace(/[^/]*$/, "");
   history.replaceState(null, "", base + "#" + (m[2] ? m[1] + "-" + m[2] : m[1]));
@@ -2273,8 +2271,8 @@ function route() {
   if (sv) {
     $("#admin").hidden = $("#pageView").hidden = $("#home").hidden = $("#destView").hidden = $("#catView").hidden = true;
     document.body.classList.remove("is-admin"); $("#destView").dataset.slug = ""; $("#pageView").dataset.kind = ""; $("#catView").dataset.key = "";
-    if (sv === "res") { setSeo("Resultados de tu búsqueda | AVM"); if (!LIVE.crit) { $("#resTitle").textContent = "Busca tu viaje"; $("#rvProd").textContent = ""; $("#rvSum").textContent = "Elige destino, fechas y viajeros en el buscador para ver precios en línea."; $("#resList").innerHTML = `<a class="go" href="#buscar">Ir al buscador ${ARROW}</a>`; } }
-    else { setSeo("Solicita tu cotización | AVM"); renderQuote(); }
+    if (sv === "res") { setSeo(`Resultados de tu búsqueda | ${BN()}`); if (!LIVE.crit) { $("#resTitle").textContent = "Busca tu viaje"; $("#rvProd").textContent = ""; $("#rvSum").textContent = "Elige destino, fechas y viajeros en el buscador para ver precios en línea."; $("#resList").innerHTML = `<a class="go" href="#buscar">Ir al buscador ${ARROW}</a>`; } }
+    else { setSeo(`Solicita tu cotización | ${BN()}`); renderQuote(); }
     scrollTo(0, 0);
     return;
   }
@@ -2288,7 +2286,7 @@ function route() {
   }
   $("#catView").dataset.key = "";
   if (!d) setSeo();
-  const page = ["#agencias", "#privacidad", "#traslados"].includes(h) ? h.slice(1) : "";
+  const page = ["#privacidad", "#traslados"].includes(h) ? h.slice(1) : "";
   document.body.classList.toggle("is-admin", isAdmin);
   $("#admin").hidden = !isAdmin; $("#pageView").hidden = !page;
   $("#home").hidden = !!d || isAdmin || !!page; $("#destView").hidden = !d;
@@ -2357,8 +2355,8 @@ function liqTable(items, rate = trm(), sumRow = false) {
   items = items.filter(x => x.liq); if (!items.length) return "";
   const cop = v => rate ? `<small>COP ${NFc.format(Math.round((+v || 0) * rate))}</small>` : "";
   const l0 = items[0].liq;
-  const cols = [["Neto del proveedor", "netoProv"], ["Comisión LiteAPI", "comLite", "a favor de AVM"], ["Tarifa LiteAPI", "neto"], ["Markup", "markup", pctTxt(l0.markupPct)], ["Fee fijo", "fijo"],
-    ["Fee general", "fee", pctTxt(l0.feePct)], ["Fee bancario", "banco", pctTxt(l0.bancoPct)], ["Comisión operador", "operador", pctTxt(l0.operadorPct)], ["Redondeo", "redondeo"], ["Total cliente", "total"], ["Ganancia AVM", "ganancia"], ["Impuestos en el hotel", "taxOut", "no incluidos"], ["Precio público sugerido", "ssp", "LiteAPI"]]
+  const cols = [["Neto del proveedor", "netoProv"], ["Comisión LiteAPI", "comLite", "a favor de la agencia"], ["Tarifa LiteAPI", "neto"], ["Markup", "markup", pctTxt(l0.markupPct)], ["Fee fijo", "fijo"],
+    ["Fee general", "fee", pctTxt(l0.feePct)], ["Fee bancario", "banco", pctTxt(l0.bancoPct)], ["Comisión operador", "operador", pctTxt(l0.operadorPct)], ["Redondeo", "redondeo"], ["Total cliente", "total"], ["Ganancia agencia", "ganancia"], ["Impuestos en el hotel", "taxOut", "no incluidos"], ["Precio público sugerido", "ssp", "LiteAPI"]]
     .filter(([, k]) => k === "redondeo" ? items.some(x => Math.abs(+x.liq.redondeo || 0) >= .01) : k === "taxOut" || k === "ssp" ? items.some(x => +x.liq[k]) : true);
   const val = (l, k) => k === "ganancia" ? (l.ganancia ?? l.margen) : l[k];
   const sum = k => items.reduce((a, x) => a + (+val(x.liq, k) || 0), 0);
@@ -2452,7 +2450,7 @@ async function renderHotel(id, tc) {
   if ($("#catView").dataset.key !== "hotel:" + id) return;
   const h = j.hotel; if (!h) return catError("hotel", tc);
   const pl = tcPlace(tc), lugar = [h.city, pl?.k].filter(Boolean).join(", ");
-  setSeo(`${h.name}${h.city ? ", " + h.city : ""} | Hoteles AVM`, (h.description || "").replace(/\s+/g, " "));
+  setSeo(`${h.name}${h.city ? ", " + h.city : ""} | ${BN()}`, (h.description || "").replace(/\s+/g, " "));
   const map = h.lat && h.lng ? `https://www.google.com/maps/search/?api=1&query=${h.lat},${h.lng}` : "";
   $("#catView .crumbs span:last-child").textContent = h.name;
   $("#catView .cv").insertAdjacentHTML("beforeend", "");
@@ -2515,7 +2513,7 @@ async function renderActividad(id, tc) {
   if ($("#catView").dataset.key !== "actividad:" + id) return;
   const t = j.tour; if (!t) return catError("actividad", tc);
   const pl = tcPlace(tc);
-  setSeo(`${t.title}${t.city ? " en " + t.city : ""} | Tours AVM`, (t.description || "").replace(/\s+/g, " "));
+  setSeo(`${t.title}${t.city ? " en " + t.city : ""} | ${BN()}`, (t.description || "").replace(/\s+/g, " "));
   $("#catView .crumbs span:last-child").textContent = t.title;
   const li = a => a.map(x => `<li>${TICK}<span>${esc(x)}</span></li>`).join("");
   $(".cv-load").outerHTML = `<header class="ch"><div><h1>${esc(t.title)}</h1><div class="meta">${t.category ? `<span class="stars">${esc(t.category)}</span>` : ""}${t.duration ? `<span>${esc(t.duration)}</span>` : ""}${t.pickup ? "<span>Incluye recogida</span>" : ""}${t.city ? `<span>${esc(t.city)}</span>` : ""}</div></div>${scoreHTML(t.rating, t.reviews)}</header>
@@ -2560,10 +2558,52 @@ async function loadDestCatalog(d) {
   })();
 }
 
+/* ---------- Marca de la agencia ----------
+   Mismas reglas que avm_marca_css() en el servidor: acento con texto legible encima, color oscuro para barras,
+   fondo claro opcional y una de cinco tipografías. */
+const FONTS = {
+  moderna: ["Outfit", "Hanken Grotesk", "Outfit:wght@400;600;700&family=Hanken+Grotesk:wght@400;500;600;700", "Moderna (Outfit + Hanken Grotesk)"],
+  clasica: ["Playfair Display", "Source Sans 3", "Playfair+Display:wght@500;600;700&family=Source+Sans+3:wght@400;500;600;700", "Clásica (Playfair Display + Source Sans 3)"],
+  amigable: ["Nunito", "Nunito Sans", "Nunito:wght@500;700;800&family=Nunito+Sans:wght@400;600;700", "Amigable (Nunito)"],
+  elegante: ["DM Serif Display", "DM Sans", "DM+Serif+Display&family=DM+Sans:wght@400;500;600;700", "Elegante (DM Serif + DM Sans)"],
+  geometrica: ["Poppins", "Inter", "Poppins:wght@500;600;700&family=Inter:wght@400;500;600;700", "Geométrica (Poppins + Inter)"]
+};
+const hexOk = (c, d) => /^#[0-9a-f]{6}$/i.test(c || "") ? c.toUpperCase() : d;
+const luz = hex => { const f = v => (v /= 255) <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4; const n = i => parseInt(hex.slice(i, i + 2), 16); return 0.2126 * f(n(1)) + 0.7152 * f(n(3)) + 0.0722 * f(n(5)); };
+const contraste = (a, b) => { const x = luz(a), y = luz(b); return (Math.max(x, y) + 0.05) / (Math.min(x, y) + 0.05); };
+const tinta = hex => contraste(hex, "#FFFFFF") >= contraste(hex, "#14181D") ? "#FFFFFF" : "#14181D";
+function brandCss(b) {
+  const acc = hexOk(b.accent, "#BBCF26"), dark = hexOk(b.dark, "#12161B"), paper = hexOk(b.paper, "#F3F4F1"), f = FONTS[b.fonts] || FONTS.moderna;
+  const v = `--signal:${acc};--signal-ink:${tinta(acc)};--bar-bg:${dark};--f-display:"${f[0]}","Segoe UI",system-ui,sans-serif;--f-body:"${f[1]}","Segoe UI",system-ui,sans-serif;`;
+  const claro = (dark !== "#12161B" && luz(dark) < 0.06 ? `--ink:${dark};` : "") + (luz(paper) > 0.82 ? `--paper:${paper};` : "");
+  return `:root{${v}}:root:not([data-theme="dark"]){${claro}}@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--paper:#0E1114;--ink:#EEF0F2}}`;
+}
+function brandLogoHTML(dark) {
+  const c = imgSrc(BRAND.logo), w = imgSrc(BRAND.logoDark) || c;
+  if (!c) return `<span class="wm">${esc(BN())}</span>`;
+  return `<img class="logo-c" src="${esc(c)}" alt="${esc(BN())}"><img class="logo-w" src="${esc(w)}" alt="${esc(BN())}">`;
+}
+function applyBrand(b = BRAND) {
+  let st = $("#brandCss"); if (!st) { st = document.createElement("style"); st.id = "brandCss"; document.head.append(st); }
+  st.textContent = brandCss(b);
+  const f = FONTS[b.fonts];
+  if (f && b.fonts !== "moderna") {
+    let l = $("#brandFont"); if (!l) { l = document.createElement("link"); l.rel = "stylesheet"; l.id = "brandFont"; document.head.append(l); }
+    const href = `https://fonts.googleapis.com/css2?family=${f[2]}&display=swap`; if (l.href !== href) l.href = href;
+  }
+  const html = brandLogoHTML();
+  $$(".brandmark").forEach(el => { if (el.dataset.k !== html) { el.innerHTML = html; el.dataset.k = html; } });
+  $$('a.logo[aria-label="Inicio"]').forEach(a => a.setAttribute("aria-label", BN() + ", inicio"));
+  const ic = imgSrc(b.icon) || imgSrc(b.logo);
+  if (ic) { let l = $('link[rel="icon"]'); if (!l) { l = document.createElement("link"); l.rel = "icon"; document.head.append(l); } if (l.href !== ic) l.href = ic; }
+  if ($("#fTag")) $("#fTag").textContent = b.tagline || "";
+  if ($("#legalLine")) $("#legalLine").textContent = [b.legal || BN(), b.rnt ? "Registro Nacional de Turismo " + b.rnt : ""].filter(Boolean).join(" · ");
+  if ($("#legalNote")) $("#legalNote").textContent = mk(TXT.legalNote || "");
+}
+
 /* ---------- Portada, textos y pie ---------- */
 function renderTexts() {
-  $("#agencyBarText").textContent = TXT.agencyBar;
-  $$(".portal-link").forEach(a => a.href = CONTACT.portal);
+  applyBrand();
   $("#heroEyebrow").textContent = TXT.heroEyebrow;
   $("#heroTitle").innerHTML = rich(TXT.heroTitle);
   $("#heroSub").textContent = TXT.heroSub;
@@ -2631,7 +2671,7 @@ function openStatus() {
   return { on: false, day, text: "Cerrado" };
 }
 const WA_ICON = '<svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 2a8 8 0 0 0-6.9 12.04L2 18l4.06-1.07A8 8 0 1 0 10 2zm4.2 11.1c-.18.5-1.04.96-1.44 1-.37.05-.83.07-1.34-.09-.31-.1-.7-.23-1.21-.45-2.13-.92-3.52-3.06-3.63-3.2-.1-.14-.86-1.15-.86-2.19s.55-1.55.74-1.76c.2-.21.42-.27.56-.27h.4c.13 0 .3-.05.47.36.18.42.6 1.45.65 1.56.05.1.09.23.02.37-.07.14-.1.23-.21.35l-.31.37c-.1.1-.21.22-.09.43.12.21.54.89 1.16 1.44.8.71 1.47.93 1.68 1.04.21.1.33.09.45-.05.12-.14.52-.6.66-.81.14-.21.28-.17.47-.1.19.07 1.21.57 1.42.67.21.1.35.16.4.24.05.09.05.5-.13 1z"/></svg>';
-const waHref = n => waLink("57" + n.replace(/\D/g, ""), "¡Hola! Quiero información sobre los paquetes de AVM.");
+const waHref = n => waLink("57" + n.replace(/\D/g, ""), `¡Hola! Quiero información sobre los paquetes de ${BN()}.`);
 const mapHref = (a, city) => "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(`${a}, ${city}, Colombia`);
 function drawContact() {
   const st = openStatus();
@@ -2656,12 +2696,6 @@ function drawContact() {
   <div class="ct">
     <span class="eyebrow">Sedes</span>
     ${CONTACT.sedes.map(([city, addr]) => `<div class="sede"><b>${esc(city.replace("Sede ", ""))}</b><span>${esc(addr)}</span><a href="${mapHref(addr, city.replace("Sede ", ""))}" target="_blank" rel="noopener">Cómo llegar →</a></div>`).join("")}
-  </div>
-  <div class="ct agency">
-    <span class="eyebrow">Portal de agencias</span>
-    <h3>¿Eres agencia de viajes?</h3>
-    <p>Cotiza y reserva en línea con tus condiciones de agencia, las 24 horas.</p>
-    <a class="go" href="${esc(CONTACT.portal)}" target="_blank" rel="noopener">Ingreso agencias ${ARROW}</a>
   </div>`;
   $("#copyMail").addEventListener("click", async e => {
     const b = e.currentTarget;
@@ -2673,20 +2707,20 @@ function drawContact() {
 setInterval(() => { const st = openStatus(), el = $("#contactGrid .open"); if (el) { el.className = "open" + (st.on ? " on" : ""); el.innerHTML = `<i></i>${esc(st.text)}`; } }, 60000);
 
 /* ---------- Solicitud de cotización ----------
-   En producción: POST al backend del sitio, que crea la oportunidad en AVM CRM (API propia del CRM)
+   En producción: POST al backend del sitio, que guarda la solicitud y avisa al equipo
    con estos campos, la asigna a un ejecutivo y avisa por WhatsApp/correo. Nunca se llama al CRM ni a
    proveedores desde el navegador: las credenciales viven solo en el servidor. */
 let leadCtx = null, lastFocus = null;
 const modal = $("#leadModal");
 const gateLink = (ctx, nombre) => `<span class="eyebrow">${nombre ? "Listo, " + esc(nombre) : "Bienvenido de nuevo"}</span>
-  <p>Guardamos tu búsqueda. Un asesor de AVM te contacta por WhatsApp con precios y disponibilidad.</p>
+  <p>Guardamos tu búsqueda. Un asesor te contacta por WhatsApp con precios y disponibilidad.</p>
   <div style="display:flex;gap:8px;flex-wrap:wrap"><a class="go" href="${esc(ctx.url)}" target="_blank" rel="noopener" id="gateGo">Ver precios y disponibilidad ${ARROW}</a><button class="ghost" type="button" id="leadOk">Cerrar</button></div>`;
 function openLead(ctx) {
   leadCtx = ctx; lastFocus = document.activeElement;
   const gate = !!ctx.gate;
   $("#leadForm").classList.toggle("gate", gate);
   $("#leadTitle").textContent = gate ? "Antes de ver precios" : "Solicita tu cotización";
-  $("#leadTitle").nextElementSibling.textContent = gate ? "Déjanos tu nombre, correo y teléfono. Guardamos tu búsqueda y te llevamos a los precios en línea." : "Déjanos tus datos y un asesor de AVM te contacta con disponibilidad y precio final.";
+  $("#leadTitle").nextElementSibling.textContent = gate ? "Déjanos tu nombre, correo y teléfono. Guardamos tu búsqueda y te llevamos a los precios en línea." : "Déjanos tus datos y un asesor te contacta con disponibilidad y precio final.";
   $("#leadModal .sheet-foot .go").textContent = gate ? "Continuar a los precios" : "Enviar solicitud";
   let seen = false; try { seen = gate && sessionStorage.getItem("avm-lead") === "1"; } catch {}
   if (seen) {
@@ -2734,7 +2768,7 @@ $("#leadForm").addEventListener("submit", e => {
     }
     $("#leadDone").innerHTML = r === "ok"
       ? `<span class="eyebrow">Solicitud recibida</span><div class="num">${num}</div>
-        <p>Gracias, ${esc(lead.nombre.split(" ")[0])}. Un asesor de AVM te escribe por WhatsApp con disponibilidad y precio final.</p>
+        <p>Gracias, ${esc(lead.nombre.split(" ")[0])}. Un asesor te escribe por WhatsApp con disponibilidad y precio final.</p>
         <div style="display:flex;gap:8px;flex-wrap:wrap"><a class="ghost" href="${waLink(CONTACT.waMain, msg)}" target="_blank" rel="noopener">Escribir ya por WhatsApp</a><button class="go" type="button" id="leadOk">Listo</button></div>`
       : `<span class="eyebrow">No pudimos registrar la solicitud desde aquí</span><div class="num">${num}</div>
         <p>Escríbenos por WhatsApp con este número y un asesor te atiende de inmediato.</p>
@@ -2807,7 +2841,7 @@ const DEFAULT_TOURS = [
 ];
 const DEFAULT_GROUPS = [
   { id: "famtrip-punta-cana", kind: "Fam Trip", name: "Fam Trip Punta Cana", place: "Punta Cana", dest: "punta-cana", from: "2027-02-10", to: "2027-02-14", seats: 20, left: 8, price: 0, audience: "Agencias", desc: "Viaje de familiarización para agencias aliadas: visitas de inspección a hoteles y experiencias en destino.", inc: [], img: "", active: true, order: 0, sample: true },
-  { id: "grupal-cancun", kind: "Salida grupal", name: "Cancún en Semana Santa", place: "Cancún", dest: "cancun", from: "2027-03-20", to: "2027-03-25", seats: 30, left: 4, price: 0, audience: "Viajeros", desc: "Salida con fecha fija y acompañamiento de AVM.", inc: [], img: "", active: true, order: 1, sample: true }
+  { id: "grupal-cancun", kind: "Salida grupal", name: "Cancún en Semana Santa", place: "Cancún", dest: "cancun", from: "2027-03-20", to: "2027-03-25", seats: 30, left: 4, price: 0, audience: "Viajeros", desc: "Salida con fecha fija y acompañamiento de un asesor.", inc: [], img: "", active: true, order: 1, sample: true }
 ];
 let TOURS = clone(DEFAULT_TOURS), GROUPS = clone(DEFAULT_GROUPS), dbTours = null, dbGroups = null;
 const itemImg = x => { const s = imgSrc(x.img) || (x.dest && imgSrc(ALL.find(d => d.slug === x.dest)?.img)) || ""; return s ? `<img src="${esc(s)}" alt="" loading="lazy" decoding="async">` : ""; };
@@ -2868,7 +2902,7 @@ function drawPartners() {
 }
 
 /* ---------- WhatsApp flotante con zonas ---------- */
-const waCtx = () => { const s = $("#destView").dataset.slug; const d = s && bySlug(s); return d ? `Hola, quiero información del paquete a ${d.name}.` : "¡Hola! Quiero información sobre los viajes de AVM."; };
+const waCtx = () => { const s = $("#destView").dataset.slug; const d = s && bySlug(s); return d ? `Hola, quiero información del paquete a ${d.name}.` : `¡Hola! Quiero información sobre los viajes de ${BN()}.`; };
 function drawWaFloat() {
   const zs = (CONTACT.zones || []).filter(z => z[1]);
   $("#waZones").innerHTML = zs.map(([z, n]) => `<a href="${esc(waLink(n.replace(/\D/g, ""), waCtx()))}" target="_blank" rel="noopener"><span class="ic">${WA_ICON}</span><span><b>${esc(z)}</b><small>+${esc(n.replace(/\D/g, "").replace(/^(\d{2})(\d{3})(\d{3})(\d{4})$/, "$1 $2 $3 $4"))}</small></span></a>`).join("");
@@ -2879,7 +2913,7 @@ $("#waBtn").addEventListener("click", () => { const p = $("#waPanel"), open = p.
 document.addEventListener("click", e => { if (!e.target.closest("#waFloat") && !$("#waPanel").hidden) { $("#waPanel").hidden = true; $("#waBtn").setAttribute("aria-expanded", "false"); } });
 addEventListener("keydown", e => { if (e.key === "Escape" && !$("#waPanel").hidden) { $("#waPanel").hidden = true; $("#waBtn").focus(); } });
 
-/* ---------- Páginas: agencias, privacidad, traslados ---------- */
+/* ---------- Páginas: privacidad y traslados ---------- */
 function mdLite(t) {
   return String(t || "").split(/\n{2,}/).map(b => {
     b = b.trim(); if (!b) return "";
@@ -2899,57 +2933,6 @@ function renderPage(kind) {
       ${TRANSFERS.zones.map(z => `<section class="dv-sec"><h2>${esc(z.name)}</h2>${transferTable(z, false)}</section>`).join("")}
       <button class="go" type="button" id="trfLead">Cotizar un traslado ${ARROW}</button></div>`;
     $("#trfLead").addEventListener("click", () => openLead({ product: "Traslado", title: "Traslado aeropuerto – hotel", data: { producto: "traslado" }, tipo: "traslado" }));
-  } else {
-    const pIcon = k => `<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">${ICONS[k] || ICONS.paquetes}</svg>`;
-    const tick = '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 8.5 6.5 11.5 12.5 4.5"/></svg>';
-    v.innerHTML = `<div class="wrap pg">${crumbs("Agencias")}
-      <section class="ag-hero"><div><div class="eyebrow">Agencias de viajes</div><h1>${rich(TXT.agTitle)}</h1><p>${esc(TXT.agSub)}</p>
-        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:18px"><a class="go" href="#agForm" style="background:var(--signal);color:var(--signal-ink)">Activar mi agencia</a><a class="ghost portal-link" href="${esc(CONTACT.portal)}" target="_blank" rel="noopener">Ingresar a la plataforma</a></div>
-        <ul class="ag-badges">${lines(TXT.agBadges).map(t => `<li>${tick}${esc(t)}</li>`).join("")}</ul></div>
-        <ul class="ag-perks">${pairs(TXT.agPerks).map(([t, d], i) => `<li><span class="ri">${REASON_ICONS[i % REASON_ICONS.length]}</span><div><b>${esc(t)}</b><span>${esc(d || "")}</span></div></li>`).join("")}</ul></section>
-      <section class="ag-sec"><h2>Todo en <strong>una sola plataforma</strong></h2><p class="lede">Lo que tus clientes necesitan para su viaje, con disponibilidad en línea y confirmación inmediata.</p>
-        <ul class="ag-prods">${pairs(TXT.agProducts).map(([k, t, d]) => `<li><span class="pi">${pIcon(k)}</span><div><b>${esc(t || k)}</b><span>${esc(d || "")}</span></div></li>`).join("")}</ul></section>
-      <section class="ag-sec"><h2>¿Por qué las agencias <strong>venden con AVM</strong>?</h2><p class="lede">Más de una década creando viajes desde Pereira y Barranquilla para agencias de todo el país.</p>
-        <ul class="ag-why">${pairs(TXT.agWhy).map(([t, d], i) => `<li><span class="ri">${REASON_ICONS[(i + 1) % REASON_ICONS.length]}</span><b>${esc(t)}</b><span>${esc(d || "")}</span></li>`).join("")}</ul></section>
-      <section class="ag-sec"><h2>Activa tu agencia <strong>en 3 pasos</strong></h2><p class="lede">Sin trámites largos: validamos tu información y empiezas a vender.</p>
-        <ol class="ag-steps">${pairs(TXT.agSteps).map(([t, d]) => `<li><b>${esc(t)}</b>${d ? `<span>${esc(d)}</span>` : ""}</li>`).join("")}</ol></section>
-      <div class="ag-two">
-      <section class="dv-sec" id="agForm"><h2>Registra tu agencia</h2><p class="help" style="margin:-4px 0 14px">Un asesor valida los datos y te envía tu usuario.</p>
-        <form class="lf ag-form" id="agencyForm" novalidate>
-          <div class="f"><label for="gName">Razón social</label><input id="gName" required><span class="err" id="gName-err"></span></div>
-          <div class="f"><label for="gNit">NIT</label><input id="gNit" inputmode="numeric" placeholder="900123456-7"><span class="err" id="gNit-err"></span></div>
-          <div class="f"><label for="gRnt">Registro Nacional de Turismo (RNT)</label><input id="gRnt" inputmode="numeric"><span class="err" id="gRnt-err"></span></div>
-          <div class="f"><label for="gCity">Ciudad</label><input id="gCity"><span class="err"></span></div>
-          <div class="f"><label for="gContact">Nombre del contacto</label><input id="gContact" autocomplete="name"><span class="err" id="gContact-err"></span></div>
-          <div class="f"><label for="gRole">Cargo</label><input id="gRole"><span class="err"></span></div>
-          <div class="f"><label for="gMail">Correo</label><input id="gMail" type="email" autocomplete="email"><span class="err" id="gMail-err"></span></div>
-          <div class="f"><label for="gPhone">Celular / WhatsApp</label><input id="gPhone" type="tel" autocomplete="tel"><span class="err" id="gPhone-err"></span></div>
-          <label class="consent full"><input type="checkbox" id="gConsent"> <span>Autorizo a AVM a tratar estos datos según su <a href="#privacidad">política de tratamiento de datos</a>.</span></label>
-          <span class="err full" id="gConsent-err"></span>
-          <div class="full" style="display:flex;gap:12px;align-items:center;flex-wrap:wrap"><button class="go" type="submit">Activar mi agencia</button><span class="toast" id="agMsg" role="status"></span></div>
-        </form></section>
-        <section class="dv-sec ag-faq"><h2>Preguntas frecuentes</h2>${pairs(TXT.agFaq).map(([q, r]) => `<details><summary>${esc(q)}</summary><p>${esc(r || "")}</p></details>`).join("")}</section>
-      </div>
-      <section class="ag-cta"><h2>${rich(TXT.agCta)}</h2><div style="display:flex;gap:10px;flex-wrap:wrap"><a class="go" href="#agForm">Activar mi agencia</a><a class="ghost" href="${waLink(CONTACT.waMain, "Hola, tengo una agencia de viajes y quiero trabajar con AVM.")}" target="_blank" rel="noopener">Hablar con un asesor</a></div></section></div>`;
-    $$('#pageView a[href="#agForm"]').forEach(x => x.addEventListener("click", e => { e.preventDefault(); $("#agForm").scrollIntoView({ behavior: "smooth", block: "start" }); setTimeout(() => $("#gName").focus({ preventScroll: true }), 400); }));
-    $("#agencyForm").addEventListener("submit", async e => {
-      e.preventDefault();
-      const v2 = id => $("#" + id).value.trim(), errs = {};
-      if (v2("gName").length < 3) errs.gName = "Escribe la razón social.";
-      if (!/^\d{6,12}(-?\d)?$/.test(v2("gNit").replace(/[.\s]/g, ""))) errs.gNit = "Escribe el NIT, por ejemplo 900123456-7.";
-      if (!/^\d{3,8}$/.test(v2("gRnt"))) errs.gRnt = "Escribe el número de RNT (solo números).";
-      if (v2("gContact").length < 3) errs.gContact = "Escribe el nombre del contacto.";
-      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v2("gMail"))) errs.gMail = "Escribe un correo válido.";
-      if (v2("gPhone").replace(/\D/g, "").length < 10) errs.gPhone = "Escribe un celular de 10 dígitos.";
-      if (!$("#gConsent").checked) errs.gConsent = "Necesitamos tu autorización para revisar la solicitud.";
-      ["gName", "gNit", "gRnt", "gContact", "gMail", "gPhone", "gConsent"].forEach(id => { $("#" + id + "-err").textContent = errs[id] || ""; });
-      const first = Object.keys(errs)[0]; if (first) return $("#" + first).focus();
-      const lead = { numero: newLeadNumber("AG"), tipo: "agencia", estado: "nueva", creado: new Date().toISOString(), nombre: v2("gContact"), celular: v2("gPhone"), correo: v2("gMail"), ciudad: v2("gCity"),
-        agencia: { razonSocial: v2("gName"), nit: v2("gNit"), rnt: v2("gRnt"), cargo: v2("gRole") }, autorizaDatos: true };
-      const r = await saveLead(lead), m = $("#agMsg");
-      if (r === "ok") { m.className = "toast ok"; m.textContent = `Solicitud ${lead.numero} recibida. Te escribimos para activar tu usuario.`; $("#agencyForm").reset(); }
-      else { m.className = "toast err"; m.textContent = `No pudimos registrarla desde aquí. Escríbenos por WhatsApp al ${CONTACT.sales[0]} o a ${CONTACT.email}.`; }
-    });
   }
 }
 
@@ -2995,13 +2978,13 @@ function renderAll() {
   DESTS = ALL.filter(d => d.active).sort((a, b) => a.order - b.order);
   rebuildPlaces(); renderTexts(); { const was = prod; drawTabs(); if (was !== prod) { renderPanel(); update(); } } drawPopular(); drawRegionChips(); drawPacks(); drawContact();
   drawTrm(); drawOffers(); drawTours(); drawGroups(); drawPartners(); drawWaFloat();
-  const pv = $("#pageView"); if (!pv.hidden && pv.dataset.kind && pv.dataset.kind !== "agencias") renderPage(pv.dataset.kind);
+  const pv = $("#pageView"); if (!pv.hidden && pv.dataset.kind) renderPage(pv.dataset.kind);
   const v = $("#destView");
   if (!v.hidden && v.dataset.slug) { const d = bySlug(v.dataset.slug); if (d) renderDest(d); else location.hash = "#destinos"; }
 }
 
 /* ---------- Datos: base de datos de la página ----------
-   site/content       → textos (txt) y contacto (contact)
+   site/content       → textos (txt), contacto (contact) y marca (brand)
    destinations/<id>  → un documento por destino
    images/<id>        → fotos subidas desde el backoffice, comprimidas (data URL)
    Reglas declaradas al publicar: todos leen; solo el propietario y los editores escriben. */
@@ -3025,6 +3008,7 @@ async function boot() {
     const x = s.exists ? s.data() : {};
     TXT = { ...clone(DEFAULT_TXT), ...(x.txt || {}) };
     CONTACT = { ...clone(DEFAULT_CONTACT), ...(x.contact || {}) };
+    BRAND = { ...DEFAULT_BRAND, ...(window.AVM_BRAND || {}), ...(x.brand || {}) };
     contentLoaded = true; renderAll(); refreshAdmin();
   }, () => {});
   db.collection("destinations").orderBy("order").onSnapshot(q => {
@@ -3055,7 +3039,7 @@ async function boot() {
 }
 
 /* ---------- Backoffice ---------- */
-const TABS = [["solicitudes", "Solicitudes"], ["portada", "Portada y textos"], ["destinos", "Destinos y ofertas"], ["tours", "Tours y circuitos"], ["grupos", "Salidas grupales"], ["traslados", "Traslados"], ["nosotros", "Nosotros y aliados"], ["contacto", "Contacto y WhatsApp"], ["legal", "Agencias y privacidad"]];
+const TABS = [["solicitudes", "Solicitudes"], ["portada", "Portada y textos"], ["destinos", "Destinos y ofertas"], ["tours", "Tours y circuitos"], ["grupos", "Salidas grupales"], ["traslados", "Traslados"], ["nosotros", "Nosotros y aliados"], ["contacto", "Contacto y WhatsApp"], ["legal", "Privacidad"]];
 const adm = { tab: "resumen", sel: null, draft: null, dirty: false, pending: {}, armed: null };
 const slugify = s => norm(s).replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "").slice(0, 60) || "destino";
 const toDDMM = s => { const [m, d] = s.split("-"); return m && d ? `${d}/${m}` : ""; };
@@ -3148,7 +3132,7 @@ function wireDiscard() { $("#admDiscard")?.addEventListener("click", () => { adm
 async function saveContent(build, btn) {
   if (!db) return toast(errMsg({ code: "no_db" }), "err");
   if (!contentLoaded) return toast(errMsg({ code: "loading" }), "err");
-  const x = { txt: clone(TXT), contact: clone(CONTACT) };
+  const x = { txt: clone(TXT), contact: clone(CONTACT), brand: clone(BRAND) };
   const err = build(x);
   if (err) return toast(err, "err");
   btn.disabled = true; toast("Guardando…");
@@ -3173,7 +3157,6 @@ function admPortada() {
     ${fld("aHeroAlt", "Descripción de la foto (para lectores de pantalla)", t.heroAlt, { full: true })}
   </div></div>
   <div class="panel"><h2>Textos de las secciones</h2><div class="fgrid2">
-    ${fld("aAgencyBar", "Barra superior para agencias", t.agencyBar, { full: true })}
     ${fld("aPopT", "Título de destinos más populares", t.popTitle)}
     ${fld("aPopS", "Texto de destinos más populares", t.popSub)}
     ${fld("aPop", "Destinos más populares (uno por línea, máximo 5)", t.popular, { type: "textarea", rows: 6, full: true, help: "Formato: Nombre | País | código (opcional) | foto (ruta o enlace). Ej.: Cancún | México | cun | img/pop-cancun.webp. Al tocarlo se buscan hoteles en ese destino. Déjalo vacío para ocultar la sección." })}
@@ -3200,7 +3183,6 @@ function admPortada() {
   $("#aSave").addEventListener("click", e => saveContent(x => {
     if (!val("aHeroTitle")) return "El título de la portada no puede quedar vacío.";
     Object.assign(x.txt, { heroEyebrow: val("aHeroEyebrow"), heroTitle: val("aHeroTitle"), heroSub: val("aHeroSub"), heroAlt: val("aHeroAlt"),
-      agencyBar: val("aAgencyBar"),
       popTitle: val("aPopT"), popSub: val("aPopS"), popular: val("aPop"), destTitle: val("aDestTitle"), destSub: val("aDestSub"), destNote: val("aDestNote"), contactTitle: val("aContactTitle"),
       contactSub: val("aContactSub"), nlTitle: val("aNlTitle"), nlSub: val("aNlSub"), offersTitle: val("aOfT"), offersSub: val("aOfS"),
       toursTitle: val("aToT"), toursSub: val("aToS"), groupsTitle: val("aGrT"), groupsSub: val("aGrS"), trm: Math.max(0, Math.round((+String(val("aTrm")).replace(",", ".") || 0) * 100) / 100), trmDate: val("aTrmD"), trmSample: $("#aTrmS").checked, showPrices: $("#aShowP").checked, litePrices: $("#aLiteP").checked });
@@ -3342,7 +3324,7 @@ async function admTarifas() {
     const red = fin - (neto + mk + x.fijo + fee + bco + op);
     $("#tCalc").innerHTML = [["Costo neto (LiteAPI)", neto], [`Markup ${x["markup_" + pr] || 0}%`, mk], ["Fee general fijo", x.fijo], [`Fee general ${x.fee}%`, fee], [`Fee bancario ${x.banco}%`, bco], [`Comisión del operador ${x.operador}%`, op], ...(Math.abs(red) >= 0.01 ? [["Redondeo", red]] : [])]
       .map(([a, b]) => `<div class="r"><span>${esc(a)}</span><span>${money(b)}</span></div>`).join("")
-      + `<div class="r t"><span>Precio al cliente</span><span>${money(fin)}</span></div><div class="r g"><span>Ganancia AVM (markup + fee general + redondeo)</span><span>${money(fin - neto - bco - op)}</span></div>`;
+      + `<div class="r t"><span>Precio al cliente</span><span>${money(fin)}</span></div><div class="r g"><span>Ganancia de la agencia (markup + fee general + redondeo)</span><span>${money(fin - neto - bco - op)}</span></div>`;
   };
   $("#admBody").addEventListener("input", e => { if (e.target.closest(".panel")) { if (e.target.id !== "tSimN") adm.tarifas = read(); calc(); } });
   $("#admBody").addEventListener("change", () => { adm.tarifas = read(); calc(); });
@@ -3364,12 +3346,11 @@ async function admTarifas() {
 function admContacto() {
   const c = CONTACT;
   $("#admBody").innerHTML = `<div class="panel"><h2>Contacto</h2><div class="fgrid2">
-    ${fld("cWa", "WhatsApp que reciben las cotizaciones", c.waMain, { help: "Con indicativo de país y sin espacios, por ejemplo 573205081068." })}
+    ${fld("cWa", "WhatsApp que reciben las cotizaciones", c.waMain, { help: "Con indicativo de país y sin espacios, por ejemplo 573001234567." })}
     ${fld("cEmail", "Correo comercial", c.email, { type: "email" })}
     ${fld("cSales", "Líneas de ventas (una por línea)", c.sales.join("\n"), { type: "textarea", rows: 3 })}
     ${fld("cEmerg", "Líneas de emergencia (una por línea)", c.emergency.join("\n"), { type: "textarea", rows: 3 })}
     ${fld("cSedes", "Sedes (una por línea: ciudad | dirección)", c.sedes.map(s => s.join(" | ")).join("\n"), { type: "textarea", rows: 3, full: true })}
-    ${fld("cPortal", "Enlace de ingreso de agencias", c.portal, { type: "url", full: true })}
     ${fld("cHotelApi", "Servicio de hoteles (LiteAPI)", c.hotelApi || "", { full: true, ph: "/api/hoteles.php", help: "Dirección del archivo del servidor que consulta LiteAPI. Vacío = el buscador no muestra hoteles. La llave de LiteAPI nunca se escribe aquí." })}
     ${fld("cZones", "WhatsApp flotante por zona (una por línea: zona | número con indicativo)", (c.zones || []).map(z => z.join(" | ")).join("\n"), { type: "textarea", rows: 4, full: true, help: "Por ejemplo: Eje Cafetero | 573205081068" })}
     ${fld("cNotify", "Correos que reciben aviso de cada solicitud nueva (uno por línea)", (c.notify || []).join("\n"), { type: "textarea", rows: 3, full: true, help: "Cada vez que alguien cotiza, estos correos reciben el resumen con el celular, el correo y un enlace para escribirle por WhatsApp." })}
@@ -3383,9 +3364,8 @@ function admContacto() {
   wireDiscard();
   $("#cSave").addEventListener("click", e => saveContent(x => {
     const wa = val("cWa").replace(/\D/g, "");
-    if (wa.length < 10) return "El WhatsApp debe tener indicativo y número, por ejemplo 573205081068.";
+    if (wa.length < 10) return "El WhatsApp debe tener indicativo y número, por ejemplo 573001234567.";
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val("cEmail"))) return "Escribe un correo válido.";
-    try { const u = new URL(val("cPortal")); if (!/^https?:$/.test(u.protocol)) throw 0; } catch { return "El enlace de agencias debe empezar con https://"; }
     const sched = [0, 1, 2, 3, 4, 5, 6].map(d => val("cS" + d));
     const bad = sched.findIndex(s => s && s.split(",").some(x => !SCHED_RE.test(x)));
     if (bad >= 0) return `Revisa el horario del ${DAYS[bad]}: usa el formato 08:00-12:00, 14:00-18:00.`;
@@ -3397,7 +3377,7 @@ function admContacto() {
     if (notify.some(m => !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(m))) return "Revisa los correos de aviso: escribe uno válido por línea.";
     if (zones.some(z => !z[0] || z[1].length < 10)) return "Cada zona necesita nombre y número con indicativo, separados por |.";
     x.contact = { waMain: wa, email: val("cEmail"), sales: lines(val("cSales")), emergency: lines(val("cEmerg")), sedes: sedes.map(s => [s[0], s.slice(1).join(" | ")]),
-      hours: hours.map(h => [h[0], h.slice(1).join(" | ")]), sched, portal: val("cPortal"), hotelApi: val("cHotelApi"), zones, notify };
+      hours: hours.map(h => [h[0], h.slice(1).join(" | ")]), sched, hotelApi: val("cHotelApi"), zones, notify };
   }, e.currentTarget));
 }
 
@@ -3628,7 +3608,7 @@ async function seedColl(kind) {
 function admTraslados() {
   const zs = TRANSFERS.zones;
   $("#admBody").innerHTML = `<div class="panel"><h2>Traslados</h2>
-    <p class="help" style="margin:-6px 0 14px">Una línea por trayecto: <b>desde | hasta | tarifa | llegada o salida</b>. Las tarifas se muestran como referencia por trayecto. Importadas del Excel "AVM - Travel Compositor".</p>
+    <p class="help" style="margin:-6px 0 14px">Una línea por trayecto: <b>desde | hasta | tarifa | llegada o salida</b>. Las tarifas se muestran como referencia por trayecto.</p>
     <div id="zoneList" style="display:grid;gap:18px">${zs.map((z, i) => `<div class="zone" data-z="${i}"><div class="fgrid2">
       ${fld("zN" + i, "Zona", z.name)}${fld("zC" + i, "Moneda", z.currency, { type: "select", list: [["USD", "USD"], ["COP", "COP"]] })}
       ${fld("zR" + i, "Trayectos", z.rows.map(r => [r[0], r[1], r[2], r[3]].join(" | ")).join("\n"), { type: "textarea", rows: Math.min(10, z.rows.length + 1), full: true })}</div>
@@ -3664,23 +3644,91 @@ async function saveTransfers(zs, btn) {
   btn.disabled = false;
 }
 
-/* ---------- Backoffice: política de datos y página de agencias ---------- */
+/* ---------- Backoffice: política de datos ---------- */
 function admLegal() {
   const t = TXT;
-  $("#admBody").innerHTML = `<div class="panel"><h2>Página para agencias</h2><div class="fgrid2">
-    ${fld("lgAgT", "Título", t.agTitle, { help: "Encierra entre *asteriscos* la parte en negrita." })}${fld("lgAgS", "Texto de apoyo", t.agSub)}
-    ${fld("lgAgB", "Sellos bajo el título (uno por línea)", t.agBadges, { type: "textarea", rows: 3 })}${fld("lgAgC", "Frase de cierre", t.agCta)}
-    ${fld("lgAgP", "Pilares junto al título (uno por línea: título | descripción)", t.agPerks, { type: "textarea", rows: 4 })}${fld("lgAgSt", "Pasos para activar la agencia (título | descripción)", t.agSteps, { type: "textarea", rows: 4 })}
-    ${fld("lgAgPr", "Productos de la plataforma (ícono | título | descripción)", t.agProducts, { type: "textarea", rows: 6, help: "Íconos: paquetes, hoteles, traslados, actividades, circuitos, asistencia." })}${fld("lgAgW", "Por qué vender con AVM (título | descripción)", t.agWhy, { type: "textarea", rows: 6 })}
-    ${fld("lgAgF", "Preguntas frecuentes (pregunta | respuesta)", t.agFaq, { type: "textarea", rows: 5, full: true })}</div></div>
-    <div class="panel"><h2>Política de tratamiento de datos</h2>
-    <p class="help" style="margin:-6px 0 12px">Deja una línea en blanco entre párrafos. Usa <b>## </b> al inicio para un título y <b>- </b> para viñetas. Es un borrador: debe revisarlo un abogado antes de publicar el sitio real.</p>
+  $("#admBody").innerHTML = `<div class="panel"><h2>Política de tratamiento de datos</h2>
+    <p class="help" style="margin:-6px 0 12px">Deja una línea en blanco entre párrafos. Usa <b>## </b> al inicio para un título y <b>- </b> para viñetas. Puedes escribir {{marca}}, {{legal}} y {{correo}}: se reemplazan por el nombre, la razón social y el correo de la agencia. Es un borrador: debe revisarlo un abogado antes de publicar.</p>
     ${fld("lgPriv", "Texto", t.privacy, { type: "textarea", rows: 22, full: true })}</div>${actions("lgSave")}`;
   wireDiscard();
   $("#lgSave").addEventListener("click", e => saveContent(x => {
     if (val("lgPriv").length < 200) return "La política parece incompleta.";
-    Object.assign(x.txt, { agTitle: val("lgAgT"), agSub: val("lgAgS"), agPerks: $("#lgAgP").value, agSteps: $("#lgAgSt").value, agBadges: $("#lgAgB").value, agCta: val("lgAgC"), agProducts: $("#lgAgPr").value, agWhy: $("#lgAgW").value, agFaq: $("#lgAgF").value, privacy: $("#lgPriv").value });
+    Object.assign(x.txt, { privacy: $("#lgPriv").value });
   }, e.currentTarget));
+}
+
+/* ---------- Backoffice: marca (nombre, logos, colores y tipografía) ---------- */
+function admMarca() {
+  const b = adm.dirty && adm.brand ? adm.brand : (adm.brand = clone(BRAND));
+  const pick = (k, label, help) => `<div class="fld"><label for="bc-${k}">${label}</label><div class="bcolor"><input type="color" id="bc-${k}" value="${esc(hexOk(b[k], DEFAULT_BRAND[k]))}"><input type="text" id="bt-${k}" value="${esc(hexOk(b[k], DEFAULT_BRAND[k]))}" maxlength="7" aria-label="${label} en hexadecimal"></div><span class="help">${help}</span></div>`;
+  const logoBox = (k, label, help, oscuro) => `<div class="fld"><label>${label}</label><div class="blogo${oscuro ? " dark" : ""}" id="bl-${k}">${imgSrc(b[k]) || adm.pending["brand-" + k]?.data ? `<img src="${esc(adm.pending["brand-" + k]?.data || imgSrc(b[k]))}" alt="">` : "<span>Sin imagen</span>"}</div>
+    <div class="row"><label class="btn" for="bf-${k}">Subir</label><input type="file" id="bf-${k}" accept="image/png,image/svg+xml,image/webp,image/jpeg" class="sr">${b[k] || adm.pending["brand-" + k] ? `<button class="btn" type="button" data-bdel="${k}">Quitar</button>` : ""}</div><span class="help">${help}</span></div>`;
+  $("#admBody").innerHTML = `<div class="panel"><h2>Identidad</h2><div class="fgrid2">
+      ${fld("bName", "Nombre comercial", b.name, { help: "Aparece en el sitio, los correos y las páginas de Google." })}
+      ${fld("bTag", "Frase corta", b.tagline, { help: "Va debajo del logo en el pie de página." })}
+      ${fld("bLegal", "Razón social", b.legal, { ph: "Viajes del Sol S.A.S." })}
+      ${fld("bRnt", "Registro Nacional de Turismo (RNT)", b.rnt, { ph: "12345" })}
+      ${fld("bNote", "Aviso legal del pie de página", TXT.legalNote, { type: "textarea", rows: 3, full: true, help: "{{marca}} se reemplaza por el nombre comercial." })}</div></div>
+    <div class="panel"><h2>Logos</h2><div class="fgrid2">
+      ${logoBox("logo", "Logo para fondo claro", "PNG o SVG con fondo transparente. Se ajusta solo; no se recorta.")}
+      ${logoBox("logoDark", "Logo para fondo oscuro (opcional)", "Versión blanca o clara. Si no la subes, se usa el logo normal.", true)}
+      ${logoBox("icon", "Ícono de la pestaña (opcional)", "Cuadrado, por ejemplo 256 × 256. Si no lo subes, se usa el logo.")}</div>
+      <p class="help">Sin logo, el sitio muestra el nombre comercial con el color de la marca.</p></div>
+    <div class="panel"><h2>Colores y tipografía</h2><div class="fgrid2">
+      ${pick("accent", "Color principal", "Botones, destacados y enlaces activos.")}
+      ${pick("dark", "Color oscuro", "Barras, pie del correo y textos sobre fondo claro.")}
+      ${pick("paper", "Fondo del sitio", "Un tono muy claro. Si es oscuro, no se aplica.")}
+      ${fld("bFonts", "Tipografía", b.fonts, { type: "select", list: Object.entries(FONTS).map(([k, f]) => [k, f[3]]) })}</div>
+      <div id="bCheck" class="help" role="status" style="margin-top:6px"></div>
+      <div class="bprev" id="bPrev"></div></div>${actions("bSave")}`;
+  wireDiscard();
+  const read = () => {
+    b.name = val("bName"); b.tagline = val("bTag"); b.legal = val("bLegal"); b.rnt = val("bRnt"); b.fonts = $("#bFonts").value;
+    ["accent", "dark", "paper"].forEach(k => b[k] = hexOk($("#bt-" + k).value.trim(), b[k]));
+  };
+  const preview = () => {
+    read();
+    const acc = hexOk(b.accent, "#BBCF26"), dark = hexOk(b.dark, "#12161B"), paper = hexOk(b.paper, "#F3F4F1"), f = FONTS[b.fonts] || FONTS.moderna;
+    const logo = adm.pending["brand-logo"]?.data || imgSrc(b.logo);
+    $("#bPrev").innerHTML = `<div class="bp" style="background:${luz(paper) > 0.82 ? paper : "#F3F4F1"};font-family:'${f[1]}',system-ui,sans-serif">
+      <div class="bp-top" style="background:${dark};color:#fff">${logo ? `<img src="${esc(adm.pending["brand-logoDark"]?.data || imgSrc(b.logoDark) || logo)}" alt="">` : `<b style="font-family:'${f[0]}'">${esc(b.name || "Tu agencia")}</b>`}<span>Destinos · Ofertas · Contacto</span></div>
+      <div class="bp-body"><b style="font-family:'${f[0]}';color:${luz(dark) < 0.06 ? dark : "#12161B"}">Viajes completos, <span style="background:${acc};color:${tinta(acc)};padding:0 6px;border-radius:6px">listos para disfrutar</span></b>
+      <span style="color:#646B73">Así se verán tus títulos, textos y botones.</span><span class="bp-btn" style="background:${acc};color:${tinta(acc)}">Cotizar ahora</span></div></div>`;
+    const c1 = contraste(acc, tinta(acc)), c2 = contraste(dark, "#FFFFFF");
+    $("#bCheck").innerHTML = [c1 < 4.5 ? `El texto sobre el color principal tiene poco contraste (${c1.toFixed(1)}:1). Prueba un tono más oscuro o más claro.` : `Contraste del color principal: ${c1.toFixed(1)}:1 ✓`,
+      c2 < 4.5 ? `El color oscuro es claro para barras con texto blanco (${c2.toFixed(1)}:1).` : ""].filter(Boolean).map(esc).join("<br>");
+  };
+  ["accent", "dark", "paper"].forEach(k => {
+    $("#bc-" + k).addEventListener("input", e => { $("#bt-" + k).value = e.target.value.toUpperCase(); markDirty(); preview(); });
+    $("#bt-" + k).addEventListener("input", e => { const v = e.target.value.trim(); if (/^#[0-9a-f]{6}$/i.test(v)) { $("#bc-" + k).value = v; preview(); } });
+  });
+  ["bName", "bFonts"].forEach(id => $("#" + id).addEventListener("input", preview));
+  ["logo", "logoDark", "icon"].forEach(k => {
+    $("#bf-" + k).addEventListener("change", async e => {
+      const f = e.target.files[0]; e.target.value = ""; if (!f) return;
+      try { adm.pending["brand-" + k] = await compressLogo(f); read(); adm.brand = b; markDirty(); admMarca(); }
+      catch { toast("No se pudo usar esa imagen. Prueba con un PNG o SVG más liviano.", "err"); }
+    });
+  });
+  $$("[data-bdel]").forEach(x => x.addEventListener("click", () => { const k = x.dataset.bdel; read(); b[k] = ""; delete adm.pending["brand-" + k]; adm.brand = b; markDirty(); admMarca(); }));
+  preview();
+  $("#bSave").addEventListener("click", async e => {
+    const btn = e.currentTarget; read();
+    if (!b.name) return toast("Escribe el nombre comercial.", "err");
+    const antes = { logo: BRAND.logo, logoDark: BRAND.logoDark, icon: BRAND.icon };
+    btn.disabled = true;
+    try {
+      for (const k of ["logo", "logoDark", "icon"]) {
+        const p = adm.pending["brand-" + k]; if (!p) continue;
+        const ref = db.collection("images").doc();
+        await write(ref, { data: p.data, w: p.w, h: p.h, createdAt: new Date().toISOString() });
+        IMGS[ref.id] = p.data; b[k] = "db:" + ref.id; delete adm.pending["brand-" + k];
+      }
+    } catch (er) { btn.disabled = false; return toast(errMsg(er), "err"); }
+    btn.disabled = false;
+    await saveContent(x => { x.brand = { ...x.brand, ...b }; x.txt.legalNote = $("#bNote").value.trim(); }, btn);
+    if (!adm.dirty) { BRAND = { ...BRAND, ...b }; TXT.legalNote = $("#bNote").value.trim(); applyBrand(); for (const k of ["logo", "logoDark", "icon"]) if (antes[k] !== BRAND[k]) await dropImageIfUnused(antes[k], false); adm.brand = null; }
+  });
 }
 
 /* ---------- Backoffice: solicitudes ---------- */
@@ -3707,7 +3755,7 @@ function admSolicitudes() {
         <span class="lest e-${esc(l.estado)}">${esc((ESTADOS.find(x => x[0] === l.estado) || [, l.estado])[1])}</span></summary>
       <div class="lbody">
         <p><b>Viaje:</b> ${esc(leadSummary(l) || "—")}</p>
-        <p><b>Contacto:</b> <a href="${esc(waLink((l.celular || "").replace(/\D/g, "").replace(/^(3\d{9})$/, "57$1"), `Hola ${l.nombre?.split(" ")[0] || ""}, te escribimos de AVM por tu solicitud ${l.numero}.`))}" target="_blank" rel="noopener">${esc(l.celular)}</a> · ${esc(l.correo)} ${l.ciudad ? "· " + esc(l.ciudad) : ""} · Prefiere ${esc(l.contacto || "WhatsApp")}</p>
+        <p><b>Contacto:</b> <a href="${esc(waLink((l.celular || "").replace(/\D/g, "").replace(/^(3\d{9})$/, "57$1"), `Hola ${l.nombre?.split(" ")[0] || ""}, te escribimos de ${BN()} por tu solicitud ${l.numero}.`))}" target="_blank" rel="noopener">${esc(l.celular)}</a> · ${esc(l.correo)} ${l.ciudad ? "· " + esc(l.ciudad) : ""} · Prefiere ${esc(l.contacto || "WhatsApp")}</p>
         ${l.presupuesto || l.tiquetes || l.comentarios ? `<p><b>Detalle:</b> ${esc([l.presupuesto && "Presupuesto " + l.presupuesto, l.tiquetes && "Tiquetes: " + l.tiquetes, l.comentarios].filter(Boolean).join(" · "))}</p>` : ""}
         <p class="help">${l.promociones ? "Acepta recibir promociones." : "No pidió promociones."}</p>
         ${LIQS[l.numero] ? liqTable((LIQS[l.numero].items || []).map(x => ({ label: `${x.producto}: ${x.nombre}`, liq: x.liq })), +LIQS[l.numero].trm || trm(), true) : ""}
@@ -3755,7 +3803,7 @@ const uniq = a => [...new Set(a.filter(Boolean))];
 const destOfLead = l => l.viaje?.destino || l.viaje?.to || l.viaje?.nombre || l.viaje?.region || "";
 const fillTpl = (s, v) => String(s || "").replace(/\{\{\s*(\w+)\s*\}\}/g, (_, k) => v[k] ?? "");
 const tplVars = (l, p) => ({ nombre: (p?.nombre || l.nombre || "").split(" ")[0] || "viajero", nombre_completo: p?.nombre || l.nombre || "", numero: l.numero || "", destino: destOfLead(l) || "tu próximo viaje",
-  agencia: l.agencia?.razonSocial || "", asesor_whatsapp: "+" + String(CONTACT.waMain).replace(/^(\d{2})(\d{3})(\d{3})(\d{4})$/, "$1 $2 $3 $4"), correo_avm: CONTACT.email });
+  agencia: l.agencia?.razonSocial || "", asesor_whatsapp: "+" + String(CONTACT.waMain).replace(/^(\d{2})(\d{3})(\d{3})(\d{4})$/, "$1 $2 $3 $4"), correo_avm: CONTACT.email, correo_agencia: CONTACT.email, marca: BN() });
 function matches(a, l, p) {
   const c = a.cond || {};
   if (c.tipos?.length && !c.tipos.includes(l.tipo || "viajero")) return false;
@@ -3828,13 +3876,13 @@ const NAV = [
   ["Contenido del sitio", [["portada", "Portada y textos", "M3 4h14v12H3zM3 9h14"], ["destinos", "Destinos y ofertas", "M10 18s-6-5-6-10a6 6 0 0 1 12 0c0 5-6 10-6 10zm0-8a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"],
     ["tours", "Tours y circuitos", "M2 17 8 6l4 6 2-3 4 8z"], ["grupos", "Salidas grupales", "M7 9a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5zm6 0a2.5 2.5 0 1 0 0-5M2 16a5 5 0 0 1 10 0m1-5a5 5 0 0 1 5 5"],
     ["traslados", "Traslados", "M3 13V9l2-4h10l2 4v4H3zM5.5 15.5v-2M14.5 15.5v-2"], ["nosotros", "Nosotros y aliados", "M10 2 3 6v5c0 4 3 6 7 7 4-1 7-3 7-7V6z"]]],
-  ["Configuración", [["contacto", "Contacto y WhatsApp", "M5 3h3l1.5 4-2 1.5a9 9 0 0 0 4 4L13 10.5l4 1.5v3a2 2 0 0 1-2 2A13 13 0 0 1 3 5a2 2 0 0 1 2-2"], ["aliados", "Cadenas y aliados", "M3 6h6v6H3zM11 8h6v6h-6zM6 14v3M14 4V2"], ["tarifas", "Tarifas y buscador", "M4 16 16 4M6 7a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zm8 9a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"], ["legal", "Agencias y privacidad", "M5 3h10v14H5zM8 7h4M8 10h4M8 13h2"]]]
+  ["Configuración", [["contacto", "Contacto y WhatsApp", "M5 3h3l1.5 4-2 1.5a9 9 0 0 0 4 4L13 10.5l4 1.5v3a2 2 0 0 1-2 2A13 13 0 0 1 3 5a2 2 0 0 1 2-2"], ["aliados", "Cadenas y aliados", "M3 6h6v6H3zM11 8h6v6h-6zM6 14v3M14 4V2"], ["tarifas", "Tarifas y buscador", "M4 16 16 4M6 7a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zm8 9a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"], ["marca", "Marca", "M10 2a8 8 0 1 0 0 16c1 0 1.5-.7 1.5-1.5 0-.6-.4-1-.4-1.6 0-.8.6-1.4 1.4-1.4H14a4 4 0 0 0 4-4c0-4-3.6-7.5-8-7.5zM6 10a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3-3a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm4 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"], ["legal", "Privacidad", "M5 3h10v14H5zM8 7h4M8 10h4M8 13h2"]]]
 ];
 const NAV_TITLES = Object.fromEntries(NAV.flatMap(([, items]) => items.map(([k, l]) => [k, l])));
-const NAV_SUBS = { resumen: "Así va el sitio hoy.", solicitudes: "Cada cotización que llega desde el sitio.", prospectos: "Personas y agencias que han dejado sus datos, sin duplicados.",
+const NAV_SUBS = { resumen: "Así va el sitio hoy.", solicitudes: "Cada cotización que llega desde el sitio.", prospectos: "Personas que han dejado sus datos, sin duplicados.",
   listas: "Grupos de prospectos para campañas y seguimiento.", automatizaciones: "Lo que pasa solo cuando llega una solicitud.", correos: "Plantillas y bandeja de salida.", campanas: "Promociones a tus listas de marketing, con o sin un destino del sitio.",
   portada: "Portada, textos de secciones y tasa de cambio.", destinos: "Paquetes, tarifas, ofertas e información práctica.", tours: "Tours y circuitos que se pueden cotizar.",
-  grupos: "Salidas con fecha fija y Fam Trips.", traslados: "Tarifas de traslados por zona.", nosotros: "Historia, cifras y por qué elegirnos.", contacto: "Teléfonos, WhatsApp por zona, sedes y horario.", aliados: "Logos de cadenas hoteleras y aliados que se muestran en el inicio.", tarifas: "Productos del buscador y tu margen sobre los precios en línea.", legal: "Página para agencias y política de datos." };
+  grupos: "Salidas con fecha fija.", traslados: "Tarifas de traslados por zona.", nosotros: "Historia, cifras y por qué elegirnos.", contacto: "Teléfonos, WhatsApp por zona, sedes y horario.", aliados: "Logos de cadenas hoteleras y aliados que se muestran en el inicio.", tarifas: "Productos del buscador y tu margen sobre los precios en línea.", legal: "Política de tratamiento de datos.", marca: "Nombre, logos, colores y tipografía de tu agencia." };
 function navBadges() {
   const n = LEADS.filter(l => l.estado === "nueva").length, o = OUTBOX.filter(x => x.estado === "pendiente").length;
   const set = (k, v) => { const b = $(`.dnav [data-tab="${k}"] .nb`); if (b) { b.textContent = v || ""; b.hidden = !v; } };
@@ -3848,7 +3896,7 @@ function renderAdmin() {
   if (!NAV_TITLES[adm.tab]) adm.tab = "resumen";
   el.innerHTML = `<div class="dash">
     <aside class="dside">
-      <div class="dbrand"><img class="logo-c" src="img/logo-color.png" alt="AVM" width="84" height="28"><img class="logo-w" src="img/logo-blanco.png" alt="AVM" width="84" height="28"><span>Gestión del sitio</span></div>
+      <div class="dbrand"><span class="brandmark" style="--bh:28px"></span><span>Gestión del sitio</span></div>
       <nav class="dnav" aria-label="Secciones del backoffice">${NAV.map(([g, items]) => `<div class="dgroup"><span class="dgl">${g}</span>${items.map(([k, l, d]) => `<button type="button" data-tab="${k}" aria-current="${adm.tab === k ? "page" : "false"}"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="${d}"/></svg><span>${l}</span><i class="nb" hidden></i></button>`).join("")}</div>`).join("")}</nav>
       <div class="dstatus"><span class="${db ? "on" : ""}"><i></i>${db ? "Base de datos conectada" : "Sin base de datos"}</span><span>${!db ? "Vista previa" : canWrite ? "Puedes editar" : writeKnown ? "Solo lectura" : "Permiso por confirmar"}</span><a href="#inicio">← Ver sitio</a></div>
     </aside>
@@ -3858,7 +3906,7 @@ function renderAdmin() {
       <div id="admBody"${gate ? ' class="locked"' : ""}></div>
     </section></div>`;
   $$(".dnav button", el).forEach(b => b.addEventListener("click", () => guard("tab:" + b.dataset.tab, () => { adm.tab = b.dataset.tab; adm.draft = null; adm.sel = null; renderAdmin(); scrollTo(0, 0); })));
-  navBadges(); renderAdminBody();
+  navBadges(); applyBrand(); renderAdminBody();
   const body = $("#admBody");
   const tracked = e => !CRM_TABS.includes(adm.tab) && e.target.type !== "file";
   body.addEventListener("input", e => { if (tracked(e)) markDirty(); });
@@ -3866,7 +3914,7 @@ function renderAdmin() {
 }
 function renderAdminBody() {
   ({ resumen: admResumen, solicitudes: admSolicitudes, prospectos: admProspectos, listas: admListas, automatizaciones: admAutos, correos: admCorreos, campanas: admCampanas,
-    portada: admPortada, destinos: admDestinos, tours: () => admColl("tours"), grupos: () => admColl("groups"), traslados: admTraslados, nosotros: admNosotros, contacto: admContacto, aliados: admAliados, tarifas: admTarifas, legal: admLegal })[adm.tab]();
+    portada: admPortada, destinos: admDestinos, tours: () => admColl("tours"), grupos: () => admColl("groups"), traslados: admTraslados, nosotros: admNosotros, contacto: admContacto, aliados: admAliados, tarifas: admTarifas, marca: admMarca, legal: admLegal })[adm.tab]();
   if ($("#admBody").classList.contains("locked")) $$("#admBody input, #admBody textarea, #admBody select, #admBody button").forEach(x => x.disabled = true);
   if (adm.msg && Date.now() - adm.msg[2] < 6000) { const t = $("#admToast"); if (t) { t.textContent = adm.msg[0]; t.className = "toast " + adm.msg[1]; } }
 }
@@ -4052,7 +4100,7 @@ function admCorreos() {
   : `<div class="dgrid"><div class="panel"><h2>Plantillas</h2><ul class="dlist">${TEMPLATES.map(x => `<li><button type="button" class="ditem tpl" data-tid="${esc(x.id)}" aria-current="${adm.sel === x.id}"><span class="dtxt"><b>${esc(x.name)}</b><small>${x.tipo === "marketing" ? "Marketing: solo a quien acepta promociones" : "Transaccional: respuesta a una solicitud"}</small></span></button></li>`).join("")}</ul><button class="btn" type="button" id="tNew">+ Nueva plantilla</button></div>
     <div class="panel"><h2>${t ? "Editar plantilla" : "Nueva plantilla"}</h2><div class="fgrid2">
       ${fld("tN", "Nombre", t?.name || "")}${fld("tT", "Tipo", t?.tipo || "transaccional", { type: "select", list: [["transaccional", "Transaccional"], ["marketing", "Marketing"]] })}
-      ${fld("tS", "Asunto", t?.asunto || "", { full: true })}${fld("tB", "Cuerpo", t?.cuerpo || "", { type: "textarea", rows: 10, full: true, help: "Variables: {{nombre}}, {{nombre_completo}}, {{numero}}, {{destino}}, {{agencia}}, {{asesor_whatsapp}}, {{correo_avm}}" })}</div>
+      ${fld("tS", "Asunto", t?.asunto || "", { full: true })}${fld("tB", "Cuerpo", t?.cuerpo || "", { type: "textarea", rows: 10, full: true, help: "Variables: {{nombre}}, {{nombre_completo}}, {{numero}}, {{destino}}, {{agencia}}, {{asesor_whatsapp}}, {{correo_agencia}}, {{marca}}" })}</div>
       <div class="adm-actions"><button class="btn primary" type="button" id="tSave">Guardar plantilla</button>${t ? '<button class="btn danger" type="button" id="tDel">Eliminar</button>' : ""}<span class="toast" id="admToast" role="status"></span></div>
       <h3 style="font:600 15px var(--f-display);margin:16px 0 8px">Vista previa</h3><pre class="mailbody" id="tPrev"></pre></div></div>`}`;
   $$("[data-mt]").forEach(b => b.addEventListener("click", () => { mailTab = b.dataset.mt; adm.sel = null; admCorreos(); }));

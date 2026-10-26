@@ -1,6 +1,6 @@
 <?php
 /**
- * Diseño de los correos de AVM (marca: verde AVM #BBCF26, tinta #14181D, fondo #F2F4EE).
+ * Diseño de los correos de cada agencia: su nombre, logo y colores (backoffice → Marca).
  *
  * Cada correo se arma con lo que la persona cotizó: el producto (paquete, hotel, traslado,
  * actividad, circuito, asistencia o salida grupal) define el título, la introducción, los datos
@@ -152,7 +152,7 @@ function avm_ficha(array $l): array {
             break;
         default:
             $titulo = 'Recibimos tu solicitud' . ($dest ? " para $dest" : '');
-            $intro = 'Un asesor de AVM revisa la disponibilidad y te envía la cotización con el precio final.';
+            $intro = 'Un asesor de ' . avm_marca()['name'] . ' revisa la disponibilidad y te envía la cotización con el precio final.';
             $add('Destino', $dest); $add('Fechas', $a ? ($b ? "$a – $b" : $a) : ''); $add('Viajeros', $viajeros);
     }
     if (!empty($v['adicionales'])) $rows[] = ['Adicionales', (string) $v['adicionales']];
@@ -170,11 +170,7 @@ function avm_ficha(array $l): array {
     ];
 }
 
-function avm_site_url(): string {
-    $c = avm_config();
-    if (!empty($c['site_url'])) return rtrim($c['site_url'], '/');
-    return !empty($_SERVER['HTTP_HOST']) ? (avm_https() ? 'https://' : 'http://') . $_SERVER['HTTP_HOST'] : '';
-}
+function avm_site_url(): string { return avm_tenant_url(); }
 function avm_foto_destino(string $dest): string {
     $n = avm_norm($dest);
     foreach (AVM_FOTOS as $k => $slug) if ($n !== '' && str_contains($n, $k)) return $slug;
@@ -186,10 +182,7 @@ function avm_wa_num(string $tel): string {
 }
 
 /* ---------- Enlace para darse de baja (firmado, para que nadie dé de baja a otro) ---------- */
-function avm_secret(): string {
-    $c = avm_config();
-    return (string) ($c['app_secret'] ?? hash('sha256', ($c['db_pass'] ?? '') . '|' . ($c['db_name'] ?? '') . '|avm-baja'));
-}
+function avm_secret(): string { return avm_app_secret() . '|' . (($GLOBALS['AVM_T'] ?? null)['id'] ?? 0); }
 function avm_baja_url(string $key): string {
     if ($key === '') return '';
     return avm_site_url() . '/baja.php?k=' . rawurlencode($key) . '&s=' . substr(hash_hmac('sha256', $key, avm_secret()), 0, 32);
@@ -200,7 +193,7 @@ function avm_desglose_filas(array $l): array {
     $p = fn($x) => rtrim(rtrim(number_format((float) $x, 2, ',', '.'), '0'), ',') . ' %';
     return array_values(array_filter([
         isset($l['netoProv']) ? ['Neto del proveedor', $l['netoProv']] : null,
-        isset($l['comLite']) ? ['Comisión LiteAPI (a favor de AVM)', $l['comLite']] : null,
+        isset($l['comLite']) ? ['Comisión LiteAPI (a favor de la agencia)', $l['comLite']] : null,
         ['Tarifa LiteAPI', $l['neto'] ?? 0],
         ['Markup ' . $p($l['markupPct'] ?? 0), $l['markup'] ?? 0],
         ['Fee fijo', $l['fijo'] ?? 0],
@@ -209,7 +202,7 @@ function avm_desglose_filas(array $l): array {
         ['Comisión operador ' . $p($l['operadorPct'] ?? 0), $l['operador'] ?? 0],
         abs((float) ($l['redondeo'] ?? 0)) >= 0.01 ? ['Redondeo', $l['redondeo']] : null,
         ['Total al cliente', $l['total'] ?? 0],
-        ['Ganancia AVM', $l['ganancia'] ?? $l['margen'] ?? 0],
+        ['Ganancia de la agencia', $l['ganancia'] ?? $l['margen'] ?? 0],
     ]));
 }
 /** Desglose en el aviso interno (neto, comisiones y fees). Nunca va en correos al cliente. */
@@ -223,7 +216,7 @@ function avm_desglose_html(array $liq, callable $e, string $font, string $mono, 
         $l = (array) ($it['liq'] ?? []);
         $rows = '';
         foreach (avm_desglose_filas($l) as $i => [$lab, $val]) {
-            $fuerte = $lab === 'Total al cliente' || $lab === 'Ganancia AVM';
+            $fuerte = $lab === 'Total al cliente' || $lab === 'Ganancia de la agencia';
             $bt = $i === 0 ? 'none' : '1px solid ' . $line;
             $rows .= '<tr><td style="padding:8px 0;border-top:' . $bt . ';font:' . ($fuerte ? 700 : 500) . ' 14px/1.4 ' . $font . ';color:' . ($fuerte ? $ink : $muted) . '">' . $e($lab) . '</td>'
                 . '<td align="right" style="padding:8px 0;border-top:' . $bt . ';font:' . ($fuerte ? 700 : 600) . ' 14px/1.4 ' . $font . ';color:' . $ink . ';white-space:nowrap">' . $e($usd($val))
@@ -243,7 +236,7 @@ function avm_desglose_html(array $liq, callable $e, string $font, string $mono, 
     return $html;
 }
 
-/** Correo completo en HTML con la marca de AVM. $m es el documento de la bandeja de salida. */
+/** Correo completo en HTML con la marca de la agencia. $m es el documento de la bandeja de salida. */
 function avm_email_html(array $m, array $contact): string {
     $e = fn($s) => htmlspecialchars((string) $s, ENT_QUOTES, 'UTF-8');
     $site = avm_site_url();
@@ -252,7 +245,11 @@ function avm_email_html(array $m, array $contact): string {
     $marketing = ($m['tipo'] ?? '') === 'marketing';
     $font = "'Outfit','Hanken Grotesk',Helvetica,Arial,sans-serif";
     $mono = "'Courier New',Courier,monospace";
-    $ink = '#14181D'; $muted = '#5B6560'; $line = '#DCE0D6'; $green = '#BBCF26'; $greenInk = '#1F2508'; $soft = '#F6F7F2'; $olive = '#5E6B05';
+    $B = avm_marca(); $nom = (string) $B['name'];
+    $ink = '#14181D'; $muted = '#5B6560'; $line = '#DCE0D6'; $soft = '#F6F7F2';
+    // Color de la marca para botones; para textos y enlaces, el oscuro de la marca si el acento es claro
+    $green = avm_hex((string) $B['accent'], '#BBCF26'); $greenInk = avm_tinta($green); $barra = avm_hex((string) $B['dark'], '#1A2024');
+    $olive = avm_luz($green) > 0.3 ? (avm_luz($barra) < 0.2 ? $barra : $ink) : $green;
     $titulo = (string) ($f['titulo'] ?? ($m['asunto'] ?? ''));
     $prod = (string) ($f['productoCorto'] ?? '');
     $dest = (string) ($f['destino'] ?? '');
@@ -282,18 +279,18 @@ function avm_email_html(array $m, array $contact): string {
         $origen = match ($f['tipo'] ?? '') {
             'busqueda' => 'Buscó precios en línea en el sitio',
             'viajero', 'tour', 'traslado' => !empty($f['precioVisto']) ? 'Eligió una opción con precio en línea y quiere reservarla' : 'Pidió que un asesor le cotice',
-            'agencia' => 'Agencia que quiere trabajar con AVM',
+            'agencia' => 'Agencia que quiere trabajar con ' . $nom,
             'boletin' => 'Se suscribió al boletín',
             default => 'Solicitud desde el sitio',
         };
         $wa = avm_wa_num((string) ($f['celular'] ?? ''));
-        $saludo = 'Hola' . (!empty($f['nombre']) ? ' ' . explode(' ', (string) $f['nombre'])[0] : '') . ', te escribimos de AVM por tu cotización de '
+        $saludo = 'Hola' . (!empty($f['nombre']) ? ' ' . explode(' ', (string) $f['nombre'])[0] : '') . ', te escribimos de ' . $nom . ' por tu cotización de '
             . mb_strtolower($prod ?: 'viaje', 'UTF-8') . ($dest ? " en $dest" : '') . (!empty($f['numero']) ? ' (' . $f['numero'] . ')' : '') . '.';
         $head = '<p style="margin:0 0 14px">' . $chip('Nueva solicitud', $green, $greenInk) . ($prod ? ' ' . $chip($prod, $soft, $ink) : '') . '</p>'
             . '<h1 style="margin:0 0 8px;font:700 28px/1.15 ' . $font . ';color:' . $ink . '">' . $e($prod ? $prod . ($dest ? " en $dest" : '') : 'Nueva solicitud') . '</h1>'
             . '<p style="margin:0 0 22px;font:500 15px/1.5 ' . $font . ';color:' . $muted . '">' . $e($origen) . '. Escríbele hoy, mientras está decidiendo.</p>';
         $cta = ($wa ? $btn('https://wa.me/' . $wa . '?text=' . rawurlencode($saludo), 'Escribirle por WhatsApp', $green, $greenInk) : '')
-            . (!empty($f['correo']) ? $btn('mailto:' . $f['correo'] . '?subject=' . rawurlencode('Tu cotización de ' . mb_strtolower($prod ?: 'viaje', 'UTF-8') . ($dest ? " en $dest" : '') . ' · AVM'), 'Responder por correo', $ink, '#FFFFFF') : '')
+            . (!empty($f['correo']) ? $btn('mailto:' . $f['correo'] . '?subject=' . rawurlencode('Tu cotización de ' . mb_strtolower($prod ?: 'viaje', 'UTF-8') . ($dest ? " en $dest" : '') . ' · ' . $nom), 'Responder por correo', $ink, '#FFFFFF') : '')
             . '<p style="margin:2px 0 0;font:400 13.5px/1.5 ' . $font . '"><a href="' . $e($site . '/#admin') . '" style="color:' . $olive . '">Ver la solicitud en el backoffice</a></p>';
         $body = $head . $ficha . avm_desglose_html((array) ($m['liq'] ?? []), $e, $font, $mono, $ink, $muted, $line) . $cta;
         $foto = '';
@@ -304,7 +301,7 @@ function avm_email_html(array $m, array $contact): string {
             if (trim($p) === '') continue;
             $paras .= '<p style="margin:0 0 16px;font:400 16px/1.6 ' . $font . ';color:' . $ink . '">' . nl2br($e(trim($p))) . '</p>';
         }
-        $eyebrow = $marketing ? 'Promociones AVM' . ($dest ? ' · ' . $dest : '') : trim(($prod ?: 'Tu viaje') . ($dest ? ' · ' . $dest : ''));
+        $eyebrow = $marketing ? 'Promociones ' . $nom . ($dest ? ' · ' . $dest : '') : trim(($prod ?: 'Tu viaje') . ($dest ? ' · ' . $dest : ''));
         $intro = !$marketing && !empty($f['intro']) ? '<p style="margin:0 0 20px;font:500 17px/1.55 ' . $font . ';color:' . $ink . '">' . $e($f['intro']) . '</p>' : '';
         // Próximos pasos
         $pasos = $marketing ? '' : '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:0 0 26px"><tr>'
@@ -323,31 +320,34 @@ function avm_email_html(array $m, array $contact): string {
         $head = '<p style="margin:0 0 10px;font:700 11px/1 ' . $mono . ';letter-spacing:.14em;text-transform:uppercase;color:' . $olive . '">' . $e($eyebrow) . '</p>'
             . '<h1 style="margin:0 0 16px;font:700 28px/1.15 ' . $font . ';color:' . $ink . '">' . $e($marketing ? ($m['asunto'] ?? '') : $titulo) . '</h1>';
         $body = $head . $intro . $paras . $ficha . $pasos . $cta;
-        $foto = '<tr><td style="position:relative"><img src="' . $e($site . '/img/correo/' . ($f['foto'] ?? avm_foto_destino($dest)) . '.jpg') . '" width="600" alt="' . $e($dest ?: 'Viajes AVM') . '" style="display:block;width:100%;max-width:600px;height:auto;border:0"></td></tr>';
+        $foto = '<tr><td style="position:relative"><img src="' . $e($site . '/img/correo/' . ($f['foto'] ?? avm_foto_destino($dest)) . '.jpg') . '" width="600" alt="' . $e($dest ?: 'Viajes ' . $nom) . '" style="display:block;width:100%;max-width:600px;height:auto;border:0"></td></tr>';
     }
 
     $num = !empty($f['numero']) ? '<span style="font:700 11px/1 ' . $mono . ';letter-spacing:.08em;color:' . $muted . '">' . $e($f['numero']) . '</span>' : '';
     $sedes = implode(' · ', array_map(fn($s) => $e(($s[0] ?? '') . ': ' . ($s[1] ?? '')), (array) ($contact['sedes'] ?? [])));
     $tels = $e(implode(' · ', array_slice((array) ($contact['sales'] ?? []), 0, 2)));
-    $legal = $interno ? 'Aviso automático del sitio de AVM.'
-        : ($marketing ? 'Recibes este correo porque aceptaste recibir promociones de AVM. <a href="' . $e(avm_baja_url((string) ($m['prospecto'] ?? ''))) . '" style="color:#C9DB4A">Darme de baja</a>.'
-            : 'Recibes este correo porque cotizaste en el sitio de AVM.');
+    $legal = $interno ? 'Aviso automático del sitio de ' . $e($nom) . '.'
+        : ($marketing ? 'Recibes este correo porque aceptaste recibir promociones de ' . $e($nom) . '. <a href="' . $e(avm_baja_url((string) ($m['prospecto'] ?? ''))) . '" style="color:#FFFFFF">Darme de baja</a>.'
+            : 'Recibes este correo porque cotizaste en el sitio de ' . $e($nom) . '.');
+    $logo = avm_logo_url(); $logoOsc = avm_logo_url(true);
+    $marcaTop = $logo ? '<img src="' . $e($logo) . '" width="120" alt="' . $e($nom) . '" style="display:block;width:120px;height:auto;border:0">'
+        : '<span style="font:700 20px/1.2 ' . $font . ';color:' . $ink . '">' . $e($nom) . '</span>';
     $pre = $interno ? (($f['resumen'] ?? '') . ' · ' . ($f['celular'] ?? '')) : (($f['intro'] ?? '') ?: 'Recibimos tu solicitud ' . ($f['numero'] ?? '') . '.');
 
     return '<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">'
-        . '<meta name="color-scheme" content="light"><meta name="supported-color-schemes" content="light"><title>' . $e($m['asunto'] ?? 'AVM') . '</title></head>'
+        . '<meta name="color-scheme" content="light"><meta name="supported-color-schemes" content="light"><title>' . $e($m['asunto'] ?? $nom) . '</title></head>'
         . '<body style="margin:0;padding:0;background:#F2F4EE">'
         . '<div style="display:none;max-height:0;overflow:hidden;opacity:0">' . $e($pre) . '</div>'
         . '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#F2F4EE"><tr><td align="center" style="padding:24px 12px">'
         . '<table role="presentation" width="600" cellpadding="0" cellspacing="0" style="width:100%;max-width:600px;background:#FFFFFF;border-radius:20px;overflow:hidden">'
         . '<tr><td style="padding:22px 28px;border-bottom:4px solid ' . $green . '"><table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr>'
-        . '<td><img src="' . $e($site . '/img/logo-color.png') . '" width="120" alt="AVM Operadores Mayoristas" style="display:block;width:120px;height:auto;border:0"></td>'
+        . '<td>' . $marcaTop . '</td>'
         . '<td align="right" style="vertical-align:middle">' . $num . '</td></tr></table></td></tr>'
         . $foto
         . '<tr><td style="padding:30px 28px 34px">' . $body . '</td></tr>'
-        . '<tr><td style="background:#1A2024;padding:26px 28px">'
-        . '<img src="' . $e($site . '/img/logo-blanco.png') . '" width="96" alt="AVM" style="display:block;width:96px;height:auto;border:0;margin:0 0 14px">'
-        . '<p style="margin:0 0 6px;font:600 14px/1.5 ' . $font . ';color:#F1F3EC">AVM Operadores Mayoristas · A volar por el mundo</p>'
+        . '<tr><td style="background:' . $barra . ';padding:26px 28px">'
+        . ($logoOsc && ($B['logoDark'] ?? '') ? '<img src="' . $e($logoOsc) . '" width="96" alt="' . $e($nom) . '" style="display:block;width:96px;height:auto;border:0;margin:0 0 14px">' : '')
+        . '<p style="margin:0 0 6px;font:600 14px/1.5 ' . $font . ';color:#F1F3EC">' . $e($nom . ($B['legal'] ? ' · ' . $B['legal'] : '')) . '</p>'
         . ($sedes ? '<p style="margin:0 0 6px;font:400 13px/1.5 ' . $font . ';color:#A9B3AC">' . $sedes . '</p>' : '')
         . '<p style="margin:0 0 14px;font:400 13px/1.5 ' . $font . ';color:#A9B3AC">' . $tels . ($tels && !empty($contact['email']) ? ' · ' : '') . $e($contact['email'] ?? '') . '</p>'
         . '<p style="margin:0;font:400 12px/1.5 ' . $font . ';color:#8A948E">' . $legal . '</p>'

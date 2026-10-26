@@ -6,7 +6,8 @@
  * GET ?tipo=actividad&id=903304
  * GET ?tipo=tarifas&ids=lp1,lp2&in=2026-12-10&out=2026-12-15&rooms=1&adults=2&kids=5,8
  */
-require __DIR__ . '/_lib.php';
+require __DIR__ . '/_nucleo.php';
+avm_tenant(); // agencia de esta dirección (404 si no existe)
 if ($_SERVER['REQUEST_METHOD'] !== 'GET') avm_fail(405, 'metodo');
 $tipo = (string) ($_GET['tipo'] ?? '');
 $id = (string) ($_GET['id'] ?? '');

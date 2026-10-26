@@ -10,8 +10,9 @@
  *  - Un visitante solo lee y escribe su propio documento leads/<visitante>.
  *  - Solicitudes, prospectos, listas, automatizaciones, plantillas y correos: solo administradores.
  */
-require __DIR__ . '/_lib.php';
+require __DIR__ . '/_nucleo.php';
 
+avm_tenant(); // 404 si la dirección no es de ninguna agencia
 $admin = avm_is_admin();
 $vid = avm_visitor();
 session_write_close();
@@ -19,8 +20,8 @@ session_write_close();
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $since = max(0, (int) ($_GET['since'] ?? 0));
     $now = avm_now_ms();
-    $st = avm_db()->prepare('SELECT path, data, deleted FROM avm_docs WHERE updated > ?' . ($since === 0 ? ' AND deleted = 0' : ''));
-    $st->execute([$since]);
+    $st = avm_db()->prepare('SELECT path, data, deleted FROM avm_docs WHERE tenant = ? AND updated > ?' . ($since === 0 ? ' AND deleted = 0' : ''));
+    $st->execute([avm_tid(), $since]);
     $docs = [];
     foreach ($st as $r) {
         if (!avm_can_read($r['path'], $admin, $vid)) continue;
@@ -50,7 +51,7 @@ if (!$admin) {
 
     // Máximo 20 envíos por hora desde la misma conexión.
     $pdo = avm_db();
-    $ip = substr(hash('sha256', ($_SERVER['REMOTE_ADDR'] ?? '') . '|avm'), 0, 40);
+    $ip = substr(hash('sha256', ($_SERVER['REMOTE_ADDR'] ?? '') . '|avm|' . avm_tid()), 0, 40);
     $pdo->prepare('DELETE FROM avm_rate WHERE t < ?')->execute([time() - 3600]);
     $n = $pdo->prepare('SELECT COUNT(*) FROM avm_rate WHERE k = ? AND t > ?');
     $n->execute([$ip, time() - 3600]);

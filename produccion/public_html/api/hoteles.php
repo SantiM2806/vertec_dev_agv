@@ -3,7 +3,8 @@
  * Hoteles alrededor de un destino (LiteAPI), para el buscador y la página del destino.
  * GET ?lat=21.118&lng=-86.759&radius=15000&limit=12 → { hotels: [ { id, name, stars, rating, reviews, address, photo } ] }
  */
-require __DIR__ . '/_lib.php';
+require __DIR__ . '/_nucleo.php';
+avm_tenant(); // agencia de esta dirección (404 si no existe)
 if ($_SERVER['REQUEST_METHOD'] !== 'GET') avm_fail(405, 'metodo');
 $lat = filter_input(INPUT_GET, 'lat', FILTER_VALIDATE_FLOAT);
 $lng = filter_input(INPUT_GET, 'lng', FILTER_VALIDATE_FLOAT);

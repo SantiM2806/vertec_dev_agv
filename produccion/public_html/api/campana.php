@@ -4,7 +4,8 @@
  * POST { op: "prueba", id, para }  → envía ya mismo un correo de prueba de la campaña
  * POST { op: "enviar", id }        → pone la campaña en cola para toda la lista
  */
-require __DIR__ . '/_lib.php';
+require __DIR__ . '/_nucleo.php';
+avm_tenant(); // agencia de esta dirección (404 si no existe)
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') avm_fail(405, 'metodo');
 if (!avm_is_admin()) avm_fail(401, 'sesion');
 session_write_close();

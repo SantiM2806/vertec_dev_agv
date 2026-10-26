@@ -1,6 +1,6 @@
 {
   "asunto": "Recibimos tu solicitud {{numero}}",
-  "cuerpo": "Hola {{nombre}},\n\nGracias por escribirnos. Recibimos tu solicitud {{numero}} para {{destino}}.\n\nUn asesor de AVM revisa la disponibilidad y te envía la cotización con el precio final. Si quieres adelantar la conversación, escríbenos por WhatsApp al {{asesor_whatsapp}}.\n\nUn saludo,\nEquipo AVM · A volar por el mundo",
+  "cuerpo": "Hola {{nombre}},\n\nGracias por escribirnos. Recibimos tu solicitud {{numero}} para {{destino}}.\n\nUn asesor de {{marca}} revisa la disponibilidad y te envía la cotización con el precio final. Si quieres adelantar la conversación, escríbenos por WhatsApp al {{asesor_whatsapp}}.\n\nUn saludo,\nEquipo {{marca}}",
   "name": "Confirmación de solicitud",
   "tipo": "transaccional"
 }

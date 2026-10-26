@@ -3,16 +3,33 @@
  * Entrada del sitio con SEO. Sirve index.html y le agrega, según la dirección, el título,
  * la descripción, la imagen para compartir, la URL canónica y los datos estructurados
  * (schema.org) de la página: inicio, /destino/<slug>, /hotel/<id>~<código>, /actividad/<id>~<código>,
- * /agencias, /traslados y /privacidad. La página sigue funcionando igual en el navegador.
+ * /traslados y /privacidad. También pone la marca de la agencia (colores, tipografía y logo) para que
+ * la página cargue ya con ella. Sin agencia (dirección de la plataforma) muestra la portada de la plataforma.
  */
-require __DIR__ . '/api/_lib.php';
+require __DIR__ . '/api/_nucleo.php';
 header('Content-Type: text/html; charset=utf-8');
 header('Cache-Control: no-cache');
+$e = fn($s) => htmlspecialchars((string) $s, ENT_QUOTES, 'UTF-8');
+
+$T = avm_tenant_opt();
+if (!$T || ($T['estado'] ?? 'activa') !== 'activa') {
+    $np = avm_plataforma_nombre();
+    if ($T) http_response_code(503); elseif (avm_host() !== strtolower(trim((string) (avm_config()['base_domain'] ?? ''), '.')) && avm_host() !== 'www.' . strtolower(trim((string) (avm_config()['base_domain'] ?? ''), '.')) && !avm_es_local(avm_host())) http_response_code(404);
+    $titulo = $T ? 'Sitio no disponible' : (http_response_code() === 404 ? 'Agencia no encontrada' : $np);
+    $texto = $T ? 'Este sitio no está disponible en este momento. Intenta más tarde.'
+        : (http_response_code() === 404 ? 'No encontramos una agencia en esta dirección.' : 'Plataforma de venta de viajes en marca blanca para agencias: buscador con precios en línea, cotizaciones, CRM y campañas, con tu marca y tus productos.');
+    echo '<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>' . $e($titulo) . '</title>'
+        . '<style>body{margin:0;min-height:100vh;display:grid;place-items:center;font:16px/1.6 system-ui,sans-serif;background:#F3F4F1;color:#12161B;padding:16px}main{max-width:560px;display:grid;gap:14px}h1{font-size:32px;margin:0}a{color:inherit}.btn{display:inline-block;padding:12px 18px;border-radius:12px;background:#12161B;color:#fff;text-decoration:none;font-weight:600;justify-self:start}'
+        . '@media (prefers-color-scheme:dark){body{background:#0E1114;color:#EEF0F2}.btn{background:#EEF0F2;color:#0E1114}}</style></head><body><main><h1>' . $e($titulo) . '</h1><p>' . $e($texto) . '</p>'
+        . (!$T && http_response_code() !== 404 ? '<a class="btn" href="plataforma.php">Ingresar al panel</a>' : '') . '</main></body></html>';
+    exit;
+}
+avm_tenant();
+$B = avm_marca();
 
 $html = (string) file_get_contents(__DIR__ . '/index.html');
 $site = avm_site_url();
 $basePath = rtrim((string) (parse_url($site, PHP_URL_PATH) ?? ''), '/') . '/';
-$e = fn($s) => htmlspecialchars((string) $s, ENT_QUOTES, 'UTF-8');
 $corto = function (string $t, int $n = 158): string { $t = trim(preg_replace('/\s+/', ' ', $t)); return mb_strlen($t) > $n ? rtrim(mb_substr($t, 0, $n - 1)) . '…' : $t; };
 
 $content = avm_get('site/content') ?? [];
@@ -20,14 +37,16 @@ $contact = (array) ($content['contact'] ?? []);
 $ruta = (string) ($_GET['ruta'] ?? '');
 $id = (string) ($_GET['id'] ?? '');
 
-$marca = 'AVM Operadores Mayoristas';
+$marca = (string) $B['name'];
+$txt = (array) ($content['txt'] ?? []);
+$plano = fn($s) => trim(str_replace('*', '', (string) $s));
 $seo = [
-    'title' => 'Paquetes todo incluido y viajes completos | ' . $marca,
-    'desc' => 'Paquetes con hotel, traslados y asistencia médica a Punta Cana, Cancún, Aruba, Curazao, Panamá y más. Cotiza en línea con AVM, operador mayorista desde 2014.',
-    'path' => '', 'image' => $site . '/img/correo/portada.jpg', 'type' => 'website', 'robots' => 'index,follow', 'jsonld' => [], 'h1' => 'Viajes completos, listos para disfrutar',
+    'title' => ($txt['seoTitle'] ?? '') ?: (($plano($txt['heroTitle'] ?? '') ?: 'Viajes y paquetes turísticos') . ' | ' . $marca),
+    'desc' => $corto(($txt['seoDesc'] ?? '') ?: ($plano($txt['heroSub'] ?? '') ?: "Cotiza en línea tu viaje con $marca: hoteles, traslados, actividades y asistencia médica.")),
+    'path' => '', 'image' => $site . '/img/correo/portada.jpg', 'type' => 'website', 'robots' => 'index,follow', 'jsonld' => [], 'h1' => $plano($txt['heroTitle'] ?? '') ?: $marca,
 ];
-$agencia = ['@type' => 'TravelAgency', 'name' => $marca, 'alternateName' => 'A volar por el mundo', 'url' => $site . '/', 'logo' => $site . '/img/logo-color.png',
-    'image' => $site . '/img/correo/portada.jpg', 'email' => (string) ($contact['email'] ?? ''), 'foundingDate' => '2014', 'areaServed' => 'CO'];
+$agencia = array_filter(['@type' => 'TravelAgency', 'name' => $marca, 'legalName' => $B['legal'] ?: null, 'url' => $site . '/', 'logo' => avm_logo_url() ?: null,
+    'image' => $site . '/img/correo/portada.jpg', 'email' => (string) ($contact['email'] ?? '') ?: null, 'areaServed' => 'CO']);
 if (!empty($contact['sales'][0])) $agencia['telephone'] = '+57 ' . $contact['sales'][0];
 foreach ((array) ($contact['sedes'] ?? []) as $s) $agencia['address'][] = ['@type' => 'PostalAddress', 'addressLocality' => (string) ($s[0] ?? ''), 'streetAddress' => (string) ($s[1] ?? ''), 'addressCountry' => 'CO'];
 $migas = fn(array $items) => ['@type' => 'BreadcrumbList', 'itemListElement' => array_map(fn($it, $i) => ['@type' => 'ListItem', 'position' => $i + 1, 'name' => $it[0], 'item' => $site . '/' . $it[1]], $items, array_keys($items))];
@@ -38,7 +57,7 @@ switch ($ruta) {
         $d = preg_match('/^[a-z0-9-]{1,80}$/', $id) ? avm_get('destinations/' . $id) : null;
         if (!$d || empty($d['active'])) { $noEncontrado = true; break; }
         $nombre = (string) ($d['name'] ?? $id);
-        $seo['title'] = "Paquete a $nombre todo incluido, con traslados y asistencia | AVM";
+        $seo['title'] = "Paquete a $nombre todo incluido, con traslados y asistencia | $marca";
         $seo['desc'] = $corto(($d['desc'] ?? '') ?: "Viaja a $nombre con hotel, traslados aeropuerto – hotel – aeropuerto y asistencia médica.");
         $seo['path'] = 'destino/' . $id; $seo['h1'] = "Paquete a $nombre";
         $seo['image'] = $site . '/img/correo/' . avm_foto_destino($nombre) . '.jpg';
@@ -52,8 +71,8 @@ switch ($ruta) {
         $r = avm_lite_hotel($hid);
         if (!$r['ok']) { $noEncontrado = true; break; }
         $h = $r['hotel'];
-        $seo['title'] = $h['name'] . ($h['city'] ? ', ' . $h['city'] : '') . ' | Hoteles AVM';
-        $seo['desc'] = $corto($h['description'] ?: $h['name'] . ' en ' . $h['city'] . '. Cotiza con AVM tu viaje con hotel, traslados y asistencia.');
+        $seo['title'] = $h['name'] . ($h['city'] ? ', ' . $h['city'] : '') . ' | ' . $marca;
+        $seo['desc'] = $corto($h['description'] ?: $h['name'] . ' en ' . $h['city'] . ". Cotiza con $marca tu viaje con hotel, traslados y asistencia.");
         $seo['path'] = 'hotel/' . $id; $seo['h1'] = $h['name']; $seo['type'] = 'website';
         if (!empty($h['images'][0]['url'])) $seo['image'] = $h['images'][0]['url'];
         $hotel = ['@type' => 'Hotel', 'name' => $h['name'], 'description' => $seo['desc'], 'image' => array_slice(array_column($h['images'], 'url'), 0, 5),
@@ -69,7 +88,7 @@ switch ($ruta) {
         $r = avm_lite_actividad($aid);
         if (!$r['ok']) { $noEncontrado = true; break; }
         $t = $r['tour'];
-        $seo['title'] = $t['title'] . ($t['city'] ? ' en ' . $t['city'] : '') . ' | Tours AVM';
+        $seo['title'] = $t['title'] . ($t['city'] ? ' en ' . $t['city'] : '') . ' | ' . $marca;
         $seo['desc'] = $corto($t['description'] ?: $t['title']);
         $seo['path'] = 'actividad/' . $id; $seo['h1'] = $t['title'];
         if (!empty($t['images'][0]['url'])) $seo['image'] = $t['images'][0]['url'];
@@ -77,14 +96,9 @@ switch ($ruta) {
             'provider' => ['@type' => 'TravelAgency', 'name' => $marca, 'url' => $site . '/']];
         $seo['jsonld'][] = $migas([['Inicio', ''], [$t['title'], $seo['path']]]);
         break;
-    case 'agencias':
-        $seo['title'] = 'Agencias de viajes: vende con ' . $marca;
-        $seo['desc'] = 'Tarifas preferenciales, plataforma de reservas 24/7 y asesores que acompañan cada venta. Activa tu agencia con AVM.';
-        $seo['path'] = 'agencias'; $seo['h1'] = 'Agencias de viajes';
-        break;
     case 'traslados':
         $seo['title'] = 'Traslados aeropuerto – hotel | ' . $marca;
-        $seo['desc'] = 'Traslados en servicio regular entre el aeropuerto y tu hotel en Punta Cana, Cancún, Riviera Maya, Aruba, Curazao y Panamá.';
+        $seo['desc'] = "Traslados entre el aeropuerto y tu hotel con $marca.";
         $seo['path'] = 'traslados'; $seo['h1'] = 'Traslados aeropuerto – hotel';
         break;
     case 'privacidad':
@@ -111,6 +125,9 @@ $html = preg_replace('#<meta name="description" content="[^"]*">#', '<meta name=
 // <base> va antes que cualquier dirección relativa; el resto, antes de cerrar <head> (o antes del primer <style>)
 $html = preg_replace('#<head>#', '<head>' . "\n" . $head, $html, 1);
 $html = preg_replace('#(<style>)#', $extra . '$1', $html, 1);
+// Marca de la agencia después del CSS base (para que sus colores manden): tipografía, ícono y datos para la página
+$cab = avm_marca_head($B);
+$html = preg_replace_callback('#</style>#', fn($m) => $m[0] . "\n" . $cab, $html, 1);
 // Texto para quien no ejecuta JavaScript
-$html = preg_replace('#(<div class="agency-bar">)#', '<noscript><h1>' . $e($seo['h1']) . '</h1><p>' . $e($seo['desc']) . '</p></noscript>$1', $html, 1);
+$html = preg_replace('#(<header class="top">)#', '<noscript><h1>' . $e($seo['h1']) . '</h1><p>' . $e($seo['desc']) . '</p></noscript>$1', $html, 1);
 echo $html;
