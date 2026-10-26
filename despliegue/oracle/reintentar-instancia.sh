@@ -17,9 +17,9 @@ IMG="$(oci compute image list -c "$C" --operating-system "Canonical Ubuntu" --sh
 [ -n "$IMG" ] || { echo "No encontré una imagen de Ubuntu para A1."; exit 1; }
 mapfile -t ADS < <(oci iam availability-domain list -c "$C" | jq -r '.data[].name')
 
-# Llave SSH: queda en Cloud Shell (~/.ssh/plataforma); desde aquí mismo puedes entrar a la máquina
+# Llave SSH (RSA: Cloud Shell está en modo FIPS y no admite ED25519): queda en Cloud Shell (~/.ssh/plataforma); desde aquí mismo puedes entrar a la máquina
 mkdir -p ~/.ssh && chmod 700 ~/.ssh
-[ -f ~/.ssh/plataforma.pub ] || { rm -f ~/.ssh/plataforma; ssh-keygen -t ed25519 -f ~/.ssh/plataforma -N "" -C plataforma -q; }
+[ -f ~/.ssh/plataforma.pub ] || { rm -f ~/.ssh/plataforma; ssh-keygen -t rsa -b 4096 -f ~/.ssh/plataforma -N "" -C plataforma -q; }
 [ -f ~/.ssh/plataforma.pub ] || { echo "No pude crear la llave SSH en ~/.ssh/plataforma.pub"; exit 1; }
 
 echo "Subred: ${SUBNET:0:40}…  Imagen: ${IMG:0:40}…  Dominios: ${ADS[*]}"
