@@ -295,6 +295,8 @@ footer .logo img{height:52px}
 .xsub label:has(input:checked){border-color:var(--ink);font-weight:600}.xsub input{accent-color:var(--ink);margin:0}
 .xopt:not(:has(input[type=checkbox]:checked)) .xsub{display:none}
 .xload{height:120px;border-radius:16px;background:var(--soft);animation:blink 1.2s infinite}
+.xtrops{display:grid;gap:6px;border:1px solid var(--line);border-radius:14px;padding:12px 14px;background:var(--card)}.xtrops .xtl{font-size:13px;color:var(--muted)}
+.xtrops label{display:flex;gap:10px;align-items:center;font-size:14px;cursor:pointer}.xtrops label span{flex:1}.xtrops b{font-variant-numeric:tabular-nums}.xtrops input{accent-color:var(--ink)}
 .xside{position:sticky;top:90px;display:grid;gap:12px}.xside .qcard .qb{gap:8px}.xside .go{width:100%;justify-content:center}
 .xside .qcard .qph{aspect-ratio:16/7}
 .xcount{font-size:13.5px;color:var(--muted)}.xskip{justify-self:center;font-size:14px;text-decoration:underline;text-underline-offset:3px}
@@ -782,6 +784,16 @@ body.is-admin .admin{max-width:none;padding:0}
 .dbrand{display:flex;align-items:center;gap:10px;padding:2px 8px 12px;border-bottom:1px solid var(--bar-line)}
 .dbrand .brandmark .logo-c{display:none}.dbrand .brandmark .logo-w{display:block}.dbrand .brandmark .wm{color:var(--bar-ink)}
 .dbrand span{font:600 13px/1.2 var(--f-body);color:var(--bar-soft)}
+.tdrop{display:grid;justify-items:center;gap:8px;text-align:center;border:1.5px dashed var(--line);padding:26px 18px;margin-bottom:16px}.tdrop.on{border-color:var(--signal);background:color-mix(in srgb,var(--signal) 10%,var(--card))}
+.tdrop b{font:600 17px/1.2 var(--f-display)}.tpdfs{list-style:none;margin:10px 0 0;padding:0;width:100%;max-width:640px;display:grid;gap:6px;text-align:left}
+.tpdfs li{display:flex;gap:10px;align-items:center;border:1px solid var(--line);border-radius:10px;padding:8px 10px;background:var(--card)}.tpdfs a{font-weight:600;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.tpdfs small{color:var(--muted);font-size:12px;white-space:nowrap}
+.tbloc{border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:12px;display:grid;gap:10px;justify-items:start}.tbloc .fgrid2{width:100%}
+.tgrid-w{overflow-x:auto;width:100%}.tgrid{border-collapse:collapse;width:100%;min-width:480px;font-size:14px}.tgrid th{text-align:left;font:600 12px/1.3 var(--f-body);color:var(--muted);padding:6px 8px}
+.tgrid td{padding:4px 8px;border-top:1px solid var(--line);vertical-align:middle}.tgrid td small{display:block;color:var(--muted);font-size:11.5px}.tgrid input{width:100%;min-width:80px;padding:8px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink);font:inherit}
+.trow{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr) minmax(0,1fr) auto;gap:10px;align-items:end;margin-bottom:8px}
+@media (max-width:640px){.trow{grid-template-columns:1fr 1fr}.trow .fld:first-child{grid-column:1/-1}}
+.pfotos{display:flex;flex-wrap:wrap;gap:8px;align-items:center}.pfoto{position:relative;width:96px;height:66px;border-radius:8px;overflow:hidden;background:var(--soft)}.pfoto img{width:100%;height:100%;object-fit:cover}
+.pfoto button{position:absolute;top:3px;right:3px;padding:2px 7px;font-size:13px;line-height:1}
 .bcolor{display:flex;gap:8px;align-items:center}.bcolor input[type=color]{width:46px;height:40px;padding:2px;border:1px solid var(--line);border-radius:10px;background:var(--card)}.bcolor input[type=text]{max-width:120px;font-family:var(--f-mono)}
 .blogo{height:96px;border:1px dashed var(--line);border-radius:12px;display:grid;place-items:center;background:var(--card);padding:10px}.blogo.dark{background:#12161B}.blogo img{max-height:76px;max-width:100%;object-fit:contain}.blogo span{color:var(--muted);font-size:13px}
 .bprev{margin-top:14px}.bp{border:1px solid var(--line);border-radius:16px;overflow:hidden;color:#12161B}.bp-top{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 16px;font-size:13px}.bp-top img{height:28px;width:auto;max-width:160px;object-fit:contain}
@@ -1776,8 +1788,9 @@ function renderExtras(box, q) {
         <div class="xgrid" id="xActs">${own.map(t => tourOpt("tour:" + t.id, t.name, [t.duration, t.desc].filter(Boolean).join(" · "), t.price, t.img)).join("")}<div class="xload" id="xLive" hidden></div>
           <label class="xopt wide"><input type="checkbox" name="x" value="recomendar" data-name="Recomendación de actividades${dest ? " en " + esc(dest) : ""}"${chk("recomendar")}><span class="xi"><b>Quiero que me recomienden actividades</b><small>Tours, excursiones y entradas según tus fechas y gustos.</small></span></label></div></section>
       <section class="xsec"><h2>Traslados</h2>
-        <label class="xopt"><input type="checkbox" name="x" value="traslado" data-name="Traslado aeropuerto – hotel"${chk("traslado")}><span class="xi"><b>Traslado aeropuerto – hotel</b><small>Servicio privado o compartido para ${pax} ${pax === 1 ? "persona" : "personas"}.</small></span>
-          <span class="xsub"><label><input type="radio" name="xTrip" value="RT"${!tr || tr.trip !== "OW" ? " checked" : ""}>Ida y regreso</label><label><input type="radio" name="xTrip" value="OW"${tr?.trip === "OW" ? " checked" : ""}>Solo llegada</label></span></label></section>
+        <label class="xopt" id="xTrCard"><input type="checkbox" name="x" value="traslado" data-name="Traslado aeropuerto – hotel"${chk("traslado")}><span class="xi"><b>Traslado aeropuerto – hotel</b><small>Servicio privado o compartido para ${pax} ${pax === 1 ? "persona" : "personas"}.</small></span>
+          <span class="xsub"><label><input type="radio" name="xTrip" value="RT"${!tr || tr.trip !== "OW" ? " checked" : ""}>Ida y regreso</label><label><input type="radio" name="xTrip" value="OW"${tr?.trip === "OW" ? " checked" : ""}>Solo llegada</label></span></label>
+        <div class="xtrops" id="xTrOps" hidden></div></section>
       <section class="xsec"><h2>Asistencia médica</h2>
         <label class="xopt"><input type="checkbox" name="x" value="asistencia" data-name="Asistencia médica de viaje"${chk("asistencia")}><span class="xi"><b>Asistencia médica de viaje</b><small>Cobertura médica para ${pax} ${pax === 1 ? "viajero" : "viajeros"}${days ? `, ${days} días` : ""}. Obligatoria en algunos destinos.</small></span></label></section>
     </form>
@@ -1786,14 +1799,45 @@ function renderExtras(box, q) {
       ${q.total ? `<div class="qprice"><small>${esc(q.totalLabel || "Total")}</small><b>${usdL(q.total)}</b>${trm() ? `<span class="cop">${copOf(q.total)}</span>` : ""}</div>` : ""}
       <span class="xcount" id="xCount" role="status"></span>
       <button class="go" type="button" id="xNext">Continuar ${ARROW}</button><button class="linkbtn xskip" type="button" id="xSkip">Seguir sin adicionales</button></div></article></aside></div></div>`;
+  // Traslados propios con precio: aparecen como opciones cuando se marca el traslado
+  let TR = null;
+  const paintTr = () => {
+    const box2 = $("#xTrOps"), on = $("#xForm input[value=traslado]")?.checked, rt = ($("#xForm input[name=xTrip]:checked")?.value || "RT") === "RT";
+    const ops = TR ? (rt ? TR.traslados : TR.trasladosSolo) : [];
+    if (!box2) return;
+    box2.hidden = !on || !ops.length;
+    if (box2.hidden) return;
+    const cur = box2.querySelector("input:checked")?.value || q.extras.find(x => x.key === "traslado")?.opt || ops[0].id;
+    box2.innerHTML = `<span class="xtl">Opciones con precio, ${rt ? "ida y regreso" : "solo llegada"}:</span>` + ops.map(o => `<label><input type="radio" name="xTrOp" value="${esc(o.id)}"${o.id === cur ? " checked" : ""}><span>${esc(o.name)} · ${esc(o.servicio)}</span><b>${usdL(o.total)}</b></label>`).join("")
+      + `<label><input type="radio" name="xTrOp" value=""${cur === "" ? " checked" : ""}><span>Que un asesor me cotice otra opción</span></label>`;
+  };
+  $("#xForm").addEventListener("change", e => { if (e.target.name === "x" || e.target.name === "xTrip") paintTr(); });
+  (async () => {
+    try {
+      const u = new URL(BUSCAR_API, document.baseURI);
+      Object.entries({ tipo: "extras", q: dest, d1: q.viaje.d1 || "", pax, regreso: "1" }).forEach(([k, v]) => u.searchParams.set(k, v));
+      const j = await (await fetch(u)).json();
+      if (box.dataset.q !== q.id + "extras") return;
+      TR = { traslados: j.traslados || [], trasladosSolo: j.trasladosSolo || [] }; paintTr();
+      if ((j.actividades || []).length) {
+        $("#xActs").insertAdjacentHTML("afterbegin", j.actividades.map(t => tourOpt("own:" + t.id, t.title, [t.category, t.duration].filter(Boolean).join(" · "), t.price, t.photo)).join(""));
+        $$("#xActs input").forEach(i => { if (sel.has(i.value)) i.checked = true; }); count();
+      }
+    } catch {}
+  })();
   const count = () => { const k = $$("#xForm input[name=x]:checked").length; $("#xCount").textContent = k ? `${k} ${k === 1 ? "adicional" : "adicionales"} para cotizar` : "Sin adicionales"; $("#xNext").innerHTML = `${k ? "Continuar" : "Continuar sin adicionales"} ${ARROW}`; };
   $("#xForm").addEventListener("change", count); count();
   const next = keep => {
     q.extras = keep ? $$("#xForm input[name=x]:checked").map(i => {
       const x = { key: i.value, name: i.dataset.name, price: +i.dataset.price || 0 };
-      if (x.key === "traslado") { x.trip = $("#xForm input[name=xTrip]:checked")?.value || "RT"; x.name += x.trip === "OW" ? " (solo llegada)" : " – aeropuerto (ida y regreso)"; x.name += `, ${pax} ${pax === 1 ? "persona" : "personas"}`; }
+      if (x.key === "traslado") {
+        x.trip = $("#xForm input[name=xTrip]:checked")?.value || "RT";
+        const opId = $("#xForm input[name=xTrOp]:checked")?.value || "", op = TR && opId ? (x.trip === "RT" ? TR.traslados : TR.trasladosSolo).find(o => o.id === opId) : null;
+        if (op) { x.opt = op.id; x.price = op.total; x.name = `Traslado ${op.servicio.toLowerCase()} ${op.name}${x.trip === "OW" ? " (solo llegada)" : " (ida y regreso)"}, ${pax} ${pax === 1 ? "persona" : "personas"} · ${usdL(op.total)}`; }
+        else { x.name += x.trip === "OW" ? " (solo llegada)" : " – aeropuerto (ida y regreso)"; x.name += `, ${pax} ${pax === 1 ? "persona" : "personas"}`; }
+      }
       if (x.key === "asistencia") x.name += ` para ${pax} ${pax === 1 ? "viajero" : "viajeros"}${days ? `, ${days} días` : ""}`;
-      if (x.key.startsWith("tour:") || x.key.startsWith("lite:")) x.name += `, ${pax} ${pax === 1 ? "persona" : "personas"}`;
+      if (x.key.startsWith("tour:") || x.key.startsWith("lite:") || x.key.startsWith("own:")) x.name += `, ${pax} ${pax === 1 ? "persona" : "personas"}${x.price ? " · desde " + usdL(x.price) + " c/u" : ""}`;
       return x;
     }) : [];
     q.step = "datos"; renderQuote(); scrollTo(0, 0);
@@ -1889,6 +1933,7 @@ const LIVE_ERR = { sin_configurar: "Los precios en línea todavía no están act
 async function runLive(who) {
   const v = V[prod], kind = P[prod].live, box = $("#results");
   // Si eligió un hotel (no un destino), va directo a la ficha del hotel con sus fechas
+  if (kind === "hoteles" && /^p-/.test(v.toId || "")) { window.AVM_LAST_HOTEL = { d1: v.d1, d2: v.d2, rooms: v.rooms, adults: v.adults }; location.hash = "#hotel-" + encodeURIComponent(v.toId); return; }
   if (kind === "hoteles" && v.toId && /hotel|lodging/.test(v.toTypes || "")) {
     const go = $("#go"); go.disabled = true;
     try {
@@ -2859,8 +2904,15 @@ const tourCard = t => `<article class="pack tcard">
   <div class="art">${itemImg(t)}<span class="badge">${t.kind === "circuito" ? "CIRCUITO" : "TOUR"} · ${esc(t.duration).toUpperCase()}</span>${sampleTag(t)}</div>
   <div class="body"><h3>${esc(t.name)}</h3><span class="hotel">${esc(t.place)}</span><p class="tdesc">${esc(t.desc)}</p>
   <div class="price"><span>${priceTag(t)}</span><button type="button" class="more linkbtn" data-tour="${esc(t.id)}">Cotizar ${ARROW}</button></div></div></article>`;
+let PROP_CIRC = [];
+async function loadPropCirc() {
+  try { const u = new URL(BUSCAR_API, document.baseURI); u.searchParams.set("tipo", "circuitos"); const j = await (await fetch(u)).json();
+    PROP_CIRC = (j.circuitos || []).map((c, i) => ({ id: c.id, kind: "circuito", name: c.name, place: c.place, dest: "", duration: c.duration, price: c.price, desc: c.desc + (c.salidas?.length ? ` Salidas: ${c.salidas.map(fmtLong).join(", ")}.` : ""), inc: c.inc || [], img: c.photo, active: true, order: 1000 + i, sample: false }));
+    if (PROP_CIRC.length) drawTours();
+  } catch {}
+}
 function drawTours() {
-  const act = TOURS.filter(t => t.active).sort((a, b) => a.order - b.order);
+  const act = [...TOURS, ...PROP_CIRC].filter(t => t.active).sort((a, b) => a.order - b.order);
   $("#tours").hidden = !act.length;
   $("#toursTitle").innerHTML = rich(TXT.toursTitle); $("#toursSub").textContent = TXT.toursSub;
   $$("#tourChips .chip").forEach(c => c.setAttribute("aria-pressed", String(c.dataset.k === tourKind)));
@@ -3287,7 +3339,7 @@ function admAliados() {
 /* Precio al cliente = (neto × (1 + markup) + fee fijo) ÷ (1 − (fee general % + fee bancario % + comisión del operador %)).
    Los porcentajes de fees se calculan sobre el precio final, para que cubran exactamente lo que se descuenta de cada venta.
    El servidor aplica la misma fórmula (api/_liteapi.php, avm_precio). */
-const TARIFAS_DEF = { markup_hoteles: 0, markup_vuelos: 0, markup_actividades: 0, fee: 0, fijo: 0, banco: 0, operador: 0, redondear: false };
+const TARIFAS_DEF = { markup_hoteles: 0, markup_vuelos: 0, markup_actividades: 0, markup_traslados: 0, markup_circuitos: 0, fee: 0, fijo: 0, banco: 0, operador: 0, redondear: false };
 function precioCliente(neto, prod, t, conFijo = true) {
   const n = k => Math.max(0, Math.min(300, +t[k] || 0));
   const pct = Math.min(60, n("fee") + n("banco") + n("operador")) / 100;
@@ -3309,16 +3361,16 @@ async function admTarifas() {
       <p class="help" style="margin-bottom:10px">Elige qué pestañas ve el cliente. Vuelos y actividades necesitan el acceso habilitado en tu cuenta de LiteAPI.</p>
       <div class="fgrid2">${Object.entries(P).map(([k, p]) => `<label class="chk"><input type="checkbox" data-prod="${k}"${on[k] !== false ? " checked" : ""}> ${esc(p.label)}${p.live ? " (precios en línea)" : " (cotiza un asesor)"}</label>`).join("")}</div></div>
     <div class="panel"><h2>Margen y cargos sobre los precios en línea</h2>
-      <p class="help" style="margin-bottom:12px">Se suman al precio de LiteAPI antes de mostrarlo. El cliente ve un solo precio final; nunca ve el desglose.</p>
+      <p class="help" style="margin-bottom:12px">Se suman al precio de LiteAPI y a las tarifas netas de tus tarifarios antes de mostrarlos. El cliente ve un solo precio final; nunca ve el desglose.</p>
       <h3 style="font:600 16px/1.2 var(--f-display);margin:6px 0 10px">Markup por producto (%)</h3>
-      <div class="fgrid2">${num("markup_hoteles", "Hoteles")}${num("markup_vuelos", "Vuelos")}${num("markup_actividades", "Actividades")}</div>
+      <div class="fgrid2">${num("markup_hoteles", "Hoteles y alojamientos")}${num("markup_vuelos", "Vuelos")}${num("markup_actividades", "Actividades")}${num("markup_traslados", "Traslados (tarifario propio)")}${num("markup_circuitos", "Circuitos (tarifario propio)")}</div>
       <h3 style="font:600 16px/1.2 var(--f-display);margin:16px 0 10px">Fees</h3>
       <div class="fgrid2">${num("fee", "Fee general (%)", "Porcentaje del precio final.")}${num("fijo", "Fee general fijo (USD por reserva)", "Se suma una vez por reserva, no por persona.")}
         ${num("banco", "Fee bancario (%)", "Lo que cobra la pasarela o el banco por cada pago.")}${num("operador", "Comisión del operador (%)", "Para quien administra la herramienta.")}
         <label class="chk full"><input type="checkbox" id="tRed"${t.redondear ? " checked" : ""}> Redondear el precio final hacia arriba al dólar entero</label></div></div>
     <div class="panel"><h2>Simulador</h2><div class="fgrid2">
       ${fld("tSimN", "Precio neto de LiteAPI (USD)", "1000", { type: "number", min: 0, step: "1" })}
-      ${fld("tSimP", "Producto", "hoteles", { type: "select", list: [["hoteles", "Hoteles"], ["vuelos", "Vuelos"], ["actividades", "Actividades"]] })}</div>
+      ${fld("tSimP", "Producto", "hoteles", { type: "select", list: [["hoteles", "Hoteles"], ["vuelos", "Vuelos"], ["actividades", "Actividades"], ["traslados", "Traslados"], ["circuitos", "Circuitos"]] })}</div>
       <div class="tcalc" id="tCalc" aria-live="polite"></div>
       <p class="help" style="margin-top:10px">Los porcentajes de fee general, bancario y comisión se calculan sobre el precio final, para que cubran exactamente lo que se descuenta de cada venta. El precio de LiteAPI ya incluye la comisión configurada en tu panel de LiteAPI.</p></div>
     ${actions("tSave")}`;
@@ -3651,6 +3703,197 @@ async function saveTransfers(zs, btn) {
   btn.disabled = false;
 }
 
+/* ---------- Backoffice: tarifarios propios (alojamientos, actividades, transportes y circuitos) ----------
+   Tarifas NETAS por temporada; el servidor les suma el markup y los fees (api/_propios.php) y los muestra en el
+   buscador junto a LiteAPI. Los PDF de origen se guardan fuera de la carpeta pública (api/archivos.php). */
+const TIPOS_P = {
+  alojamiento: { uno: "alojamiento", nuevo: "Nuevo alojamiento", vacio: "Todavía no tienes alojamientos propios." },
+  actividad: { uno: "actividad", nuevo: "Nueva actividad", vacio: "Todavía no tienes actividades propias." },
+  transporte: { uno: "transporte", nuevo: "Nuevo transporte", vacio: "Todavía no tienes transportes propios." },
+  circuito: { uno: "circuito", nuevo: "Nuevo circuito", vacio: "Todavía no tienes circuitos propios." }
+};
+const REGIMENES = [["RO", "Solo alojamiento"], ["BB", "Desayuno incluido"], ["HB", "Media pensión"], ["FB", "Pensión completa"], ["AI", "Todo incluido"]];
+const hoyISO = () => new Date().toISOString().slice(0, 10);
+const enUnAno = () => { const d = new Date(); d.setFullYear(d.getFullYear() + 1); return d.toISOString().slice(0, 10); };
+function prodBlank(tipo) {
+  const p = { _new: true, tipo, activo: true, nombre: "", destino: "", ciudad: "", pais: "", moneda: "USD", descripcion: "", incluye: "", proveedor: "", notas: "", tarifarioId: "", fotos: [],
+    temporadas: [{ nombre: "Todo el año", desde: hoyISO(), hasta: enUnAno() }] };
+  if (tipo === "alojamiento") Object.assign(p, { estrellas: "", clase: "Hotel", direccion: "", checkin: "15:00", checkout: "12:00", minNoches: 1, reembolsable: false, politica: "", habitaciones: [{ nombre: "Habitación doble", regimen: "AI", max: 3, camas: "", precios: [{}] }] });
+  if (tipo === "actividad") Object.assign(p, { duracion: "", categoria: "Tour", recogida: false, encuentro: "", noIncluye: "", politica: "", precios: [{}] });
+  if (tipo === "transporte") Object.assign(p, { trayectos: [{ desde: "Aeropuerto", hasta: "Hotel", servicio: "compartido", cobro: "persona", capacidad: "", precios: [{}] }] });
+  if (tipo === "circuito") Object.assign(p, { noches: "", salidas: "", precios: [{}] });
+  return p;
+}
+const getPath = (o, path) => path.split(".").reduce((x, k) => x?.[k], o);
+function setPath(o, path, v) { const ks = path.split("."); let x = o; ks.slice(0, -1).forEach((k, i) => { if (x[k] == null) x[k] = /^\d+$/.test(ks[i + 1]) ? [] : {}; x = x[k]; }); x[ks.at(-1)] = v; }
+const kb = n => n > 1048576 ? (n / 1048576).toFixed(1).replace(".", ",") + " MB" : Math.max(1, Math.round(n / 1024)) + " KB";
+async function subirTarifario(file, tipo) {
+  const fd = new FormData(); fd.append("archivo", file); fd.append("categoria", tipo);
+  const r = await fetch("api/archivos.php", { method: "POST", body: fd, credentials: "same-origin", headers: { "X-AVM": "1" } });
+  const j = await r.json().catch(() => ({}));
+  if (!r.ok || !j.ok) throw new Error(j.error || "No se pudo subir " + file.name);
+  return j;
+}
+function admTarifario(tipo) {
+  const T = TIPOS_P[tipo], lista = PRODS.filter(p => p.tipo === tipo), pdfs = TARIFS.filter(f => f.categoria === tipo);
+  if (!adm.pdraft || adm.pdraft.tipo !== tipo) { const x = lista.find(p => p.id === adm.psel) || lista[0]; adm.pdraft = x ? clone(x) : prodBlank(tipo); adm.psel = x?.id || null; }
+  const d = adm.pdraft, temps = d.temporadas || [];
+  const inp = (path, label, o = {}) => {
+    const v = getPath(d, path) ?? "", id = "pk-" + path.replace(/\./g, "-");
+    const input = o.type === "select" ? `<select id="${id}" data-k="${path}">${o.list.map(([a, b]) => `<option value="${esc(a)}"${String(a) === String(v) ? " selected" : ""}>${esc(b)}</option>`).join("")}</select>`
+      : o.type === "textarea" ? `<textarea id="${id}" data-k="${path}" rows="${o.rows || 3}"${o.ph ? ` placeholder="${esc(o.ph)}"` : ""}>${esc(v)}</textarea>`
+      : o.type === "check" ? "" : `<input id="${id}" data-k="${path}" type="${o.type || "text"}" value="${esc(v)}"${o.ph ? ` placeholder="${esc(o.ph)}"` : ""}${o.type === "number" ? ' min="0" step="any" inputmode="decimal"' : ""}>`;
+    if (o.type === "check") return `<label class="chk${o.full ? " full" : ""}"><input type="checkbox" data-k="${path}"${v ? " checked" : ""}> ${label}</label>`;
+    return `<div class="fld${o.full ? " full" : ""}"><label for="${id}">${label}</label>${input}${o.help ? `<span class="help">${o.help}</span>` : ""}</div>`;
+  };
+  const cell = (path, ph) => `<input type="number" min="0" step="any" inputmode="decimal" data-k="${path}" value="${esc(getPath(d, path) ?? "")}" placeholder="${ph || ""}" aria-label="${ph || path}">`;
+  const grid = (base, cols) => `<div class="tgrid-w"><table class="tgrid"><thead><tr><th>Temporada</th>${cols.map(([, l]) => `<th>${l}</th>`).join("")}</tr></thead>
+    <tbody>${temps.map((t, i) => `<tr><td>${esc(t.nombre || "Temporada " + (i + 1))}<small>${t.desde ? fmtLong(t.desde) : "?"} – ${t.hasta ? fmtLong(t.hasta) : "?"}</small></td>${cols.map(([k]) => `<td>${cell(`${base}.${i}.${k}`, "")}</td>`).join("")}</tr>`).join("")}</tbody></table></div>`;
+  const mon = d.moneda || "USD";
+  let precios = "";
+  if (tipo === "alojamiento") precios = `<div class="panel"><div class="ed-head"><h2>Habitaciones y precios</h2><button class="btn" type="button" data-add="habitaciones">+ Habitación</button></div>
+    <p class="help" style="margin:-4px 0 12px">Precio <b>neto por persona y por noche</b> en ${mon}, según cuántos adultos comparten la habitación. Niño: precio por noche. Deja vacío lo que no se vende.</p>
+    ${(d.habitaciones || []).map((h, i) => `<div class="tbloc"><div class="fgrid2">${inp(`habitaciones.${i}.nombre`, "Habitación", { ph: "Junior Suite vista al mar" })}${inp(`habitaciones.${i}.regimen`, "Régimen", { type: "select", list: REGIMENES })}
+      ${inp(`habitaciones.${i}.max`, "Máximo de personas", { type: "number" })}${inp(`habitaciones.${i}.camas`, "Camas (opcional)", { ph: "1 king o 2 dobles" })}</div>
+      ${grid(`habitaciones.${i}.precios`, [["sgl", "Sencilla (1 adulto)"], ["dbl", "Doble (por persona)"], ["tpl", "Triple (por persona)"], ["nino", "Niño"]])}
+      <button class="btn danger" type="button" data-del="habitaciones.${i}">Quitar habitación</button></div>`).join("")}</div>`;
+  if (tipo === "actividad") precios = `<div class="panel"><h2>Precios</h2><p class="help" style="margin:-4px 0 12px">Precio <b>neto por persona</b> en ${mon}.</p>${grid("precios", [["adulto", "Adulto"], ["nino", "Niño"]])}</div>`;
+  if (tipo === "circuito") precios = `<div class="panel"><h2>Salidas y precios</h2><div class="fgrid2">${inp("noches", "Noches", { type: "number" })}${inp("salidas", "Fechas de salida (una por línea, AAAA-MM-DD)", { type: "textarea", rows: 4, ph: "2027-02-10\n2027-03-15" })}</div>
+    <p class="help" style="margin:4px 0 12px">Precio <b>neto por persona para todo el circuito</b> en ${mon}, según la acomodación.</p>${grid("precios", [["sgl", "Sencilla"], ["dbl", "Doble (por persona)"], ["tpl", "Triple (por persona)"], ["nino", "Niño"]])}</div>`;
+  if (tipo === "transporte") precios = `<div class="panel"><div class="ed-head"><h2>Trayectos y precios</h2><button class="btn" type="button" data-add="trayectos">+ Trayecto</button></div>
+    <p class="help" style="margin:-4px 0 12px">Precio <b>neto por trayecto</b> (solo ida) en ${mon}. Si es ida y regreso, se cobra dos veces.</p>
+    ${(d.trayectos || []).map((t, i) => `<div class="tbloc"><div class="fgrid2">${inp(`trayectos.${i}.desde`, "Desde", { ph: "Aeropuerto de Punta Cana" })}${inp(`trayectos.${i}.hasta`, "Hasta", { ph: "Hoteles de Bávaro" })}
+      ${inp(`trayectos.${i}.servicio`, "Servicio", { type: "select", list: [["compartido", "Compartido"], ["privado", "Privado"]] })}${inp(`trayectos.${i}.cobro`, "Se cobra", { type: "select", list: [["persona", "Por persona"], ["vehiculo", "Por vehículo"]] })}
+      ${inp(`trayectos.${i}.capacidad`, "Personas por vehículo", { type: "number", help: "Solo si se cobra por vehículo." })}</div>
+      ${grid(`trayectos.${i}.precios`, [["valor", "Precio neto"]])}<button class="btn danger" type="button" data-del="trayectos.${i}">Quitar trayecto</button></div>`).join("")}</div>`;
+  const extra = tipo === "alojamiento" ? `${inp("estrellas", "Estrellas", { type: "select", list: [["", "Sin categoría"], ["3", "3 estrellas"], ["3.5", "3,5 estrellas"], ["4", "4 estrellas"], ["4.5", "4,5 estrellas"], ["5", "5 estrellas"]] })}
+      ${inp("clase", "Tipo", { type: "select", list: [["Hotel", "Hotel"], ["Resort", "Resort"], ["Apartahotel", "Apartahotel"], ["Hostal", "Hostal"], ["Casa vacacional", "Casa vacacional"], ["Glamping", "Glamping"]] })}
+      ${inp("direccion", "Dirección", { full: true })}${inp("checkin", "Entrada desde", { ph: "15:00" })}${inp("checkout", "Salida hasta", { ph: "12:00" })}
+      ${inp("minNoches", "Mínimo de noches", { type: "number" })}${inp("reembolsable", "Cancelación con reembolso", { type: "check" })}
+      ${inp("politica", "Política de cancelación e información importante", { type: "textarea", rows: 3, full: true })}`
+    : tipo === "actividad" ? `${inp("duracion", "Duración", { ph: "Día completo, 4 horas" })}${inp("categoria", "Categoría", { ph: "Tour, entrada, excursión" })}
+      ${inp("encuentro", "Punto de encuentro", { full: true })}${inp("recogida", "Incluye recogida en el hotel", { type: "check" })}${inp("noIncluye", "No incluye", { type: "textarea", rows: 2 })}`
+    : tipo === "circuito" ? `${inp("duracion", "Duración (si no pones noches)", { ph: "8 días" })}` : "";
+  const fotos = (d.fotos || []).map((ref, i) => `<div class="pfoto"><img src="${esc(imgSrc(ref) || "api/imagen.php?id=" + encodeURIComponent(ref.slice(3)))}" alt=""><button type="button" class="btn danger" data-delfoto="${i}" aria-label="Quitar foto">×</button></div>`).join("");
+  $("#admBody").innerHTML = `<div class="panel tdrop" id="tDrop"><svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M12 16V4m0 0-4 4m4-4 4 4M4 15v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3"/></svg>
+      <b>Arrastra tus tarifarios aquí</b><span class="help">Solo PDF, hasta 25 MB por archivo. Quedan guardados solo para tu equipo.</span>
+      <label class="btn" for="tFile">Buscar archivos</label><input type="file" id="tFile" accept="application/pdf" multiple class="sr"><span class="toast" id="tUp" role="status"></span>
+      ${pdfs.length ? `<ul class="tpdfs">${pdfs.map(f => `<li><a href="api/archivos.php?id=${esc(f.id)}" target="_blank" rel="noopener">${esc(f.nombre)}</a><small>${kb(f.tamano || 0)} · ${esc(new Date(f.subido).toLocaleDateString("es-CO"))}${PRODS.some(p => p.tarifarioId === f.id) ? " · en uso" : ""}</small><button class="btn danger" type="button" data-delpdf="${esc(f.id)}">Quitar</button></li>`).join("")}</ul>` : ""}</div>
+    <div class="adm-grid">
+    <div class="panel"><h2>${T.nuevo.replace(/^Nuev[oa] /, "").replace(/^\w/, c => c.toUpperCase())}s</h2>
+      ${lista.length ? `<ul class="dlist">${lista.map(p => `<li><button type="button" class="ditem" data-psel="${esc(p.id)}" aria-current="${!d._new && d.id === p.id}"><span class="dthumb">${p.fotos?.[0] ? `<img src="${esc(imgSrc(p.fotos[0]) || "api/imagen.php?id=" + encodeURIComponent(p.fotos[0].slice(3)))}" alt="">` : ""}</span><span class="dtxt"><b>${esc(p.nombre)}</b><small>${esc(p.destino || "Sin destino")}${p.activo ? "" : " · oculto"}</small></span></button></li>`).join("")}</ul>` : `<p class="help">${T.vacio}</p>`}
+      <button class="btn" type="button" id="pNew">+ ${T.nuevo}</button></div>
+    <div><div class="panel"><div class="ed-head"><h2>${d._new ? T.nuevo : esc(d.nombre)}</h2></div><div class="fgrid2">
+      ${inp("activo", "Publicado en el sitio", { type: "check" })}${inp("moneda", "Moneda del tarifario", { type: "select", list: [["USD", "Dólares (USD)"], ["COP", "Pesos (COP)"]], help: "En pesos se convierte a dólares con la TRM del sitio." })}
+      ${inp("nombre", "Nombre", { ph: tipo === "alojamiento" ? "Hotel Playa Azul" : "" })}${inp("destino", "Destino", { ph: "Punta Cana", help: "Así lo encuentran en el buscador: escribe el destino como lo buscaría el cliente." })}
+      ${inp("ciudad", "Ciudad o zona (opcional)", { ph: "Bávaro" })}${inp("pais", "País", { ph: "República Dominicana" })}
+      ${extra}
+      ${inp("descripcion", "Descripción", { type: "textarea", rows: 4, full: true })}
+      ${inp("incluye", tipo === "alojamiento" ? "Servicios (uno por línea)" : "Incluye (uno por línea)", { type: "textarea", rows: 4, full: true })}
+      <div class="fld full"><label>Fotos</label><div class="pfotos">${fotos}<label class="btn" for="pFotos">Subir fotos</label><input type="file" id="pFotos" accept="image/jpeg,image/png,image/webp" multiple class="sr"></div><span class="help">La primera es la portada.</span></div>
+      ${inp("proveedor", "Proveedor (solo interno)", { ph: "Nombre del hotel u operador" })}${inp("tarifarioId", "Tarifario de origen", { type: "select", list: [["", "Ninguno"], ...pdfs.map(f => [f.id, f.nombre])] })}
+      ${inp("notas", "Notas internas", { type: "textarea", rows: 2, full: true })}</div></div>
+    <div class="panel"><div class="ed-head"><h2>Temporadas</h2><button class="btn" type="button" data-add="temporadas">+ Temporada</button></div>
+      <p class="help" style="margin:-4px 0 12px">Una fila por cada rango de fechas del tarifario. Una fecha sin temporada no se vende en línea.</p>
+      ${temps.map((t, i) => `<div class="trow">${inp(`temporadas.${i}.nombre`, "Nombre", { ph: "Alta" })}${inp(`temporadas.${i}.desde`, "Desde", { type: "date" })}${inp(`temporadas.${i}.hasta`, "Hasta", { type: "date" })}<button class="btn danger" type="button" data-del="temporadas.${i}"${temps.length < 2 ? " disabled" : ""} aria-label="Quitar temporada">×</button></div>`).join("")}</div>
+    ${precios}
+    <div class="adm-actions"><button class="btn primary" type="button" id="pSave">Guardar</button><button class="btn" type="button" id="admDiscard">Descartar cambios</button>
+      ${!d._new ? `<button class="btn danger" type="button" id="pDel">Eliminar</button><span id="pDelC" hidden>¿Eliminar? <button class="btn danger" type="button" id="pDelYes">Sí, eliminar</button></span>` : ""}
+      <span class="toast" id="admToast" role="status"></span></div></div></div>`;
+  wireDiscard();
+  // Los campos llevan data-k con su ruta en el borrador; un solo par de manejadores por panel
+  const body = $("#admBody");
+  if (!body.dataset.tw) {
+    body.dataset.tw = "1";
+    const put = e => { const k = e.target.dataset?.k; if (k && adm.pdraft) setPath(adm.pdraft, k, e.target.type === "checkbox" ? e.target.checked : e.target.value); return k; };
+    body.addEventListener("input", put);
+    body.addEventListener("change", e => { const k = put(e); if (k && /^temporadas\.|^moneda$/.test(k)) { markDirty(); admTarifario(adm.pdraft.tipo); } });
+  }
+  $$("[data-add]").forEach(b => b.addEventListener("click", () => {
+    const k = b.dataset.add;
+    if (k === "temporadas") d.temporadas.push({ nombre: "", desde: "", hasta: "" });
+    if (k === "habitaciones") d.habitaciones.push({ nombre: "", regimen: d.habitaciones.at(-1)?.regimen || "AI", max: 2, camas: "", precios: [] });
+    if (k === "trayectos") d.trayectos.push({ desde: "", hasta: "", servicio: "compartido", cobro: "persona", capacidad: "", precios: [] });
+    markDirty(); admTarifario(tipo);
+  }));
+  $$("[data-del]").forEach(b => b.addEventListener("click", () => {
+    const [k, i] = b.dataset.del.split("."); d[k].splice(+i, 1);
+    // Al quitar una temporada se quitan también sus precios
+    if (k === "temporadas") [...(d.habitaciones || []), ...(d.trayectos || []), d].forEach(x => Array.isArray(x.precios) && x.precios.splice(+i, 1));
+    markDirty(); admTarifario(tipo);
+  }));
+  $$("[data-delfoto]").forEach(b => b.addEventListener("click", () => { d.fotos.splice(+b.dataset.delfoto, 1); markDirty(); admTarifario(tipo); }));
+  $("#pFotos").addEventListener("change", async e => {
+    const files = [...e.target.files]; e.target.value = "";
+    for (const f of files) {
+      try { const r = await compressImage(f, 1600, 1000); const ref = db.collection("images").doc(); await write(ref, { data: r.data, w: r.w, h: r.h, createdAt: new Date().toISOString() }); IMGS[ref.id] = r.data; d.fotos = [...(d.fotos || []), "db:" + ref.id]; }
+      catch { toast(`No se pudo usar ${f.name}.`, "err"); }
+    }
+    markDirty(); admTarifario(tipo);
+  });
+  // Tarifarios en PDF
+  const up = async files => {
+    const pdf = [...files].filter(f => f.type === "application/pdf" || /\.pdf$/i.test(f.name));
+    if (!pdf.length) return toast("Solo se admiten archivos PDF.", "err");
+    const m = $("#tUp"); let ok = 0;
+    for (const f of pdf) {
+      if (f.size > 25 * 1048576) { toast(`${f.name} pesa más de 25 MB.`, "err"); continue; }
+      m.textContent = `Subiendo ${f.name}…`;
+      try { const j = await subirTarifario(f, tipo); TARIFS = [{ id: j.id, nombre: j.nombre, categoria: j.categoria, tamano: j.tamano, subido: j.subido }, ...TARIFS.filter(x => x.id !== j.id)]; ok++; } catch (er) { toast(er.message, "err"); }
+    }
+    if (ok) { admTarifario(tipo); toast(`${ok} ${ok === 1 ? "tarifario subido" : "tarifarios subidos"}.`, "ok"); } else m.textContent = "";
+  };
+  const drop = $("#tDrop");
+  ["dragenter", "dragover"].forEach(ev => drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.add("on"); }));
+  ["dragleave", "drop"].forEach(ev => drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.remove("on"); }));
+  drop.addEventListener("drop", e => up(e.dataTransfer.files));
+  $("#tFile").addEventListener("change", e => { const f = e.target.files; up(f); e.target.value = ""; });
+  $$("[data-delpdf]").forEach(b => b.addEventListener("click", async () => {
+    if (b.dataset.armed !== "1") { b.dataset.armed = "1"; b.textContent = "¿Seguro? Toca otra vez"; return; }
+    try { const r = await fetch("api/archivos.php", { method: "POST", credentials: "same-origin", headers: { "Content-Type": "application/json", "X-AVM": "1" }, body: JSON.stringify({ op: "borrar", id: b.dataset.delpdf }) }); if (!r.ok) throw 0; TARIFS = TARIFS.filter(x => x.id !== b.dataset.delpdf); admTarifario(tipo); toast("Tarifario quitado.", "ok"); }
+    catch { toast("No se pudo quitar el archivo.", "err"); }
+  }));
+  // Productos
+  $$("[data-psel]").forEach(b => b.addEventListener("click", () => guard("psel:" + b.dataset.psel, () => { adm.psel = b.dataset.psel; adm.pdraft = null; renderAdmin(); })));
+  $("#pNew").addEventListener("click", () => guard("pnew", () => { adm.psel = null; adm.pdraft = prodBlank(tipo); renderAdmin(); }));
+  $("#pDel")?.addEventListener("click", () => { $("#pDelC").hidden = false; });
+  $("#pDelYes")?.addEventListener("click", async () => {
+    try { await db.doc("productos/" + d.id).delete(); PRODS = PRODS.filter(p => p.id !== d.id); for (const f of d.fotos || []) await dropImageIfUnused(f, false); adm.pdraft = null; adm.psel = null; adm.dirty = false; renderAdmin(); toast("Eliminado.", "ok"); }
+    catch (er) { toast(errMsg(er), "err"); }
+  });
+  $("#pSave").addEventListener("click", async e => {
+    if (!db) return toast(errMsg({ code: "no_db" }), "err");
+    const x = clone(d); delete x._new; delete x.id;
+    x.nombre = String(x.nombre || "").trim(); x.destino = String(x.destino || "").trim();
+    if (!x.nombre || !x.destino) return toast("Escribe el nombre y el destino.", "err");
+    const malT = x.temporadas.findIndex(t => !t.desde || !t.hasta || t.hasta < t.desde);
+    if (malT >= 0) return toast(`Revisa las fechas de la temporada ${malT + 1}: falta una fecha o termina antes de empezar.`, "err");
+    const pos = (o, ks) => ks.some(k => +String(o?.[k] ?? "").replace(",", ".") > 0);
+    if (tipo === "alojamiento") {
+      x.habitaciones = x.habitaciones.filter(h => String(h.nombre || "").trim());
+      if (!x.habitaciones.length) return toast("Agrega al menos una habitación con nombre.", "err");
+      if (!x.habitaciones.some(h => (h.precios || []).some(p => pos(p, ["sgl", "dbl", "tpl"])))) return toast("Escribe al menos un precio de habitación.", "err");
+    }
+    if (tipo === "actividad" && !(x.precios || []).some(p => pos(p, ["adulto"]))) return toast("Escribe el precio por adulto de al menos una temporada.", "err");
+    if (tipo === "circuito" && !(x.precios || []).some(p => pos(p, ["sgl", "dbl", "tpl"]))) return toast("Escribe al menos un precio del circuito.", "err");
+    if (tipo === "transporte") {
+      x.trayectos = x.trayectos.filter(t => String(t.desde || "").trim() || String(t.hasta || "").trim());
+      if (!x.trayectos.some(t => (t.precios || []).some(p => pos(p, ["valor"])))) return toast("Escribe el precio de al menos un trayecto.", "err");
+    }
+    x.actualizado = new Date().toISOString();
+    const btn = e.currentTarget; btn.disabled = true; toast("Guardando…");
+    try {
+      let id = d.id;
+      if (d._new) { const base = slugify(x.nombre); id = base; let n = 2; while (PRODS.some(p => p.id === id)) id = `${base}-${n++}`; }
+      await write(db.doc("productos/" + id), x);
+      PRODS = [...PRODS.filter(p => p.id !== id), { id, ...x }].sort((a, b) => String(a.nombre).localeCompare(String(b.nombre), "es"));
+      adm.psel = id; adm.pdraft = null; adm.dirty = false; adm.pending = {};
+      renderAdmin(); toast(x.activo ? "Guardado. Ya sale en el buscador para su destino y fechas." : "Guardado como oculto.", "ok");
+    } catch (er) { toast(errMsg(er), "err"); }
+    btn.disabled = false;
+  });
+}
+
 /* ---------- Backoffice: política de datos ---------- */
 function admLegal() {
   const t = TXT;
@@ -3803,7 +4046,7 @@ async function editLead(uid, numero, change, okMsg) {
    El motor corre en el navegador de quien tenga el backoffice o el sitio abierto con permiso de edición:
    toma cada solicitud nueva, crea o actualiza el prospecto, aplica las automatizaciones activas y deja
    los correos en la bandeja de salida. Enviarlos de verdad requiere conectar un proveedor de correo. */
-let PROSPECTS = [], LISTS = [], AUTOS = [], TEMPLATES = [], OUTBOX = [], CAMPS = [], LIQS = {};
+let PROSPECTS = [], LISTS = [], AUTOS = [], TEMPLATES = [], OUTBOX = [], CAMPS = [], LIQS = {}, PRODS = [], TARIFS = [];
 const TAB_ID = Math.random().toString(36).slice(2);
 const prospectKey = l => { const m = String(l.correo || "").trim().toLowerCase(); if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(m)) return "m-" + m.replace(/[^a-z0-9_.~:@+-]/g, "-").slice(0, 190); const t = String(l.celular || "").replace(/\D/g, ""); return t.length >= 10 ? "t-" + t : ""; };
 const uniq = a => [...new Set(a.filter(Boolean))];
@@ -3868,6 +4111,8 @@ function subscribeCrm() {
   const sub = (name, set) => db.collection(name).onSnapshot(q => { set(q.docs.map(d => ({ id: d.id, ...d.data() }))); crmLoaded.add(name); refreshCrm(); }, () => {});
   sub("prospects", v => PROSPECTS = v.sort((a, b) => String(b.ultima).localeCompare(String(a.ultima))));
   sub("liquidaciones", v => LIQS = Object.fromEntries(v.map(x => [x.numero || x.id, x])));
+  sub("productos", v => PRODS = v.sort((a, b) => String(a.nombre).localeCompare(String(b.nombre), "es")));
+  sub("tarifarios", v => TARIFS = v.sort((a, b) => String(b.subido).localeCompare(String(a.subido))));
   sub("lists", v => LISTS = v.sort((a, b) => String(a.name).localeCompare(String(b.name), "es")));
   sub("automations", v => AUTOS = v.sort((a, b) => (+a.order || 0) - (+b.order || 0)));
   sub("templates", v => TEMPLATES = v.sort((a, b) => String(a.name).localeCompare(String(b.name), "es")));
@@ -3884,13 +4129,17 @@ const NAV = [
   ["Contenido del sitio", [["portada", "Portada y textos", "M3 4h14v12H3zM3 9h14"], ["destinos", "Destinos y ofertas", "M10 18s-6-5-6-10a6 6 0 0 1 12 0c0 5-6 10-6 10zm0-8a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"],
     ["tours", "Tours y circuitos", "M2 17 8 6l4 6 2-3 4 8z"], ["grupos", "Salidas grupales", "M7 9a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5zm6 0a2.5 2.5 0 1 0 0-5M2 16a5 5 0 0 1 10 0m1-5a5 5 0 0 1 5 5"],
     ["traslados", "Traslados", "M3 13V9l2-4h10l2 4v4H3zM5.5 15.5v-2M14.5 15.5v-2"], ["nosotros", "Nosotros y aliados", "M10 2 3 6v5c0 4 3 6 7 7 4-1 7-3 7-7V6z"]]],
+  ["Tarifarios", [["t_alojamiento", "Alojamientos", "M3 17V8l7-5 7 5v9M7 17v-5h6v5"], ["t_actividad", "Actividades", "M10 2l2.4 5 5.6.8-4 3.9.9 5.5-4.9-2.6-4.9 2.6.9-5.5-4-3.9 5.6-.8z"],
+    ["t_transporte", "Transportes", "M3 13V9l2-4h10l2 4v4H3zM5.5 15.5v-2M14.5 15.5v-2"], ["t_circuito", "Circuitos", "M4 16a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm12-8a2 2 0 1 0 0-4 2 2 0 0 0 0 4zM6 14c4 0 2-8 8-8"]]],
   ["Configuración", [["contacto", "Contacto y WhatsApp", "M5 3h3l1.5 4-2 1.5a9 9 0 0 0 4 4L13 10.5l4 1.5v3a2 2 0 0 1-2 2A13 13 0 0 1 3 5a2 2 0 0 1 2-2"], ["aliados", "Cadenas y aliados", "M3 6h6v6H3zM11 8h6v6h-6zM6 14v3M14 4V2"], ["tarifas", "Tarifas y buscador", "M4 16 16 4M6 7a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zm8 9a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"], ["marca", "Marca", "M10 2a8 8 0 1 0 0 16c1 0 1.5-.7 1.5-1.5 0-.6-.4-1-.4-1.6 0-.8.6-1.4 1.4-1.4H14a4 4 0 0 0 4-4c0-4-3.6-7.5-8-7.5zM6 10a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3-3a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm4 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"], ["legal", "Privacidad", "M5 3h10v14H5zM8 7h4M8 10h4M8 13h2"]]]
 ];
 const NAV_TITLES = Object.fromEntries(NAV.flatMap(([, items]) => items.map(([k, l]) => [k, l])));
 const NAV_SUBS = { resumen: "Así va el sitio hoy.", solicitudes: "Cada cotización que llega desde el sitio.", prospectos: "Personas que han dejado sus datos, sin duplicados.",
   listas: "Grupos de prospectos para campañas y seguimiento.", automatizaciones: "Lo que pasa solo cuando llega una solicitud.", correos: "Plantillas y bandeja de salida.", campanas: "Promociones a tus listas de marketing, con o sin un destino del sitio.",
   portada: "Portada, textos de secciones y tasa de cambio.", destinos: "Paquetes, tarifas, ofertas e información práctica.", tours: "Tours y circuitos que se pueden cotizar.",
-  grupos: "Salidas con fecha fija.", traslados: "Tarifas de traslados por zona.", nosotros: "Historia, cifras y por qué elegirnos.", contacto: "Teléfonos, WhatsApp por zona, sedes y horario.", aliados: "Logos de cadenas hoteleras y aliados que se muestran en el inicio.", tarifas: "Productos del buscador y tu margen sobre los precios en línea.", legal: "Política de tratamiento de datos.", marca: "Nombre, logos, colores y tipografía de tu agencia." };
+  grupos: "Salidas con fecha fija.", traslados: "Tarifas de traslados por zona.", nosotros: "Historia, cifras y por qué elegirnos.", contacto: "Teléfonos, WhatsApp por zona, sedes y horario.", aliados: "Logos de cadenas hoteleras y aliados que se muestran en el inicio.", tarifas: "Productos del buscador y tu margen sobre los precios en línea.", legal: "Política de tratamiento de datos.", marca: "Nombre, logos, colores y tipografía de tu agencia.",
+  t_alojamiento: "Hoteles con tus tarifas netas por temporada. Salen en el buscador junto a LiteAPI.", t_actividad: "Tours y entradas con precio por persona por temporada.",
+  t_transporte: "Traslados por trayecto, compartidos o privados.", t_circuito: "Circuitos con salidas y precio por persona." };
 function navBadges() {
   const n = LEADS.filter(l => l.estado === "nueva").length, o = OUTBOX.filter(x => x.estado === "pendiente").length;
   const set = (k, v) => { const b = $(`.dnav [data-tab="${k}"] .nb`); if (b) { b.textContent = v || ""; b.hidden = !v; } };
@@ -3922,7 +4171,7 @@ function renderAdmin() {
 }
 function renderAdminBody() {
   ({ resumen: admResumen, solicitudes: admSolicitudes, prospectos: admProspectos, listas: admListas, automatizaciones: admAutos, correos: admCorreos, campanas: admCampanas,
-    portada: admPortada, destinos: admDestinos, tours: () => admColl("tours"), grupos: () => admColl("groups"), traslados: admTraslados, nosotros: admNosotros, contacto: admContacto, aliados: admAliados, tarifas: admTarifas, marca: admMarca, legal: admLegal })[adm.tab]();
+    portada: admPortada, destinos: admDestinos, tours: () => admColl("tours"), grupos: () => admColl("groups"), traslados: admTraslados, nosotros: admNosotros, contacto: admContacto, aliados: admAliados, tarifas: admTarifas, marca: admMarca, legal: admLegal, t_alojamiento: () => admTarifario("alojamiento"), t_actividad: () => admTarifario("actividad"), t_transporte: () => admTarifario("transporte"), t_circuito: () => admTarifario("circuito") })[adm.tab]();
   if ($("#admBody").classList.contains("locked")) $$("#admBody input, #admBody textarea, #admBody select, #admBody button").forEach(x => x.disabled = true);
   if (adm.msg && Date.now() - adm.msg[2] < 6000) { const t = $("#admToast"); if (t) { t.textContent = adm.msg[0]; t.className = "toast " + adm.msg[1]; } }
 }
@@ -4258,6 +4507,7 @@ $("#nlForm").addEventListener("submit", e => {
 });
 
 $("#year").textContent = new Date().getFullYear();
+loadPropCirc();
 renderAll(); renderPanel(); update(); route(); boot();
 })();
 </script>

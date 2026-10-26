@@ -8,6 +8,7 @@ credenciales*.txt
 # Archivos que crea el sitio al funcionar
 produccion/avm-cache/
 produccion/avm-copias/
+produccion/avm-archivos/
 produccion/avm-instalado.lock
 *.log
 

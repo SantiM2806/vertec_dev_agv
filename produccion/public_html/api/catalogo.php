@@ -12,8 +12,9 @@ if ($_SERVER['REQUEST_METHOD'] !== 'GET') avm_fail(405, 'metodo');
 $tipo = (string) ($_GET['tipo'] ?? '');
 $id = (string) ($_GET['id'] ?? '');
 switch ($tipo) {
-    case 'hotel': $r = avm_lite_hotel($id); $k = 'hotel'; break;
-    case 'actividad': $r = avm_lite_actividad($id); $k = 'tour'; break;
+    // Ids "p-…": productos propios de la agencia (Tarifarios)
+    case 'hotel': $r = str_starts_with($id, 'p-') ? avm_prop_hotel($id) : avm_lite_hotel($id); $k = 'hotel'; break;
+    case 'actividad': $r = str_starts_with($id, 'p-') ? avm_prop_actividad($id) : avm_lite_actividad($id); $k = 'tour'; break;
     case 'actividades':
         $lat = filter_input(INPUT_GET, 'lat', FILTER_VALIDATE_FLOAT); $lng = filter_input(INPUT_GET, 'lng', FILTER_VALIDATE_FLOAT);
         if ($lat === false || $lat === null || $lng === false || $lng === null || abs($lat) > 90 || abs($lng) > 180) avm_fail(400, 'coordenadas');
@@ -23,7 +24,12 @@ switch ($tipo) {
     case 'tarifas':
         $ids = explode(',', (string) ($_GET['ids'] ?? ''));
         $kids = array_filter(explode(',', (string) ($_GET['kids'] ?? '')), fn($x) => $x !== '');
-        $r = avm_lite_tarifas($ids, (string) ($_GET['in'] ?? ''), (string) ($_GET['out'] ?? ''), (int) ($_GET['rooms'] ?? 1), (int) ($_GET['adults'] ?? 2), $kids);
+        $propios = array_values(array_filter($ids, fn($x) => str_starts_with($x, 'p-')));
+        $otros = array_values(array_diff($ids, $propios));
+        $in = (string) ($_GET['in'] ?? ''); $out = (string) ($_GET['out'] ?? ''); $ro = (int) ($_GET['rooms'] ?? 1); $ad = (int) ($_GET['adults'] ?? 2);
+        if ($propios && !avm_lite_fechas_ok($in, $out)) avm_fail(400, 'fechas');
+        $r = $otros ? avm_lite_tarifas($otros, $in, $out, $ro, $ad, $kids) : ['ok' => true, 'rates' => [], 'nights' => max(1, (int) round((strtotime($out) - strtotime($in)) / 86400))];
+        if ($propios) { $pr = avm_prop_tarifas($propios, $in, $out, $ro, $ad, $kids); $r = $r['ok'] ? ['ok' => true, 'rates' => $r['rates'] + $pr, 'nights' => $r['nights']] : ($pr ? ['ok' => true, 'rates' => $pr, 'nights' => max(1, (int) round((strtotime($out) - strtotime($in)) / 86400))] : $r); }
         // El desglose (neto y comisiones) solo viaja a administradores
         $adm = avm_is_admin(); session_write_close();
         header('Cache-Control: ' . ($adm ? 'private, no-store' : 'public, max-age=900'));
@@ -31,5 +37,7 @@ switch ($tipo) {
         avm_json($r['ok'] ? ['rates' => $r['rates'], 'nights' => $r['nights']] : ['error' => $r['error']], $r['ok'] ? 200 : (int) $r['status']);
     default: avm_fail(400, 'tipo');
 }
-header('Cache-Control: public, max-age=3600');
+$adm = avm_is_admin(); session_write_close();
+if ($r['ok'] && !$adm) $r = avm_sin_liq($r);
+header('Cache-Control: ' . ($adm ? 'private, no-store' : 'public, max-age=' . (str_starts_with($id, 'p-') ? 300 : 3600)));
 avm_json($r['ok'] ? [$k => $r[$k]] : ['error' => $r['error']], $r['ok'] ? 200 : (int) $r['status']);

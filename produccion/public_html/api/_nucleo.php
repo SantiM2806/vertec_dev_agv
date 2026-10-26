@@ -15,8 +15,9 @@ require_once __DIR__ . '/_tenant.php';
 require_once __DIR__ . '/_correo.php';
 require_once __DIR__ . '/_campanas.php';
 require_once __DIR__ . '/_liteapi.php';
+require_once __DIR__ . '/_propios.php';
 
-const AVM_ADMIN_COLLS = ['leads', 'prospects', 'lists', 'automations', 'templates', 'outbox', 'campaigns', 'firmas', 'system', 'liquidaciones'];
+const AVM_ADMIN_COLLS = ['leads', 'prospects', 'lists', 'automations', 'templates', 'outbox', 'campaigns', 'firmas', 'system', 'liquidaciones', 'productos', 'tarifarios'];
 const AVM_SEG = '/^[A-Za-z0-9_\-.~:@+]{1,200}$/';
 
 function avm_config(): array {
@@ -252,7 +253,9 @@ function avm_liquidar_lead(array $l): ?array {
     if (empty($l['numero']) || empty($v['hotelId']) || empty($v['d1']) || empty($v['d2']) || empty($v['habitacion'])) return null;
     $id = (string) $v['hotelId'];
     $kids = array_fill(0, max(0, min(6, (int) ($v['kids'] ?? 0))), 8);
-    $r = avm_lite_tarifas([$id], (string) $v['d1'], (string) $v['d2'], (int) ($v['rooms'] ?? 1), (int) ($v['adults'] ?? 2), $kids, 40);
+    $r = str_starts_with($id, 'p-')
+        ? ['ok' => true, 'rates' => avm_prop_tarifas([$id], (string) $v['d1'], (string) $v['d2'], (int) ($v['rooms'] ?? 1), (int) ($v['adults'] ?? 2), $kids, 40), 'nights' => max(1, (int) round((strtotime((string) $v['d2']) - strtotime((string) $v['d1'])) / 86400))]
+        : avm_lite_tarifas([$id], (string) $v['d1'], (string) $v['d2'], (int) ($v['rooms'] ?? 1), (int) ($v['adults'] ?? 2), $kids, 40);
     $want = (float) ($v['totalUsd'] ?? 0); $best = null; $pts = INF;
     foreach ($r['ok'] ? ($r['rates'][$id]['options'] ?? []) : [] as $o) {
         if (empty($o['liq'])) continue;

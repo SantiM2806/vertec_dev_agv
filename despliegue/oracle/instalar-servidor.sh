@@ -59,9 +59,9 @@ EOF
 a2enmod rewrite headers remoteip >/dev/null
 a2dissite 000-default >/dev/null 2>&1 || true
 a2ensite plataforma >/dev/null
-# Fotos y logos suben comprimidos; 8 MB por petición es suficiente
+# Fotos y logos suben comprimidos; los tarifarios en PDF pueden pesar hasta 25 MB
 PHPINI="$(php -r 'echo PHP_MAJOR_VERSION.".".PHP_MINOR_VERSION;')"
-sed -i 's/^post_max_size = .*/post_max_size = 8M/; s/^upload_max_filesize = .*/upload_max_filesize = 8M/' "/etc/php/$PHPINI/apache2/php.ini"
+sed -i 's/^post_max_size = .*/post_max_size = 26M/; s/^upload_max_filesize = .*/upload_max_filesize = 25M/' "/etc/php/$PHPINI/apache2/php.ini"
 systemctl restart apache2
 
 echo "==> Base de datos"
@@ -97,9 +97,9 @@ else
   echo "   avm-config.php ya existe: no lo toco."
 fi
 chown root:www-data "$CONF"; chmod 640 "$CONF"
-# Carpetas que escribe el sitio: caché, copias diarias y el candado del instalador
-mkdir -p "$PROD/avm-cache" "$PROD/avm-copias"
-chown www-data:www-data "$PROD/avm-cache" "$PROD/avm-copias"
+# Carpetas que escribe el sitio: caché, copias diarias, tarifarios en PDF y el candado del instalador
+mkdir -p "$PROD/avm-cache" "$PROD/avm-copias" "$PROD/avm-archivos"
+chown www-data:www-data "$PROD/avm-cache" "$PROD/avm-copias" "$PROD/avm-archivos"
 chgrp www-data "$PROD"; chmod 775 "$PROD"
 
 echo "==> Caddy: HTTPS automático para la plataforma y cada agencia"

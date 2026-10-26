@@ -6,6 +6,7 @@ Una sola instalación para muchas agencias de viajes. Cada agencia tiene su siti
 - cotización con adicionales (actividades, traslados y asistencia médica);
 - captura de solicitudes, CRM de prospectos, correos automáticos y campañas con Resend;
 - tarifas con markup y fees, y desglose interno del neto y la ganancia.
+- **tarifarios propios** (alojamientos, actividades, transportes y circuitos con temporadas y precios netos, más sus PDF): salen en el buscador junto a LiteAPI, o solos si la agencia no tiene integraciones.
 
 El dueño de la plataforma administra las agencias en `plataforma.php`.
 
@@ -19,6 +20,7 @@ El dueño de la plataforma administra las agencias en `plataforma.php`.
 | `produccion/public_html/` | El sitio. `index.html` y `datos-iniciales.json` se **generan**; el resto se edita directo. |
 | `produccion/public_html/api/_tenant.php` | Multi-agencia: reconoce la agencia por la dirección, su configuración y su marca. |
 | `produccion/public_html/api/_nucleo.php` | Base de datos, sesiones, automatizaciones y correos. |
+| `produccion/public_html/api/_propios.php` | Productos de los tarifarios: precios por temporada y su búsqueda. |
 | `produccion/public_html/plataforma.php` | Panel del dueño de la plataforma (crear agencias, dominios, llaves). |
 | `produccion/public_html/api/tareas.php` | Tareas programadas (cada 5 minutos) para todas las agencias. |
 | `produccion/avm-config.example.php` | Plantilla de la configuración de la plataforma. |

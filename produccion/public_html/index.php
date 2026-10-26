@@ -68,13 +68,13 @@ switch ($ruta) {
         break;
     case 'hotel':
         [$hid, $tc] = array_pad(explode('~', $id, 2), 2, '');
-        $r = avm_lite_hotel($hid);
+        $r = str_starts_with($hid, 'p-') ? avm_prop_hotel($hid) : avm_lite_hotel($hid);
         if (!$r['ok']) { $noEncontrado = true; break; }
         $h = $r['hotel'];
         $seo['title'] = $h['name'] . ($h['city'] ? ', ' . $h['city'] : '') . ' | ' . $marca;
         $seo['desc'] = $corto($h['description'] ?: $h['name'] . ' en ' . $h['city'] . ". Cotiza con $marca tu viaje con hotel, traslados y asistencia.");
         $seo['path'] = 'hotel/' . $id; $seo['h1'] = $h['name']; $seo['type'] = 'website';
-        if (!empty($h['images'][0]['url'])) $seo['image'] = $h['images'][0]['url'];
+        if (!empty($h['images'][0]['url'])) $seo['image'] = preg_match('#^https?://#', $h['images'][0]['url']) ? $h['images'][0]['url'] : $site . '/' . $h['images'][0]['url'];
         $hotel = ['@type' => 'Hotel', 'name' => $h['name'], 'description' => $seo['desc'], 'image' => array_slice(array_column($h['images'], 'url'), 0, 5),
             'address' => ['@type' => 'PostalAddress', 'streetAddress' => $h['address'], 'addressLocality' => $h['city'], 'addressCountry' => $h['country']]];
         if ($h['lat'] && $h['lng']) $hotel['geo'] = ['@type' => 'GeoCoordinates', 'latitude' => $h['lat'], 'longitude' => $h['lng']];
@@ -85,13 +85,13 @@ switch ($ruta) {
         break;
     case 'actividad':
         [$aid, $tc] = array_pad(explode('~', $id, 2), 2, '');
-        $r = avm_lite_actividad($aid);
+        $r = str_starts_with($aid, 'p-') ? avm_prop_actividad($aid) : avm_lite_actividad($aid);
         if (!$r['ok']) { $noEncontrado = true; break; }
         $t = $r['tour'];
         $seo['title'] = $t['title'] . ($t['city'] ? ' en ' . $t['city'] : '') . ' | ' . $marca;
         $seo['desc'] = $corto($t['description'] ?: $t['title']);
         $seo['path'] = 'actividad/' . $id; $seo['h1'] = $t['title'];
-        if (!empty($t['images'][0]['url'])) $seo['image'] = $t['images'][0]['url'];
+        if (!empty($t['images'][0]['url'])) $seo['image'] = preg_match('#^https?://#', $t['images'][0]['url']) ? $t['images'][0]['url'] : $site . '/' . $t['images'][0]['url'];
         $seo['jsonld'][] = ['@type' => 'TouristTrip', 'name' => $t['title'], 'description' => $seo['desc'], 'image' => array_slice(array_column($t['images'], 'url'), 0, 5),
             'provider' => ['@type' => 'TravelAgency', 'name' => $marca, 'url' => $site . '/']];
         $seo['jsonld'][] = $migas([['Inicio', ''], [$t['title'], $seo['path']]]);
