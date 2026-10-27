@@ -8,7 +8,9 @@ Una sola instalación para muchas agencias de viajes. Cada agencia tiene su siti
 - tarifas con markup y fees, y desglose interno del neto y la ganancia.
 - **tarifarios propios** (alojamientos, actividades, transportes y circuitos con temporadas y precios netos, más sus PDF): salen en el buscador junto a LiteAPI, o solos si la agencia no tiene integraciones.
 
-El dueño de la plataforma administra las agencias en `plataforma.php`.
+El dueño de la plataforma administra las agencias en `plataforma.php`. Cada agencia enciende sus proveedores y deja sus credenciales (cifradas) en su backoffice → *Integraciones*.
+
+**Agregar un proveedor nuevo:** se declara en `avm_prov_registro()` (`api/_proveedores.php`) con sus credenciales, sus productos y sus funciones de búsqueda, tarifas y ficha, que deben devolver el mismo formato que LiteAPI (`api/_liteapi.php`). Sus ids llevan un prefijo propio (por ejemplo `tbo-`) para que fichas y tarifas lleguen al proveedor correcto.
 
 ## Estructura
 
@@ -20,6 +22,7 @@ El dueño de la plataforma administra las agencias en `plataforma.php`.
 | `produccion/public_html/` | El sitio. `index.html` y `datos-iniciales.json` se **generan**; el resto se edita directo. |
 | `produccion/public_html/api/_tenant.php` | Multi-agencia: reconoce la agencia por la dirección, su configuración y su marca. |
 | `produccion/public_html/api/_nucleo.php` | Base de datos, sesiones, automatizaciones y correos. |
+| `produccion/public_html/api/_proveedores.php` | Registro de proveedores en línea (LiteAPI y los próximos: TBO, World2Meet, Omnibees). El buscador junta todos los activos con los tarifarios propios. |
 | `produccion/public_html/api/_propios.php` | Productos de los tarifarios: precios por temporada y su búsqueda. |
 | `produccion/public_html/plataforma.php` | Panel del dueño de la plataforma (crear agencias, dominios, llaves). |
 | `produccion/public_html/api/tareas.php` | Tareas programadas (cada 5 minutos) para todas las agencias. |

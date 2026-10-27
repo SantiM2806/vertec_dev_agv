@@ -788,6 +788,11 @@ body.is-admin .admin{max-width:none;padding:0}
 @media (max-width:640px){.trow{grid-template-columns:1fr 1fr}.trow .fld:first-child{grid-column:1/-1}}
 .pfotos{display:flex;flex-wrap:wrap;gap:8px;align-items:center}.pfoto{position:relative;width:96px;height:66px;border-radius:8px;overflow:hidden;background:var(--soft)}.pfoto img{width:100%;height:100%;object-fit:cover}
 .pfoto button{position:absolute;top:3px;right:3px;padding:2px 7px;font-size:13px;line-height:1}
+.icard{border:1px solid var(--line);background:var(--card);border-radius:18px;padding:18px;margin-bottom:14px;display:grid;gap:10px}
+.ihead{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}.ihead h3{font:600 18px/1.2 var(--f-display);margin:0 0 6px}
+.ichips{display:flex;flex-wrap:wrap;gap:6px}.ichips span{font-size:12px;padding:3px 9px;border-radius:999px;background:var(--soft);color:var(--muted)}
+.ipill{font:600 12px/1 var(--f-body);padding:6px 10px;border-radius:999px;white-space:nowrap;background:var(--soft);color:var(--muted)}
+.ipill.on{background:color-mix(in srgb,var(--ok) 16%,transparent);color:var(--ok)}.ipill.off{background:color-mix(in srgb,var(--danger) 12%,transparent);color:var(--danger)}.ipill.soon{background:var(--soft);color:var(--muted)}
 .bcolor{display:flex;gap:8px;align-items:center}.bcolor input[type=color]{width:46px;height:40px;padding:2px;border:1px solid var(--line);border-radius:10px;background:var(--card)}.bcolor input[type=text]{max-width:120px;font-family:var(--f-mono)}
 .blogo{height:96px;border:1px dashed var(--line);border-radius:12px;display:grid;place-items:center;background:var(--card);padding:10px}.blogo.dark{background:#12161B}.blogo img{max-height:76px;max-width:100%;object-fit:contain}.blogo span{color:var(--muted);font-size:13px}
 .bprev{margin-top:14px}.bp{border:1px solid var(--line);border-radius:16px;overflow:hidden;color:#12161B}.bp-top{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 16px;font-size:13px}.bp-top img{height:28px;width:auto;max-width:160px;object-fit:contain}
@@ -1922,7 +1927,7 @@ let LIVE = { prod: "", items: [], shown: 0, who: null, nights: 0, crit: null };
 const durTxt = m => m ? `${Math.floor(m / 60)} h${m % 60 ? " " + (m % 60) + " min" : ""}` : "";
 const hhmm = iso => String(iso || "").slice(11, 16);
 const dmy = iso => iso ? fmt(String(iso).slice(0, 10)) : "";
-const LIVE_ERR = { sin_configurar: "Los precios en línea todavía no están activos.", sin_acceso: "Este producto todavía no está habilitado para precios en línea.", fechas: "Revisa las fechas: deben ser desde hoy en adelante.", destino: "No encontramos ese destino. Elígelo de la lista.", ruta: "Revisa el origen y el destino." };
+const LIVE_ERR = { sin_configurar: "Los precios en línea todavía no están activos.", sin_proveedores: "Por ahora no tenemos precios en línea para ese destino.", sin_acceso: "Este producto todavía no está habilitado para precios en línea.", fechas: "Revisa las fechas: deben ser desde hoy en adelante.", destino: "No encontramos ese destino. Elígelo de la lista.", ruta: "Revisa el origen y el destino." };
 async function runLive(who) {
   const v = V[prod], kind = P[prod].live, box = $("#results");
   // Si eligió un hotel (no un destino), va directo a la ficha del hotel con sus fechas
@@ -3351,7 +3356,7 @@ async function admTarifas() {
   const t = adm.tarifas, on = { ...DEFAULT_TXT.buscador, ...(TXT.buscador || {}) };
   const num = (id, label, help) => fld(id, label, t[id], { type: "number", min: 0, step: "0.1", help });
   $("#admBody").innerHTML = `<div class="panel"><h2>Productos del buscador</h2>
-      <p class="help" style="margin-bottom:10px">Elige qué pestañas ve el cliente. Vuelos y actividades necesitan el acceso habilitado en tu cuenta de LiteAPI.</p>
+      <p class="help" style="margin-bottom:10px">Elige qué pestañas ve el cliente. Los precios en línea salen de tus proveedores activos (Integraciones) y de tus tarifarios propios. Vuelos y actividades de LiteAPI necesitan el acceso habilitado en tu cuenta.</p>
       <div class="fgrid2">${Object.entries(P).map(([k, p]) => `<label class="chk"><input type="checkbox" data-prod="${k}"${on[k] !== false ? " checked" : ""}> ${esc(p.label)}${p.live ? " (precios en línea)" : " (cotiza un asesor)"}</label>`).join("")}</div></div>
     <div class="panel"><h2>Margen y cargos sobre los precios en línea</h2>
       <p class="help" style="margin-bottom:12px">Se suman al precio de LiteAPI y a las tarifas netas de tus tarifarios antes de mostrarlos. El cliente ve un solo precio final; nunca ve el desglose.</p>
@@ -3887,6 +3892,61 @@ function admTarifario(tipo) {
   });
 }
 
+/* ---------- Backoffice: integraciones (proveedores en línea) ----------
+   Cada agencia enciende sus proveedores y deja sus credenciales; se guardan cifradas en el servidor y nunca vuelven
+   a la página (api/integraciones.php). El buscador junta los proveedores activos con los tarifarios propios. */
+const PROD_TXT = { hoteles: "Hoteles", actividades: "Actividades", vuelos: "Vuelos", traslados: "Traslados" };
+async function integApi(body) {
+  const r = await fetch("api/integraciones.php", body ? { method: "POST", credentials: "same-origin", headers: { "Content-Type": "application/json", "X-AVM": "1" }, body: JSON.stringify(body) } : { credentials: "same-origin" });
+  const j = await r.json().catch(() => ({}));
+  if (!r.ok) throw new Error(j.error || "No se pudo conectar con el servidor.");
+  return j;
+}
+async function admIntegraciones() {
+  $("#admBody").innerHTML = `<div class="panel"><p class="help">Cargando integraciones…</p></div>`;
+  let data;
+  try { data = await integApi(); } catch (e) { $("#admBody").innerHTML = `<div class="panel"><p class="help">${esc(e.message)}</p></div>`; return; }
+  if (adm.tab !== "integraciones") return;
+  const pr = data.propios || {}, nProp = Object.values(pr).reduce((a, b) => a + b, 0);
+  const pill = p => p.estado !== "disponible" ? `<span class="ipill soon">Próximamente</span>`
+    : !p.encendido ? `<span class="ipill off">Apagado</span>` : p.activo ? `<span class="ipill on">${p.demo ? "Activo · llave de demostración" : "Activo"}</span>` : `<span class="ipill off">Sin credenciales</span>`;
+  const card = p => `<article class="icard" data-prov="${esc(p.k)}"><div class="ihead"><div><h3>${esc(p.nombre)}</h3><div class="ichips">${p.productos.map(x => `<span>${esc(PROD_TXT[x] || x)}</span>`).join("")}</div></div>${pill(p)}</div>
+    <p class="help">${esc(p.desc)}${p.estado !== "disponible" ? " Puedes dejar tus credenciales: la conexión se activa cuando el conector esté listo." : ""}</p>
+    ${p.demo ? `<p class="help">Hoy usas la llave de demostración de la plataforma. Para vender con tu propia cuenta y comisiones, pega aquí tu llave.</p>` : ""}
+    <div class="fgrid2">${p.campos.map(c => `<div class="fld"><label for="ic-${esc(p.k)}-${esc(c.k)}">${esc(c.label)}</label>
+      <input id="ic-${esc(p.k)}-${esc(c.k)}" data-c="${esc(c.k)}" type="${c.tipo === "secreto" ? "password" : "text"}" autocomplete="off" value="${esc(c.valor || "")}" placeholder="${c.tipo === "secreto" && c.lleno ? "Guardada · escribe para cambiarla" : ""}">
+      ${c.tipo === "secreto" && c.lleno ? `<label class="chk"><input type="checkbox" data-borrar="${esc(c.k)}"> Quitar esta llave</label>` : ""}</div>`).join("")}</div>
+    <label class="chk"><input type="checkbox" data-on${p.encendido ? " checked" : ""}> Usar este proveedor en el buscador</label>
+    <div class="adm-actions"><button class="btn primary" type="button" data-isave>Guardar</button>${p.probar ? `<button class="btn" type="button" data-iprobar>Probar conexión</button>` : ""}
+      ${p.web ? `<a class="btn" href="${esc(p.web)}" target="_blank" rel="noopener">Sitio del proveedor ↗</a>` : ""}<span class="toast" role="status" data-imsg></span></div></article>`;
+  $("#admBody").innerHTML = `<div class="panel"><h2>Cómo se arma el buscador</h2>
+      <p class="help">El cliente ve en una sola lista los resultados de tus <b>tarifarios propios</b> y de cada <b>proveedor activo</b>, ordenados por precio y con tu markup y tus fees (Tarifas y buscador). Si un proveedor no responde, los demás siguen mostrándose.</p></div>
+    <article class="icard"><div class="ihead"><div><h3>Tarifarios propios</h3><div class="ichips"><span>Alojamientos</span><span>Actividades</span><span>Transportes</span><span>Circuitos</span></div></div><span class="ipill on">${nProp ? "Activo" : "Sin productos"}</span></div>
+      <p class="help">${nProp ? `Tienes ${nProp} ${nProp === 1 ? "producto publicado" : "productos publicados"}: ${Object.entries(pr).map(([k, n]) => `${n} ${{ alojamiento: "alojamientos", actividad: "actividades", transporte: "transportes", circuito: "circuitos" }[k] || k}`).join(", ")}.` : "Carga tus hoteles, actividades, traslados y circuitos con tus tarifas netas en la sección Tarifarios."}</p>
+      <div class="adm-actions"><button class="btn" type="button" data-goto="t_alojamiento">Ir a Tarifarios</button></div></article>
+    ${data.proveedores.map(card).join("")}
+    <div class="panel"><h2>¿Tu proveedor no está en la lista?</h2><p class="help">La plataforma puede conectar otros proveedores con API (por ejemplo Hotelbeds, Expedia, Juniper o tu propio sistema). Escríbenos con el nombre del proveedor y su documentación.</p></div>`;
+  $$("[data-goto]").forEach(b => b.addEventListener("click", () => { adm.tab = b.dataset.goto; renderAdmin(); }));
+  $$(".icard[data-prov]").forEach(cardEl => {
+    const k = cardEl.dataset.prov, msg = $("[data-imsg]", cardEl);
+    $("[data-isave]", cardEl).addEventListener("click", async e => {
+      const btn = e.currentTarget; btn.disabled = true; msg.className = "toast"; msg.textContent = "Guardando…";
+      try {
+        const campos = Object.fromEntries($$("[data-c]", cardEl).map(i => [i.dataset.c, i.value]));
+        const borrar = $$("[data-borrar]:checked", cardEl).map(i => i.dataset.borrar);
+        await integApi({ op: "guardar", proveedor: k, encendido: $("[data-on]", cardEl).checked, campos, borrar });
+        toast("Integración guardada.", "ok"); admIntegraciones();
+      } catch (er) { msg.className = "toast err"; msg.textContent = er.message; btn.disabled = false; }
+    });
+    $("[data-iprobar]", cardEl)?.addEventListener("click", async e => {
+      const btn = e.currentTarget; btn.disabled = true; msg.className = "toast"; msg.textContent = "Probando…";
+      try { const j = await integApi({ op: "probar", proveedor: k }); msg.className = "toast " + (j.ok ? "ok" : "err"); msg.textContent = j.mensaje || (j.ok ? "Conexión correcta." : "No se pudo conectar."); }
+      catch (er) { msg.className = "toast err"; msg.textContent = er.message; }
+      btn.disabled = false;
+    });
+  });
+}
+
 /* ---------- Backoffice: política de datos ---------- */
 function admLegal() {
   const t = TXT;
@@ -4111,7 +4171,7 @@ function subscribeCrm() {
   sub("outbox", v => OUTBOX = v.sort((a, b) => String(b.creado).localeCompare(String(a.creado))));
   sub("campaigns", v => CAMPS = v.sort((a, b) => String(b.creado).localeCompare(String(a.creado))));
 }
-const CRM_TABS = ["resumen", "solicitudes", "prospectos", "listas", "automatizaciones", "correos", "campanas"];
+const CRM_TABS = ["resumen", "solicitudes", "prospectos", "listas", "automatizaciones", "correos", "campanas", "integraciones"];
 function refreshCrm() { navBadges(); runEngine(); if (!$("#admin").hidden && CRM_TABS.includes(adm.tab) && !adm.dirty && !document.activeElement?.closest?.("#admBody")) renderAdminBody(); }
 
 /* ---------- Dashboard: estructura ---------- */
@@ -4123,13 +4183,13 @@ const NAV = [
     ["traslados", "Traslados", "M3 13V9l2-4h10l2 4v4H3zM5.5 15.5v-2M14.5 15.5v-2"], ["nosotros", "Nosotros y aliados", "M10 2 3 6v5c0 4 3 6 7 7 4-1 7-3 7-7V6z"]]],
   ["Tarifarios", [["t_alojamiento", "Alojamientos", "M3 17V8l7-5 7 5v9M7 17v-5h6v5"], ["t_actividad", "Actividades", "M10 2l2.4 5 5.6.8-4 3.9.9 5.5-4.9-2.6-4.9 2.6.9-5.5-4-3.9 5.6-.8z"],
     ["t_transporte", "Transportes", "M3 13V9l2-4h10l2 4v4H3zM5.5 15.5v-2M14.5 15.5v-2"], ["t_circuito", "Circuitos", "M4 16a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm12-8a2 2 0 1 0 0-4 2 2 0 0 0 0 4zM6 14c4 0 2-8 8-8"]]],
-  ["Configuración", [["contacto", "Contacto y WhatsApp", "M5 3h3l1.5 4-2 1.5a9 9 0 0 0 4 4L13 10.5l4 1.5v3a2 2 0 0 1-2 2A13 13 0 0 1 3 5a2 2 0 0 1 2-2"], ["aliados", "Cadenas y aliados", "M3 6h6v6H3zM11 8h6v6h-6zM6 14v3M14 4V2"], ["tarifas", "Tarifas y buscador", "M4 16 16 4M6 7a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zm8 9a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"], ["marca", "Marca", "M10 2a8 8 0 1 0 0 16c1 0 1.5-.7 1.5-1.5 0-.6-.4-1-.4-1.6 0-.8.6-1.4 1.4-1.4H14a4 4 0 0 0 4-4c0-4-3.6-7.5-8-7.5zM6 10a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3-3a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm4 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"], ["legal", "Privacidad", "M5 3h10v14H5zM8 7h4M8 10h4M8 13h2"]]]
+  ["Configuración", [["contacto", "Contacto y WhatsApp", "M5 3h3l1.5 4-2 1.5a9 9 0 0 0 4 4L13 10.5l4 1.5v3a2 2 0 0 1-2 2A13 13 0 0 1 3 5a2 2 0 0 1 2-2"], ["aliados", "Cadenas y aliados", "M3 6h6v6H3zM11 8h6v6h-6zM6 14v3M14 4V2"], ["integraciones", "Integraciones", "M7 4v4M13 4v4M5 8h10v3a5 5 0 0 1-10 0zM10 16v2"], ["tarifas", "Tarifas y buscador", "M4 16 16 4M6 7a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zm8 9a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"], ["marca", "Marca", "M10 2a8 8 0 1 0 0 16c1 0 1.5-.7 1.5-1.5 0-.6-.4-1-.4-1.6 0-.8.6-1.4 1.4-1.4H14a4 4 0 0 0 4-4c0-4-3.6-7.5-8-7.5zM6 10a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3-3a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm4 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"], ["legal", "Privacidad", "M5 3h10v14H5zM8 7h4M8 10h4M8 13h2"]]]
 ];
 const NAV_TITLES = Object.fromEntries(NAV.flatMap(([, items]) => items.map(([k, l]) => [k, l])));
 const NAV_SUBS = { resumen: "Así va el sitio hoy.", solicitudes: "Cada cotización que llega desde el sitio.", prospectos: "Personas que han dejado sus datos, sin duplicados.",
   listas: "Grupos de prospectos para campañas y seguimiento.", automatizaciones: "Lo que pasa solo cuando llega una solicitud.", correos: "Plantillas y bandeja de salida.", campanas: "Promociones a tus listas de marketing, con o sin un destino del sitio.",
   portada: "Portada, textos de secciones y tasa de cambio.", destinos: "Paquetes, tarifas, ofertas e información práctica.", tours: "Tours y circuitos que se pueden cotizar.",
-  grupos: "Salidas con fecha fija.", traslados: "Tarifas de traslados por zona.", nosotros: "Historia, cifras y por qué elegirnos.", contacto: "Teléfonos, WhatsApp por zona, sedes y horario.", aliados: "Logos de cadenas hoteleras y aliados que se muestran en el inicio.", tarifas: "Productos del buscador y tu margen sobre los precios en línea.", legal: "Política de tratamiento de datos.", marca: "Nombre, logos, colores y tipografía de tu agencia.",
+  grupos: "Salidas con fecha fija.", traslados: "Tarifas de traslados por zona.", nosotros: "Historia, cifras y por qué elegirnos.", contacto: "Teléfonos, WhatsApp por zona, sedes y horario.", aliados: "Logos de cadenas hoteleras y aliados que se muestran en el inicio.", tarifas: "Productos del buscador y tu margen sobre los precios en línea.", legal: "Política de tratamiento de datos.", marca: "Nombre, logos, colores y tipografía de tu agencia.", integraciones: "Proveedores con precio en línea y tus tarifarios propios.",
   t_alojamiento: "Hoteles con tus tarifas netas por temporada. Salen en el buscador junto a LiteAPI.", t_actividad: "Tours y entradas con precio por persona por temporada.",
   t_transporte: "Traslados por trayecto, compartidos o privados.", t_circuito: "Circuitos con salidas y precio por persona." };
 function navBadges() {
@@ -4163,7 +4223,7 @@ function renderAdmin() {
 }
 function renderAdminBody() {
   ({ resumen: admResumen, solicitudes: admSolicitudes, prospectos: admProspectos, listas: admListas, automatizaciones: admAutos, correos: admCorreos, campanas: admCampanas,
-    portada: admPortada, destinos: admDestinos, tours: () => admColl("tours"), grupos: () => admColl("groups"), traslados: admTraslados, nosotros: admNosotros, contacto: admContacto, aliados: admAliados, tarifas: admTarifas, marca: admMarca, legal: admLegal, t_alojamiento: () => admTarifario("alojamiento"), t_actividad: () => admTarifario("actividad"), t_transporte: () => admTarifario("transporte"), t_circuito: () => admTarifario("circuito") })[adm.tab]();
+    portada: admPortada, destinos: admDestinos, tours: () => admColl("tours"), grupos: () => admColl("groups"), traslados: admTraslados, nosotros: admNosotros, contacto: admContacto, aliados: admAliados, tarifas: admTarifas, integraciones: admIntegraciones, marca: admMarca, legal: admLegal, t_alojamiento: () => admTarifario("alojamiento"), t_actividad: () => admTarifario("actividad"), t_transporte: () => admTarifario("transporte"), t_circuito: () => admTarifario("circuito") })[adm.tab]();
   if ($("#admBody").classList.contains("locked")) $$("#admBody input, #admBody textarea, #admBody select, #admBody button").forEach(x => x.disabled = true);
   if (adm.msg && Date.now() - adm.msg[2] < 6000) { const t = $("#admToast"); if (t) { t.textContent = adm.msg[0]; t.className = "toast " + adm.msg[1]; } }
 }

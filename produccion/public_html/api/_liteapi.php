@@ -20,7 +20,8 @@ const AVM_TCCODE = ['punta-cana' => 'puj', 'riviera-maya' => 'pcm', 'aruba' => '
 
 function avm_lite_get(string $path, array $params, int $ttl): array {
     $key = (string) avm_cfg('liteapi_key', '');
-    if ($key === '') return ['ok' => false, 'error' => 'sin_configurar', 'status' => 503];
+    // Sin llave, o apagado por la agencia en Integraciones
+    if ($key === '' || ((($GLOBALS['AVM_T'] ?? null)['config']['prov_liteapi'] ?? true) === false)) return ['ok' => false, 'error' => 'sin_configurar', 'status' => 503];
     $base = rtrim((string) avm_cfg('liteapi_base', 'https://api.liteapi.travel/v3.0'), '/');
     $url = $base . $path . ($params ? '?' . http_build_query($params) : '');
     $dir = dirname(__DIR__, 2) . '/avm-cache';
@@ -47,7 +48,8 @@ function avm_lite_get(string $path, array $params, int $ttl): array {
 /** Consulta POST con caché (tarifas: 3 horas). */
 function avm_lite_post(string $path, array $body, int $ttl): array {
     $key = (string) avm_cfg('liteapi_key', '');
-    if ($key === '') return ['ok' => false, 'error' => 'sin_configurar', 'status' => 503];
+    // Sin llave, o apagado por la agencia en Integraciones
+    if ($key === '' || ((($GLOBALS['AVM_T'] ?? null)['config']['prov_liteapi'] ?? true) === false)) return ['ok' => false, 'error' => 'sin_configurar', 'status' => 503];
     $base = rtrim((string) avm_cfg('liteapi_base', 'https://api.liteapi.travel/v3.0'), '/');
     $json = json_encode($body, JSON_UNESCAPED_SLASHES);
     $dir = dirname(__DIR__, 2) . '/avm-cache';

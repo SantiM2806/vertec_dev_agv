@@ -68,7 +68,7 @@ switch ($ruta) {
         break;
     case 'hotel':
         [$hid, $tc] = array_pad(explode('~', $id, 2), 2, '');
-        $r = str_starts_with($hid, 'p-') ? avm_prop_hotel($hid) : avm_lite_hotel($hid);
+        $r = avm_prov_ficha('hotel', $hid);
         if (!$r['ok']) { $noEncontrado = true; break; }
         $h = $r['hotel'];
         $seo['title'] = $h['name'] . ($h['city'] ? ', ' . $h['city'] : '') . ' | ' . $marca;
@@ -85,7 +85,7 @@ switch ($ruta) {
         break;
     case 'actividad':
         [$aid, $tc] = array_pad(explode('~', $id, 2), 2, '');
-        $r = str_starts_with($aid, 'p-') ? avm_prop_actividad($aid) : avm_lite_actividad($aid);
+        $r = avm_prov_ficha('actividad', $aid);
         if (!$r['ok']) { $noEncontrado = true; break; }
         $t = $r['tour'];
         $seo['title'] = $t['title'] . ($t['city'] ? ' en ' . $t['city'] : '') . ' | ' . $marca;

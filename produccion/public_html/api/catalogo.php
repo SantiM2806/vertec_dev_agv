@@ -13,23 +13,20 @@ $tipo = (string) ($_GET['tipo'] ?? '');
 $id = (string) ($_GET['id'] ?? '');
 switch ($tipo) {
     // Ids "p-…": productos propios de la agencia (Tarifarios)
-    case 'hotel': $r = str_starts_with($id, 'p-') ? avm_prop_hotel($id) : avm_lite_hotel($id); $k = 'hotel'; break;
-    case 'actividad': $r = str_starts_with($id, 'p-') ? avm_prop_actividad($id) : avm_lite_actividad($id); $k = 'tour'; break;
+    case 'hotel': $r = avm_prov_ficha('hotel', $id); $k = 'hotel'; break;
+    case 'actividad': $r = avm_prov_ficha('actividad', $id); $k = 'tour'; break;
     case 'actividades':
         $lat = filter_input(INPUT_GET, 'lat', FILTER_VALIDATE_FLOAT); $lng = filter_input(INPUT_GET, 'lng', FILTER_VALIDATE_FLOAT);
         if ($lat === false || $lat === null || $lng === false || $lng === null || abs($lat) > 90 || abs($lng) > 180) avm_fail(400, 'coordenadas');
+        if (!avm_prov_activo('liteapi')) avm_json(['tours' => []]);
         $km = max(1, min(80, (int) (filter_input(INPUT_GET, 'km', FILTER_VALIDATE_INT) ?: 25)));
         $limit = max(1, min(20, (int) (filter_input(INPUT_GET, 'limit', FILTER_VALIDATE_INT) ?: 8)));
         $r = avm_lite_actividades($lat, $lng, $km, $limit); $k = 'tours'; break;
     case 'tarifas':
         $ids = explode(',', (string) ($_GET['ids'] ?? ''));
         $kids = array_filter(explode(',', (string) ($_GET['kids'] ?? '')), fn($x) => $x !== '');
-        $propios = array_values(array_filter($ids, fn($x) => str_starts_with($x, 'p-')));
-        $otros = array_values(array_diff($ids, $propios));
-        $in = (string) ($_GET['in'] ?? ''); $out = (string) ($_GET['out'] ?? ''); $ro = (int) ($_GET['rooms'] ?? 1); $ad = (int) ($_GET['adults'] ?? 2);
-        if ($propios && !avm_lite_fechas_ok($in, $out)) avm_fail(400, 'fechas');
-        $r = $otros ? avm_lite_tarifas($otros, $in, $out, $ro, $ad, $kids) : ['ok' => true, 'rates' => [], 'nights' => max(1, (int) round((strtotime($out) - strtotime($in)) / 86400))];
-        if ($propios) { $pr = avm_prop_tarifas($propios, $in, $out, $ro, $ad, $kids); $r = $r['ok'] ? ['ok' => true, 'rates' => $r['rates'] + $pr, 'nights' => $r['nights']] : ($pr ? ['ok' => true, 'rates' => $pr, 'nights' => max(1, (int) round((strtotime($out) - strtotime($in)) / 86400))] : $r); }
+        // Cada id va a su proveedor (propios "p-", LiteAPI sin prefijo, otros con su prefijo)
+        $r = avm_prov_tarifas($ids, (string) ($_GET['in'] ?? ''), (string) ($_GET['out'] ?? ''), (int) ($_GET['rooms'] ?? 1), (int) ($_GET['adults'] ?? 2), $kids);
         // El desglose (neto y comisiones) solo viaja a administradores
         $adm = avm_is_admin(); session_write_close();
         header('Cache-Control: ' . ($adm ? 'private, no-store' : 'public, max-age=900'));
