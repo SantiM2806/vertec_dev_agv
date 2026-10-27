@@ -20,6 +20,8 @@ return [
     'platform_name' => 'Vertec Travel',
     // Dominio base: cada agencia queda en <subdominio>.<base_domain>, p. ej. 'tuplataforma.com' o '129.80.1.2.sslip.io'
     'base_domain' => '',
+    // Agencia que se abre en la dirección principal (sin subdominio). Vacío: si hay una sola agencia, se abre esa.
+    'agencia_principal' => '',
     // 'https' (normal) o 'http' (solo para pruebas sin certificado)
     'base_http' => 'https',
     // Dirección pública de la plataforma, sin / al final (para la portada sin agencia)

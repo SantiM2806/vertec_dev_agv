@@ -55,7 +55,10 @@ function avm_tenant_opt(): ?array {
                     setcookie('vt_agencia', $q, ['path' => '/', 'httponly' => true, 'samesite' => 'Lax']);
                 $t = $t ?: avm_tenant_fila('slug', (string) ($_COOKIE['vt_agencia'] ?? (avm_config()['dev_tenant'] ?? '')));
             }
-        } elseif ($base !== '' && str_ends_with($h, '.' . $base) && !str_starts_with($h, 'www.' . $base)) {
+        } elseif ($base !== '' && ($h === $base || $h === 'www.' . $base)) {
+            // Dirección principal: la agencia de agencia_principal o, si solo hay una, esa (modo demo de una sola agencia)
+            $t = avm_agencia_principal();
+        } elseif ($base !== '' && str_ends_with($h, '.' . $base)) {
             $t = avm_tenant_fila('slug', substr($h, 0, -strlen($base) - 1));
         } elseif ($h !== $base && $h !== 'www.' . $base) {
             $t = avm_tenant_fila('domain', $h) ?? avm_tenant_fila('domain', preg_replace('/^www\./', '', $h));
@@ -65,6 +68,13 @@ function avm_tenant_opt(): ?array {
     }
     $GLOBALS['AVM_T'] = $t;
     return $t;
+}
+/** Agencia que abre la dirección principal: agencia_principal de avm-config.php, o la única agencia si hay solo una. */
+function avm_agencia_principal(): ?array {
+    $slug = (string) (avm_config()['agencia_principal'] ?? '');
+    if ($slug !== '') return avm_tenant_fila('slug', $slug);
+    try { $ids = avm_db()->query('SELECT id FROM avm_tenants LIMIT 2')->fetchAll(PDO::FETCH_COLUMN); } catch (PDOException $e) { return null; }
+    return count($ids) === 1 ? avm_tenant_fila('id', (string) $ids[0]) : null;
 }
 /** Agencia de esta petición; si no hay, responde 404 (o 403 si está suspendida). */
 function avm_tenant(): array {
@@ -147,7 +157,7 @@ function avm_tenant_url(?array $t = null): string {
     $dom = trim(explode(',', (string) $t['domains'])[0] ?? '');
     if ($dom !== '') return 'https://' . $dom;
     $base = trim((string) (avm_config()['base_domain'] ?? ''), '.');
-    if ($base !== '') return (avm_config()['base_http'] ?? 'https') . '://' . $t['slug'] . '.' . $base;
+    if ($base !== '') return (avm_config()['base_http'] ?? 'https') . '://' . ((avm_agencia_principal()['id'] ?? 0) === $t['id'] ? '' : $t['slug'] . '.') . $base;
     // En local, sin base_domain: <slug>.localhost (los navegadores lo resuelven a este mismo equipo)
     if (PHP_SAPI !== 'cli' && avm_es_local(avm_host())) {
         $puerto = preg_match('/:(\d+)$/', (string) ($_SERVER['HTTP_HOST'] ?? ''), $m) ? ':' . $m[1] : '';

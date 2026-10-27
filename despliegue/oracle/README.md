@@ -97,8 +97,8 @@ cd /var/www/plataforma && sudo PLATAFORMA="Vertec Travel" ACME_EMAIL=tu@correo.c
 Al terminar muestra las direcciones. Luego, en el navegador:
 
 1. `https://<ip-con-guiones>.sslip.io/instalar.php`: crea tu usuario de la plataforma (contraseña de 12 caracteres o más). El instalador queda bloqueado solo.
-2. `https://<ip-con-guiones>.sslip.io/plataforma.php`: crea una agencia de prueba. Copia la contraseña temporal del administrador.
-3. Abre la agencia con el botón **Abrir sitio** y entra a su backoffice en `/ingresar.php`.
+2. `https://<ip-con-guiones>.sslip.io/plataforma.php`: crea tu agencia de demostración. Copia la contraseña temporal del administrador.
+3. Si es la única agencia, la dirección principal `https://<ip-con-guiones>.sslip.io` ya muestra su sitio, y su backoffice queda en `/ingresar.php`. Si más adelante creas otras, cada una queda en su subdominio.
 
 El primer ingreso a cada dirección tarda unos segundos mientras Caddy pide su certificado HTTPS.
 
