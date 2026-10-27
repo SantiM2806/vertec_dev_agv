@@ -59,6 +59,8 @@ function avm_tenant_opt(): ?array {
             $t = avm_tenant_fila('slug', substr($h, 0, -strlen($base) - 1));
         } elseif ($h !== $base && $h !== 'www.' . $base) {
             $t = avm_tenant_fila('domain', $h) ?? avm_tenant_fila('domain', preg_replace('/^www\./', '', $h));
+            // Pruebas desde el computador publicado con un túnel temporal de Cloudflare: abre dev_tenant
+            if (!$t && str_ends_with($h, '.trycloudflare.com') && !empty(avm_config()['dev_tenant'])) $t = avm_tenant_fila('slug', (string) avm_config()['dev_tenant']);
         }
     }
     $GLOBALS['AVM_T'] = $t;

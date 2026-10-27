@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Instala la plataforma en un servidor Ubuntu (Oracle Cloud Always Free u otro).
+# Instala la plataforma en un servidor Ubuntu (Oracle Cloud, Google Cloud o cualquier VPS).
 # Se ejecuta UNA vez, dentro de la carpeta del repositorio ya clonado:
 #   sudo bash despliegue/oracle/instalar-servidor.sh
 # Opcional, antes del comando:
@@ -15,6 +15,13 @@ PROD="$APP_DIR/produccion"
 PUB="$PROD/public_html"
 CONF="$PROD/avm-config.php"
 [ -f "$PUB/index.php" ] || { echo "No encuentro $PUB/index.php. Ejecuta el script desde el repositorio clonado."; exit 1; }
+
+# Máquinas pequeñas (1 GB, como la e2-micro gratuita de Google): 2 GB de memoria de intercambio
+if [ "$(awk '/MemTotal/ {print $2}' /proc/meminfo)" -lt 1800000 ] && ! swapon --show | grep -q .; then
+  echo "==> Memoria de intercambio de 2 GB (la máquina tiene poca memoria)"
+  fallocate -l 2G /swapfile && chmod 600 /swapfile && mkswap /swapfile >/dev/null && swapon /swapfile
+  grep -q '^/swapfile' /etc/fstab || echo '/swapfile none swap sw 0 0' >> /etc/fstab
+fi
 
 echo "==> Paquetes (Apache, PHP, MariaDB, Caddy)"
 export DEBIAN_FRONTEND=noninteractive
