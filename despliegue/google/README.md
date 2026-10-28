@@ -40,6 +40,8 @@ En la lista de instancias, botón **SSH** de la máquina: abre una terminal en e
 
 ## 5. Dar acceso de lectura al repositorio (privado)
 
+**Desde aquí todo se hace en la terminal SSH de la máquina** (la ventana del botón SSH), no en PowerShell ni en tu computador. Pega cada comando con Ctrl+V y pulsa Enter.
+
 En esa terminal:
 
 ```bash
@@ -53,6 +55,8 @@ cat ~/.ssh/id_ed25519.pub
 Copia la línea que aparece. En GitHub: repositorio `vertec_dev_agv` → **Settings → Deploy keys → Add deploy key**. Pégala, título *Servidor Google*, **sin marcar** *Allow write access*.
 
 ## 6. Descargar el código e instalar
+
+En la misma terminal SSH de la máquina:
 
 ```bash
 sudo mkdir -p /var/www && sudo chown "$USER":"$USER" /var/www

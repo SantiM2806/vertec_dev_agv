@@ -80,6 +80,8 @@ Copia la línea que aparece. En GitHub: repositorio `vertec_dev_agv` → **Setti
 
 ## 6. Descargar el código e instalar
 
+En la terminal de la máquina (después de entrar por SSH), no en tu computador:
+
 ```bash
 sudo mkdir -p /var/www && sudo chown ubuntu:ubuntu /var/www
 ```
