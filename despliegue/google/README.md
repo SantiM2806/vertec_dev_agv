@@ -58,6 +58,12 @@ Copia la línea que aparece. En GitHub: repositorio `vertec_dev_agv` → **Setti
 
 En la misma terminal SSH de la máquina:
 
+Primero instala Git (algunas imágenes de Ubuntu no lo traen):
+
+```bash
+sudo apt-get update && sudo apt-get install -y git
+```
+
 ```bash
 sudo mkdir -p /var/www && sudo chown "$USER":"$USER" /var/www
 ```
