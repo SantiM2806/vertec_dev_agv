@@ -113,11 +113,20 @@ chown www-data:www-data "$PROD/avm-cache" "$PROD/avm-copias" "$PROD/avm-archivos
 chgrp www-data "$PROD"; chmod 775 "$PROD"
 
 echo "==> Caddy: HTTPS automático para la plataforma y cada agencia"
+# Caddy 2.8 o más reciente usa "permission http"; las versiones anteriores, "ask"
+CADDY_V="$(caddy version 2>/dev/null | grep -o 'v2\.[0-9]*' | head -1 | cut -d. -f2)"
+if [ "${CADDY_V:-0}" -ge 8 ]; then
+  PERMISO=$'		permission http {
+			endpoint http://127.0.0.1:8080/api/dominio.php
+		}'
+else
+  PERMISO=$'		ask http://127.0.0.1:8080/api/dominio.php'
+fi
 cat > /etc/caddy/Caddyfile <<EOF
 {
 	${ACME_EMAIL:+email $ACME_EMAIL}
 	on_demand_tls {
-		ask http://127.0.0.1:8080/api/dominio.php
+$PERMISO
 	}
 }
 https:// {
@@ -131,6 +140,7 @@ http:// {
 	redir https://{host}{uri} permanent
 }
 EOF
+caddy validate --config /etc/caddy/Caddyfile >/dev/null 2>&1 || { echo "La configuración de Caddy no es válida:"; caddy validate --config /etc/caddy/Caddyfile; exit 1; }
 systemctl enable caddy >/dev/null
 systemctl restart caddy
 
