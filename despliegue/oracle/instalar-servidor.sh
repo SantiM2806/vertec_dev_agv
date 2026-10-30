@@ -69,13 +69,16 @@ a2ensite plataforma >/dev/null
 # Fotos y logos suben comprimidos; los tarifarios en PDF pueden pesar hasta 25 MB
 PHPINI="$(php -r 'echo PHP_MAJOR_VERSION.".".PHP_MINOR_VERSION;')"
 sed -i 's/^post_max_size = .*/post_max_size = 26M/; s/^upload_max_filesize = .*/upload_max_filesize = 25M/' "/etc/php/$PHPINI/apache2/php.ini"
+systemctl daemon-reload
 systemctl restart apache2
 
 echo "==> Base de datos"
 systemctl enable --now mariadb >/dev/null
 if [ ! -f "$CONF" ]; then
   DB_PASS="$(openssl rand -hex 18)"
-  mysql -e "CREATE DATABASE IF NOT EXISTS plataforma CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+  # En MariaDB reciente el cliente se llama "mariadb" (ya no siempre existe "mysql")
+  SQL="$(command -v mariadb || command -v mysql)"
+  "$SQL" -e "CREATE DATABASE IF NOT EXISTS plataforma CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
             CREATE USER IF NOT EXISTS 'plataforma'@'localhost' IDENTIFIED BY '$DB_PASS';
             ALTER USER 'plataforma'@'localhost' IDENTIFIED BY '$DB_PASS';
             GRANT ALL PRIVILEGES ON plataforma.* TO 'plataforma'@'localhost'; FLUSH PRIVILEGES;"
