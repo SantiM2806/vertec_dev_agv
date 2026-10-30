@@ -113,20 +113,15 @@ chown www-data:www-data "$PROD/avm-cache" "$PROD/avm-copias" "$PROD/avm-archivos
 chgrp www-data "$PROD"; chmod 775 "$PROD"
 
 echo "==> Caddy: HTTPS automático para la plataforma y cada agencia"
-# Caddy 2.8 o más reciente usa "permission http"; las versiones anteriores, "ask"
-CADDY_V="$(caddy version 2>/dev/null | grep -o 'v2\.[0-9]*' | head -1 | cut -d. -f2)"
-if [ "${CADDY_V:-0}" -ge 8 ]; then
-  PERMISO=$'		permission http {
-			endpoint http://127.0.0.1:8080/api/dominio.php
-		}'
-else
-  PERMISO=$'		ask http://127.0.0.1:8080/api/dominio.php'
-fi
-cat > /etc/caddy/Caddyfile <<EOF
+# La forma de "preguntar antes de emitir un certificado" cambió entre versiones de Caddy:
+# se prueban las tres y se usa la primera que Caddy acepte.
+ASK="http://127.0.0.1:8080/api/dominio.php"
+caddyfile() {
+cat <<CADDY
 {
 	${ACME_EMAIL:+email $ACME_EMAIL}
 	on_demand_tls {
-$PERMISO
+		$1
 	}
 }
 https:// {
@@ -139,8 +134,17 @@ https:// {
 http:// {
 	redir https://{host}{uri} permanent
 }
-EOF
-caddy validate --config /etc/caddy/Caddyfile >/dev/null 2>&1 || { echo "La configuración de Caddy no es válida:"; caddy validate --config /etc/caddy/Caddyfile; exit 1; }
+CADDY
+}
+OK=""
+for forma in "permission http $ASK" "permission http {
+			endpoint $ASK
+		}" "ask $ASK"; do
+  caddyfile "$forma" > /tmp/Caddyfile.prueba
+  if caddy validate --adapter caddyfile --config /tmp/Caddyfile.prueba >/dev/null 2>&1; then OK=1; break; fi
+done
+if [ -z "$OK" ]; then echo "Caddy no aceptó ninguna configuración:"; caddy validate --adapter caddyfile --config /tmp/Caddyfile.prueba; exit 1; fi
+cp /tmp/Caddyfile.prueba /etc/caddy/Caddyfile
 systemctl enable caddy >/dev/null
 systemctl restart caddy
 
