@@ -39,9 +39,9 @@ BASE="${BASE_DOMAIN:-$(echo "$IP" | tr . -).sslip.io}"
 PLATAFORMA="${PLATAFORMA:-Vertec Travel}"
 echo "==> IP pública: $IP · dominio base: $BASE"
 
-echo "==> Firewall del servidor (las imágenes de Oracle bloquean 80 y 443)"
+echo "==> Firewall del servidor: abre 80 y 443 (en Oracle vienen bloqueados; en Google ya están abiertos)"
 for p in 80 443; do
-  iptables -C INPUT -p tcp --dport "$p" -m state --state NEW -j ACCEPT 2>/dev/null || iptables -I INPUT 5 -p tcp --dport "$p" -m state --state NEW -j ACCEPT
+  iptables -C INPUT -p tcp --dport "$p" -m state --state NEW -j ACCEPT 2>/dev/null || iptables -I INPUT 1 -p tcp --dport "$p" -m state --state NEW -j ACCEPT
 done
 netfilter-persistent save >/dev/null
 
