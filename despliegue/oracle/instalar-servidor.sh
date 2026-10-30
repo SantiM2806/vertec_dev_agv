@@ -81,13 +81,17 @@ if [ ! -f "$CONF" ]; then
   "$SQL" -e "CREATE DATABASE IF NOT EXISTS plataforma CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
             CREATE USER IF NOT EXISTS 'plataforma'@'localhost' IDENTIFIED BY '$DB_PASS';
             ALTER USER 'plataforma'@'localhost' IDENTIFIED BY '$DB_PASS';
-            GRANT ALL PRIVILEGES ON plataforma.* TO 'plataforma'@'localhost'; FLUSH PRIVILEGES;"
+            CREATE USER IF NOT EXISTS 'plataforma'@'127.0.0.1' IDENTIFIED BY '$DB_PASS';
+            ALTER USER 'plataforma'@'127.0.0.1' IDENTIFIED BY '$DB_PASS';
+            GRANT ALL PRIVILEGES ON plataforma.* TO 'plataforma'@'localhost';
+            GRANT ALL PRIVILEGES ON plataforma.* TO 'plataforma'@'127.0.0.1'; FLUSH PRIVILEGES;"
   SECRET="$(openssl rand -hex 32)"
   cat > "$CONF" <<EOF
 <?php
 // Creado por instalar-servidor.sh. No lo subas al repositorio (Git ya lo ignora).
 return [
-    'db_host' => 'localhost',
+    // Por TCP: en algunas versiones de Ubuntu PHP no encuentra el socket local de MariaDB
+    'db_host' => '127.0.0.1',
     'db_name' => 'plataforma',
     'db_user' => 'plataforma',
     'db_pass' => '$DB_PASS',
