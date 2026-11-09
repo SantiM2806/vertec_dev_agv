@@ -1,4 +1,4 @@
-<title>Propuesta B2C y B2B AVM</title>
+<title>Propuesta Plataforma AVM</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700&family=Hanken+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap">
@@ -143,6 +143,25 @@ section { padding-block: 44px 0; display: grid; gap: 16px }
   .dates { grid-template-columns: 1fr 1fr }
 }
 @media (max-width: 460px) { .scope, .dates { grid-template-columns: 1fr } }
+
+/* Plan semanal */
+.plan-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 16px; background: var(--card) }
+.plan { width: 100%; border-collapse: collapse; font-size: 14.5px; min-width: 600px }
+.plan th { text-align: left; font: 700 11px/1.3 var(--f-mono); letter-spacing: .06em; text-transform: uppercase; color: var(--muted); padding: 12px 14px; border-bottom: 1px solid var(--line) }
+.plan td { padding: 8px 14px; border-top: 1px solid var(--line); vertical-align: top }
+.plan td.w { font: 700 12px/1.5 var(--f-mono); color: var(--muted); white-space: nowrap; font-variant-numeric: tabular-nums; width: 1% }
+.plan td.d { font: 500 12.5px/1.5 var(--f-mono); color: var(--muted); white-space: nowrap; font-variant-numeric: tabular-nums; width: 1% }
+.plan tr.fase td { background: var(--soft); font: 600 15px/1.3 var(--f-display); color: var(--ink); padding-top: 12px; padding-bottom: 12px }
+.plan tr.fase td small { font: 500 12px/1 var(--f-mono); color: var(--muted); margin-left: 8px }
+.plan tr.hito td { background: color-mix(in srgb, var(--signal) 22%, var(--card)); font-weight: 700 }
+.plan tr.off td { color: var(--muted); font-style: italic }
+.cols { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px }
+.cols .card ul { display: grid; gap: 7px; font-size: 14.5px }
+.cols .card li { display: grid; grid-template-columns: 14px minmax(0, 1fr); gap: 8px }
+.cols .card li::before { content: ""; width: 6px; height: 6px; margin-top: 9px; border-radius: 50%; background: var(--signal) }
+.cols .card li b { font-weight: 600 }
+.cols .card .tag { justify-self: start }
+@media (max-width: 760px) { .cols { grid-template-columns: 1fr } }
 </style>
 
 <main class="doc">
@@ -152,203 +171,154 @@ section { padding-block: 44px 0; display: grid; gap: 16px }
       <span><img class="logo-c" src="img/logo-color.png" alt="AVM Operadores Mayoristas" width="121" height="40"><img class="logo-w" src="img/logo-blanco.png" alt="AVM Operadores Mayoristas" width="121" height="40"></span>
       <span class="meta">Propuesta · 9 nov 2026</span>
     </div>
-    <h1>Venta directa y venta a agencias: <strong>dos plataformas propias para AVM</strong></h1>
-    <p class="lead"><b>B2C:</b> un sitio donde el viajero busca, cotiza, reserva y paga. <b>B2B:</b> un portal propio, al estilo de Travel Compositor, donde las agencias reservan con los proveedores con los que AVM tiene negociación, con pago o con crédito de AVM. Tiempos calculados para un desarrollador, a 20 horas por semana, desde hoy.</p>
+    <h1>Plataforma de AVM: <strong>portal B2B para agencias y sitio B2C para viajeros</strong></h1>
+    <p class="lead">Una sola plataforma con los proveedores con los que AVM tiene negociación: TBO, World2Meet y Omnibees. Primero el portal B2B, porque construye los conectores que después usa el B2C. El sitio B2C, que ya está avanzado, sale a producción en la primera semana cotizando y se completa al final con reserva y pago.</p>
   </header>
 
-  <section id="resumen">
-    <span class="eyebrow">Resumen</span>
-    <h2>Cuatro escenarios, <strong>con fecha real</strong></h2>
-    <div class="scen">
+  <section id="alcance">
+    <span class="eyebrow">Qué se entrega</span>
+    <h2>Dos portales, <strong>un solo backoffice</strong></h2>
+    <div class="cols">
       <div class="card">
-        <span class="tag">B2C · camino 1</span>
-        <h3>LiteAPI + producto propio</h3>
-        <dl><dt>Productos</dt><dd>Hoteles, vuelos y actividades de LiteAPI; asistencia médica y traslados propios</dd>
-          <dt>Duración</dt><dd class="num">6 meses</dd><dt>En producción</dt><dd>7 de mayo de 2027</dd></dl>
-      </div>
-      <div class="card">
-        <span class="tag">B2C · camino 2</span>
-        <h3>Proveedores de AVM</h3>
-        <dl><dt>Productos</dt><dd>Hoteles, traslados y actividades de TBO, World2Meet y Omnibees; asistencia y traslados propios</dd>
-          <dt>Duración</dt><dd class="num">8 meses</dd><dt>En producción</dt><dd>16 de julio de 2027</dd></dl>
-      </div>
-      <div class="card rec">
-        <span class="tag on">Recomendado si AVM quiere ambos</span>
-        <h3>B2C camino 2, luego B2B</h3>
-        <dl><dt>Duración</dt><dd class="num">14 meses</dd><dt>B2C en producción</dt><dd>16 de julio de 2027</dd><dt>B2B en producción</dt><dd>14 de enero de 2028</dd></dl>
-      </div>
-      <div class="card">
-        <span class="tag">Alternativa</span>
-        <h3>B2C camino 1, luego B2B</h3>
-        <dl><dt>Duración</dt><dd class="num">16 meses</dd><dt>B2C en producción</dt><dd>7 de mayo de 2027</dd><dt>B2B en producción</dt><dd>17 de marzo de 2028</dd></dl>
-      </div>
-    </div>
-    <p class="note"><b>Por qué el camino 2 si AVM quiere los dos proyectos:</b> el B2B necesita los conectores de TBO, World2Meet y Omnibees. En el camino 2 se construyen una sola vez y el B2B los reutiliza. En el camino 1 el B2C sale dos meses antes, pero esos conectores se hacen después y el total es dos meses más largo.</p>
-  </section>
-
-  <section id="b2c">
-    <span class="eyebrow">Proyecto 1 · B2C</span>
-    <h2>El sitio para <strong>el viajero</strong></h2>
-    <p class="note">Las dos opciones comparten el mismo sitio y el mismo backoffice. Cambia de dónde salen los precios y las reservas.</p>
-    <ul class="scope">
-      <li><h3>Buscador y cotización<span class="done">Avanzado</span></h3><span>Fechas en un paso, filtros, ficha del hotel con fotos por habitación y cotización con adicionales.</span></li>
-      <li><h3>Reserva y pago en línea</h3><span>El viajero reserva y paga con tarjeta, PSE o Nequi por la pasarela (Wompi, PayU o ePayco), con confirmación y voucher.</span></li>
-      <li><h3>Cuentas de usuario</h3><span>Registro e ingreso del viajero, sus reservas, sus cotizaciones y sus datos para la próxima compra.</span></li>
-      <li><h3>Backoffice<span class="done">Avanzado</span></h3><span>Diseño y marca, banners, markup y fees por producto, producto y tarifarios propios, contenido y desglose de cada venta.</span></li>
-      <li><h3>Gestión de reservas</h3><span>Reservas, pagos, cancelaciones y reembolsos en el backoffice, con aviso al equipo y al viajero.</span></li>
-      <li><h3>Asistencia médica y traslados</h3><span>Producto propio cargado por AVM, con precio en la cotización y en la compra.</span></li>
-      <li><h3>SEO<span class="done">Avanzado</span></h3><span>Página por destino, hotel y actividad, mapa del sitio y datos para Google.</span></li>
-      <li><h3>Google Ads y Analytics</h3><span>Google Analytics 4 y conversiones de Google Ads en búsqueda, cotización y compra.</span></li>
-      <li><h3>Automatizaciones de marketing</h3><span>Recaptura de búsquedas y cotizaciones sin compra, campañas a listas y baja automática.</span></li>
-    </ul>
-    <div class="paths">
-      <div class="card path">
-        <div class="top"><span class="letter">1</span><span class="tag">6 meses · 7 may 2027</span></div>
-        <h3>Camino 1: LiteAPI + producto propio</h3>
+        <span class="tag on">B2B · agencias</span>
         <ul>
-          <li><span>Hoteles, vuelos y actividades con precio y reserva de LiteAPI.</span></li>
-          <li><span>Asistencia médica y traslados como producto propio de AVM.</span></li>
-          <li><span>Aprovecha lo que ya está construido y probado con LiteAPI.</span></li>
+          <li><span><b>Agencias:</b> registro con RNT y NIT, aprobación de AVM, usuarios y roles.</span></li>
+          <li><span><b>Proveedores:</b> hoteles y actividades de TBO, hoteles y traslados de World2Meet, hoteles de Omnibees, vuelos y asistencia médica.</span></li>
+          <li><span><b>Un solo catálogo:</b> cada hotel sale una vez, con el mejor precio entre proveedores.</span></li>
+          <li><span><b>Precios por agencia:</b> markup y comisión por agencia, grupo, producto y proveedor.</span></li>
+          <li><span><b>Crédito de AVM:</b> cupo o saldo prepagado, estado de cuenta, abonos y bloqueo por mora.</span></li>
+          <li><span><b>Pago con tarjeta, PSE y Nequi</b> para las agencias que no usan crédito.</span></li>
+          <li><span><b>Expedientes:</b> varios servicios en un mismo viaje.</span></li>
+          <li><span><b>Cotizaciones y vouchers modernos:</b> cotización con enlace, PDF y WhatsApp, con la marca de la agencia; un voucher por viaje, con QR.</span></li>
+          <li><span><b>Operación:</b> reservas, cancelaciones, reportes y conciliación con proveedores.</span></li>
         </ul>
-        <p class="foot"><b>Requisito:</b> LiteAPI debe aprobar los pagos de AVM en producción y habilitar Flights y Experiences en su cuenta.</p>
       </div>
-      <div class="card path">
-        <div class="top"><span class="letter">2</span><span class="tag">8 meses · 16 jul 2027</span></div>
-        <h3>Camino 2: proveedores de AVM</h3>
+      <div class="card">
+        <span class="tag on">B2C · viajeros</span>
         <ul>
-          <li><span>Hoteles y actividades de TBO, hoteles y traslados de World2Meet, hoteles directos de Omnibees.</span></li>
-          <li><span>Un mismo hotel de varios proveedores sale una sola vez, con el mejor precio.</span></li>
-          <li><span>Asistencia médica y traslados propios, igual que en el camino 1.</span></li>
+          <li><span><b>Buscador</b> con los mismos proveedores, más los tarifarios propios de AVM. LiteAPI, ya conectado, sigue como proveedor adicional.</span></li>
+          <li><span><b>Reserva y pago en el sitio</b> con tarjeta, PSE y Nequi.</span></li>
+          <li><span><b>Cuentas del viajero:</b> sus reservas y sus cotizaciones.</span></li>
+          <li><span><b>Asistencia médica y traslados propios</b> dentro de la compra.</span></li>
+          <li><span><b>Cotizaciones y vouchers modernos</b> para el viajero.</span></li>
+          <li><span><b>Backoffice:</b> diseño, banners, markup y fees, producto y tarifarios propios, desglose de cada venta.</span></li>
+          <li><span><b>SEO</b> por destino y hotel, <b>Google Analytics 4</b> y conversiones de <b>Google Ads</b>.</span></li>
+          <li><span><b>Automatizaciones:</b> recaptura de búsquedas y cotizaciones sin compra, y campañas.</span></li>
         </ul>
-        <p class="foot"><b>Vuelos:</b> ninguno de estos tres proveedores trae vuelos con lo que AVM tiene hoy. Se pueden sumar con LiteAPI Flights o TBO Air, con 3 a 4 semanas más.</p>
       </div>
     </div>
   </section>
 
-  <section id="b2b">
-    <span class="eyebrow">Proyecto 2 · B2B</span>
-    <h2>El portal para <strong>las agencias</strong></h2>
-    <p class="note">Un portal propio de AVM, al estilo de Travel Compositor: las agencias aliadas reservan con los proveedores con los que AVM tiene negociación, ven su precio neto y su comisión, y pagan con tarjeta o con el crédito que AVM les asigna.</p>
-    <ul class="scope">
-      <li><h3>Registro de agencias</h3><span>Solicitud con RNT y NIT, aprobación de AVM, usuarios por agencia con roles (administrador y asesor).</span></li>
-      <li><h3>Precios por agencia</h3><span>Markup y comisión por agencia o por grupo de agencias, por producto y por proveedor.</span></li>
-      <li><h3>Crédito de AVM</h3><span>Cupo o saldo prepagado por agencia, movimientos, estado de cuenta, abonos, alertas y bloqueo por mora.</span></li>
-      <li><h3>Conectores de proveedores</h3><span>TBO, World2Meet y Omnibees: búsqueda, precio, reserva, cancelación y voucher.</span></li>
-      <li><h3>Expedientes</h3><span>Varios servicios en un mismo viaje (hotel, vuelo, traslado, actividad, asistencia) con un solo voucher.</span></li>
-      <li><h3>Vuelos y asistencia médica</h3><span>Vuelos con el proveedor aéreo que AVM elija y asistencia médica con la API de su proveedor.</span></li>
-      <li><h3>Pago con tarjeta</h3><span>La misma pasarela del B2C, para agencias que no usan crédito.</span></li>
-      <li><h3>Operación en el backoffice</h3><span>Reservas por agencia, cancelaciones, reportes de venta por agencia y proveedor, conciliación con proveedores.</span></li>
-      <li><h3>Lo del B2C</h3><span>Diseño, banners, markup, producto propio, usuarios, correos y desglose de cada venta.</span></li>
-    </ul>
-  </section>
-
-  <section id="horas">
-    <span class="eyebrow">Horas de desarrollo</span>
-    <h2>De dónde salen <strong>los meses</strong></h2>
-    <p class="note">Estimación de un desarrollador. Cada total lleva un 20 % de margen para imprevistos: cambios de los proveedores, certificaciones y ajustes después de las pruebas.</p>
-    <div class="hrs-wrap">
-      <table class="hrs">
-        <thead><tr><th>Trabajo</th><th class="h">Camino 1</th><th class="h">Camino 2</th></tr></thead>
-        <tbody>
-          <tr><td>Salida a producción de lo construido<small>Backoffice, tarifarios, marca, integraciones</small></td><td class="h">20 h</td><td class="h">20 h</td></tr>
-          <tr><td>Pasarela de pagos<small>Pago, confirmación automática, reembolsos y conciliación</small></td><td class="h">40 h</td><td class="h">40 h</td></tr>
-          <tr><td>Reserva de hoteles con LiteAPI</td><td class="h">40 h</td><td class="h">–</td></tr>
-          <tr><td>Vuelos con reserva (LiteAPI)<small>Datos de pasajeros, emisión y cambios</small></td><td class="h">50 h</td><td class="h">–</td></tr>
-          <tr><td>Actividades con reserva (LiteAPI)</td><td class="h">30 h</td><td class="h">–</td></tr>
-          <tr><td>Conector TBO<small>Hoteles y actividades: búsqueda, reserva, cancelación y certificación</small></td><td class="h">–</td><td class="h">100 h</td></tr>
-          <tr><td>Conector World2Meet<small>Hoteles y traslados</small></td><td class="h">–</td><td class="h">70 h</td></tr>
-          <tr><td>Conector Omnibees<small>Hoteles directos</small></td><td class="h">–</td><td class="h">60 h</td></tr>
-          <tr><td>Hoteles repetidos entre proveedores<small>Unificar un mismo hotel y su contenido</small></td><td class="h">–</td><td class="h">60 h</td></tr>
-          <tr><td>Cuentas de usuario</td><td class="h">35 h</td><td class="h">35 h</td></tr>
-          <tr><td>Gestión de reservas, vouchers y correos</td><td class="h">45 h</td><td class="h">45 h</td></tr>
-          <tr><td>Asistencia médica y traslados propios en la compra</td><td class="h">10 h</td><td class="h">10 h</td></tr>
-          <tr><td>Banners y diseño parametrizable</td><td class="h">15 h</td><td class="h">15 h</td></tr>
-          <tr><td>Google Analytics 4 y Google Ads</td><td class="h">15 h</td><td class="h">15 h</td></tr>
-          <tr><td>Automatizaciones de marketing</td><td class="h">25 h</td><td class="h">25 h</td></tr>
-          <tr><td>Pruebas de punta a punta, seguridad y capacitación</td><td class="h">50 h</td><td class="h">70 h</td></tr>
-          <tr class="sub"><td>Subtotal</td><td class="h">375 h</td><td class="h">565 h</td></tr>
-          <tr><td>Margen para imprevistos (20 %)</td><td class="h">75 h</td><td class="h">115 h</td></tr>
-          <tr class="tot"><td>Total B2C</td><td class="h">450 h · 6 meses</td><td class="h">680 h · 8 meses</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <div class="hrs-wrap">
-      <table class="hrs">
-        <thead><tr><th>Trabajo B2B</th><th class="h">Después del camino 1</th><th class="h">Después del camino 2</th></tr></thead>
-        <tbody>
-          <tr><td>Conectores TBO, World2Meet y Omnibees y hoteles repetidos</td><td class="h">290 h</td><td class="h">Ya hechos</td></tr>
-          <tr><td>Registro de agencias, usuarios y roles</td><td class="h">40 h</td><td class="h">40 h</td></tr>
-          <tr><td>Precios y comisiones por agencia</td><td class="h">30 h</td><td class="h">30 h</td></tr>
-          <tr><td>Crédito de AVM a las agencias</td><td class="h">60 h</td><td class="h">60 h</td></tr>
-          <tr><td>Expedientes de varios servicios y vouchers</td><td class="h">70 h</td><td class="h">70 h</td></tr>
-          <tr><td>Vuelos y asistencia médica por API</td><td class="h">60 h</td><td class="h">60 h</td></tr>
-          <tr><td>Operación, reportes y conciliación</td><td class="h">50 h</td><td class="h">50 h</td></tr>
-          <tr><td>Pago con tarjeta para agencias</td><td class="h">15 h</td><td class="h">15 h</td></tr>
-          <tr><td>Pruebas, certificaciones y capacitación</td><td class="h">70 h</td><td class="h">70 h</td></tr>
-          <tr class="sub"><td>Subtotal</td><td class="h">685 h</td><td class="h">395 h</td></tr>
-          <tr><td>Margen para imprevistos (20 %)</td><td class="h">140 h</td><td class="h">80 h</td></tr>
-          <tr class="tot"><td>Total B2B</td><td class="h">825 h · 10 meses</td><td class="h">475 h · 6 meses</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <p class="note">A 20 horas por semana salen unas 80 horas útiles al mes. Los meses incluyen el descanso del 21 de diciembre al 1 de enero de cada año.</p>
-  </section>
-
-  <section id="cronograma">
-    <span class="eyebrow">Cronograma recomendado</span>
-    <h2>B2C camino 2 y luego B2B · <strong>9 nov 2026 a 14 ene 2028</strong></h2>
-    <div class="gantt-wrap">
-      <div class="gantt" role="table" aria-label="Cronograma por mes" style="grid-template-columns: minmax(230px, 1.7fr) repeat(15, minmax(34px, 1fr))">
-        <div class="hd wk">Etapa</div>
-        <div class="hd">Nov</div><div class="hd">Dic</div><div class="hd">Ene</div><div class="hd">Feb</div><div class="hd">Mar</div><div class="hd">Abr</div><div class="hd">May</div><div class="hd">Jun</div><div class="hd">Jul</div><div class="hd">Ago</div><div class="hd">Sep</div><div class="hd">Oct</div><div class="hd">Nov</div><div class="hd">Dic</div><div class="hd">Ene</div>
-        <div class="task">Producción de lo construido y pasarela de pagos<small>B2C</small></div>
-        <div class="cell"><i class="bar s"></i></div><div class="cell"><i class="bar e"></i></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div>
-        <div class="task">Conector TBO y certificación<small>B2C</small></div>
-        <div class="cell"></div><div class="cell"></div><div class="cell"><i class="bar s"></i></div><div class="cell"><i class="bar e"></i></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div>
-        <div class="task">Conector World2Meet y hoteles repetidos<small>B2C</small></div>
-        <div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"><i class="bar s"></i></div><div class="cell"><i class="bar e"></i></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div>
-        <div class="task">Omnibees, usuarios y marketing<small>B2C</small></div>
-        <div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"><i class="bar s"></i></div><div class="cell"><i class="bar e"></i></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div>
-        <div class="task">Pruebas y salida del B2C<small>16 jul 2027</small></div>
-        <div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"><i class="bar gate s e"></i></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div>
-        <div class="task">Agencias, roles, precios y crédito<small>B2B</small></div>
-        <div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"><i class="bar s"></i></div><div class="cell"><i class="bar"></i></div><div class="cell"><i class="bar e"></i></div><div class="cell"></div><div class="cell"></div><div class="cell"></div>
-        <div class="task">Expedientes, vuelos, asistencia y operación<small>B2B</small></div>
-        <div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"><i class="bar s"></i></div><div class="cell"><i class="bar e"></i></div><div class="cell"></div>
-        <div class="task">Pruebas y salida del B2B<small>14 ene 2028</small></div>
-        <div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"><i class="bar gate s e"></i></div>
-      </div>
-    </div>
+  <section id="plan">
+    <span class="eyebrow">Plan de trabajo</span>
+    <h2>Semana a semana · <strong>58 semanas de 20 horas</strong></h2>
     <ul class="dates">
-      <li><time>Vie 18 dic 2026</time><b>Pagos en línea y producción de lo construido</b></li>
-      <li><time>Vie 26 feb 2027</time><b>Hoteles y actividades de TBO</b></li>
-      <li><time>Vie 16 jul 2027</time><b>B2C en producción</b></li>
-      <li><time>Vie 14 ene 2028</time><b>B2B en producción</b></li>
+      <li><time>Vie 13 nov 2026</time><b>Plataforma actual en producción</b></li>
+      <li><time>Vie 19 feb 2027</time><b>TBO conectado</b></li>
+      <li><time>Vie 1 oct 2027</time><b>Portal B2B en producción</b></li>
+      <li><time>Vie 7 ene 2028</time><b>Sitio B2C completo</b></li>
     </ul>
-    <p class="note">Cada mes cierra con una entrega que AVM puede probar en el sitio de prueba. Si AVM elige el camino 1, el B2C sale el 7 de mayo de 2027 con hoteles, vuelos y actividades de LiteAPI, y el B2B el 17 de marzo de 2028.</p>
+    <div class="plan-wrap">
+      <table class="plan">
+        <thead><tr><th>Sem.</th><th>Fechas</th><th>Qué se entrega</th></tr></thead>
+        <tbody>
+<tr class="fase"><td colspan="3">Fase 1 · Puesta en marcha y base del portal B2B<small>9 nov 2026 – 8 ene 2027 · 7 semanas</small></td></tr>
+<tr><td class="w">S01</td><td class="d">9 nov – 13 nov</td><td>Salida a producción de la plataforma actual en el servidor de AVM. El sitio B2C sigue cotizando mientras se construye el resto.</td></tr>
+<tr><td class="w">S02</td><td class="d">16 nov – 20 nov</td><td>Registro de agencias con RNT y NIT, y aprobación de AVM.</td></tr>
+<tr><td class="w">S03</td><td class="d">23 nov – 27 nov</td><td>Usuarios por agencia con roles (administrador y asesor) e ingreso al portal.</td></tr>
+<tr><td class="w">S04</td><td class="d">30 nov – 4 dic</td><td>Precios por agencia: markup y comisión por agencia, grupo, producto y proveedor.</td></tr>
+<tr><td class="w">S05</td><td class="d">7 dic – 11 dic</td><td>Expedientes: un viaje con varios servicios, pasajeros y estados.</td></tr>
+<tr><td class="w">S06</td><td class="d">14 dic – 18 dic</td><td>Cotización moderna (1/2): diseño, enlace para compartir, PDF y envío por WhatsApp y correo.</td></tr>
+<tr class="off"><td class="w">–</td><td class="d">21 dic – 1 ene</td><td>Descanso de fin de año</td></tr>
+<tr><td class="w">S07</td><td class="d">4 ene – 8 ene</td><td>Cotización moderna (2/2): con la marca de cada agencia, para que la envíe a su cliente.</td></tr>
+<tr class="fase"><td colspan="3">Fase 2 · Conector TBO<small>11 ene 2027 – 19 feb 2027 · 6 semanas</small></td></tr>
+<tr><td class="w">S08</td><td class="d">11 ene – 15 ene</td><td>TBO: conexión, destinos y catálogo de hoteles.</td></tr>
+<tr><td class="w">S09</td><td class="d">18 ene – 22 ene</td><td>TBO: búsqueda y precios de hoteles en el portal.</td></tr>
+<tr><td class="w">S10</td><td class="d">25 ene – 29 ene</td><td>TBO: verificación de precio, políticas de cancelación y reserva.</td></tr>
+<tr><td class="w">S11</td><td class="d">1 feb – 5 feb</td><td>TBO: cancelación, voucher del proveedor y registro en el expediente.</td></tr>
+<tr><td class="w">S12</td><td class="d">8 feb – 12 feb</td><td>TBO: actividades (búsqueda, precio y reserva).</td></tr>
+<tr><td class="w">S13</td><td class="d">15 feb – 19 feb</td><td>TBO: pruebas de certificación, correcciones y solicitud de producción.</td></tr>
+<tr class="fase"><td colspan="3">Fase 3 · Conector World2Meet<small>22 feb 2027 – 19 mar 2027 · 4 semanas</small></td></tr>
+<tr><td class="w">S14</td><td class="d">22 feb – 26 feb</td><td>World2Meet: conexión y catálogo de hoteles.</td></tr>
+<tr><td class="w">S15</td><td class="d">1 mar – 5 mar</td><td>World2Meet: búsqueda, precios y reserva de hoteles.</td></tr>
+<tr><td class="w">S16</td><td class="d">8 mar – 12 mar</td><td>World2Meet: traslados (búsqueda, precio y reserva) y cancelaciones.</td></tr>
+<tr><td class="w">S17</td><td class="d">15 mar – 19 mar</td><td>World2Meet: certificación y correcciones.</td></tr>
+<tr class="fase"><td colspan="3">Fase 4 · Conector Omnibees<small>22 mar 2027 – 16 abr 2027 · 4 semanas</small></td></tr>
+<tr><td class="w">S18</td><td class="d">22 mar – 26 mar</td><td>Omnibees: conexión, hoteles disponibles y tarifas.</td></tr>
+<tr><td class="w">S19</td><td class="d">29 mar – 2 abr</td><td>Omnibees: reserva, modificación y cancelación.</td></tr>
+<tr><td class="w">S20</td><td class="d">5 abr – 9 abr</td><td>Omnibees: pruebas con hoteles reales y correcciones.</td></tr>
+<tr><td class="w">S21</td><td class="d">12 abr – 16 abr</td><td>Omnibees: certificación y salida a producción del conector.</td></tr>
+<tr class="fase"><td colspan="3">Fase 5 · Un solo catálogo de hoteles<small>19 abr 2027 – 7 may 2027 · 3 semanas</small></td></tr>
+<tr><td class="w">S22</td><td class="d">19 abr – 23 abr</td><td>Un mismo hotel de varios proveedores se reconoce y sale una sola vez.</td></tr>
+<tr><td class="w">S23</td><td class="d">26 abr – 30 abr</td><td>Mejor precio entre proveedores y prioridad por proveedor.</td></tr>
+<tr><td class="w">S24</td><td class="d">3 may – 7 may</td><td>Contenido: fotos, descripción y servicios del mejor proveedor para cada hotel.</td></tr>
+<tr class="fase"><td colspan="3">Fase 6 · Crédito de AVM y pagos<small>10 may 2027 – 11 jun 2027 · 5 semanas</small></td></tr>
+<tr><td class="w">S25</td><td class="d">10 may – 14 may</td><td>Crédito: cupo y saldo prepagado por agencia, y movimientos.</td></tr>
+<tr><td class="w">S26</td><td class="d">17 may – 21 may</td><td>Crédito: estado de cuenta, abonos y conciliación de pagos de las agencias.</td></tr>
+<tr><td class="w">S27</td><td class="d">24 may – 28 may</td><td>Crédito: alertas de cupo, bloqueo por mora y reservas contra el cupo.</td></tr>
+<tr><td class="w">S28</td><td class="d">31 may – 4 jun</td><td>Pasarela de pagos: tarjeta, PSE y Nequi, con confirmación automática.</td></tr>
+<tr><td class="w">S29</td><td class="d">7 jun – 11 jun</td><td>Pasarela: reembolsos, comisiones y conciliación con la pasarela.</td></tr>
+<tr class="fase"><td colspan="3">Fase 7 · Reservas y vouchers<small>14 jun 2027 – 9 jul 2027 · 4 semanas</small></td></tr>
+<tr><td class="w">S30</td><td class="d">14 jun – 18 jun</td><td>Reserva de un expediente con varios proveedores en un solo paso.</td></tr>
+<tr><td class="w">S31</td><td class="d">21 jun – 25 jun</td><td>Voucher de reserva moderno: uno por viaje, con código QR y los datos de cada servicio.</td></tr>
+<tr><td class="w">S32</td><td class="d">28 jun – 2 jul</td><td>Correos de confirmación, cambio y cancelación para la agencia y el viajero.</td></tr>
+<tr><td class="w">S33</td><td class="d">5 jul – 9 jul</td><td>Cancelaciones y penalidades en el portal y en el backoffice.</td></tr>
+<tr class="fase"><td colspan="3">Fase 8 · Vuelos y asistencia médica<small>12 jul 2027 – 6 ago 2027 · 4 semanas</small></td></tr>
+<tr><td class="w">S34</td><td class="d">12 jul – 16 jul</td><td>Vuelos: búsqueda y precios con el proveedor aéreo que elija AVM.</td></tr>
+<tr><td class="w">S35</td><td class="d">19 jul – 23 jul</td><td>Vuelos: datos de pasajeros, reserva y emisión.</td></tr>
+<tr><td class="w">S36</td><td class="d">26 jul – 30 jul</td><td>Asistencia médica: planes y precios por API del proveedor.</td></tr>
+<tr><td class="w">S37</td><td class="d">2 ago – 6 ago</td><td>Asistencia médica: emisión dentro del expediente y en el voucher.</td></tr>
+<tr class="fase"><td colspan="3">Fase 9 · Operación de AVM<small>9 ago 2027 – 27 ago 2027 · 3 semanas</small></td></tr>
+<tr><td class="w">S38</td><td class="d">9 ago – 13 ago</td><td>Backoffice de reservas: búsqueda, estados y gestión por agencia.</td></tr>
+<tr><td class="w">S39</td><td class="d">16 ago – 20 ago</td><td>Reportes de ventas por agencia, proveedor y producto.</td></tr>
+<tr><td class="w">S40</td><td class="d">23 ago – 27 ago</td><td>Conciliación con proveedores y control de lo pagado a cada uno.</td></tr>
+<tr class="fase"><td colspan="3">Fase 10 · Pruebas y salida del B2B<small>30 ago 2027 – 8 oct 2027 · 6 semanas</small></td></tr>
+<tr><td class="w">S41</td><td class="d">30 ago – 3 sep</td><td>Pruebas de punta a punta con agencias piloto (1/3).</td></tr>
+<tr><td class="w">S42</td><td class="d">6 sep – 10 sep</td><td>Pruebas con agencias piloto (2/3) y correcciones.</td></tr>
+<tr><td class="w">S43</td><td class="d">13 sep – 17 sep</td><td>Pruebas (3/3) y revisión de seguridad.</td></tr>
+<tr><td class="w">S44</td><td class="d">20 sep – 24 sep</td><td>Capacitación del equipo de AVM y manual de uso.</td></tr>
+<tr class="hito"><td class="w">S45</td><td class="d">27 sep – 1 oct</td><td>Salida a producción del portal B2B con las primeras agencias.</td></tr>
+<tr><td class="w">S46</td><td class="d">4 oct – 8 oct</td><td>Acompañamiento a las agencias y ajustes.</td></tr>
+<tr class="fase"><td colspan="3">Fase 11 · B2C completo sobre la misma plataforma<small>11 oct 2027 – 14 ene 2028 · 12 semanas</small></td></tr>
+<tr><td class="w">S47</td><td class="d">11 oct – 15 oct</td><td>El buscador del viajero usa los proveedores conectados y los tarifarios propios.</td></tr>
+<tr><td class="w">S48</td><td class="d">18 oct – 22 oct</td><td>Reserva y pago del viajero en el sitio.</td></tr>
+<tr><td class="w">S49</td><td class="d">25 oct – 29 oct</td><td>Cuentas del viajero: registro, ingreso, sus reservas y sus cotizaciones.</td></tr>
+<tr><td class="w">S50</td><td class="d">1 nov – 5 nov</td><td>Cotización y voucher modernos para el viajero.</td></tr>
+<tr><td class="w">S51</td><td class="d">8 nov – 12 nov</td><td>Asistencia médica y traslados propios dentro de la compra.</td></tr>
+<tr><td class="w">S52</td><td class="d">15 nov – 19 nov</td><td>Banners y diseño parametrizable en el backoffice.</td></tr>
+<tr><td class="w">S53</td><td class="d">22 nov – 26 nov</td><td>SEO: páginas por destino y hotel con el contenido de los proveedores.</td></tr>
+<tr><td class="w">S54</td><td class="d">29 nov – 3 dic</td><td>Google Analytics 4 y conversiones de Google Ads.</td></tr>
+<tr><td class="w">S55</td><td class="d">6 dic – 10 dic</td><td>Automatizaciones: recaptura de búsquedas y cotizaciones sin compra.</td></tr>
+<tr><td class="w">S56</td><td class="d">13 dic – 17 dic</td><td>Pruebas de punta a punta del B2C y revisión de seguridad.</td></tr>
+<tr class="off"><td class="w">–</td><td class="d">20 dic – 31 dic</td><td>Descanso de fin de año</td></tr>
+<tr class="hito"><td class="w">S57</td><td class="d">3 ene – 7 ene</td><td>Capacitación y salida a producción del B2C completo.</td></tr>
+<tr><td class="w">S58</td><td class="d">10 ene – 14 ene</td><td>Acompañamiento y ajustes.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note">Cada semana son 20 horas de desarrollo. Cada fase ya incluye un margen para pruebas, festivos e imprevistos. Al final de cada fase AVM prueba lo entregado en el sitio de prueba.</p>
   </section>
 
-  <section id="riesgos">
-    <span class="eyebrow">Lo que puede mover las fechas</span>
+  <section id="requisitos">
+    <span class="eyebrow">Lo que mueve las fechas</span>
     <h2>Requisitos de AVM <strong>y riesgos</strong></h2>
     <div class="two">
       <div class="card">
         <h3>AVM entrega</h3>
         <ul class="dec">
-          <li><span>Acceso a la API de cada proveedor<small>Documentación y credenciales de prueba de TBO, World2Meet y Omnibees, a nombre de AVM, un mes antes de su etapa.</small></span></li>
-          <li><span>Pasarela de pagos<small>Cuenta de Wompi, PayU o ePayco a nombre de AVM, aprobada antes del 4 de diciembre.</small></span></li>
-          <li><span>Proveedor de asistencia médica<small>Con API, contrato y credenciales, para el B2B.</small></span></li>
-          <li><span>Políticas y contenido<small>Términos de compra, cancelación y reembolso revisados por un abogado; tarifarios propios en PDF.</small></span></li>
-          <li><span>Una persona de AVM para pruebas<small>Unas 2 horas por semana para probar cada entrega y responder dudas.</small></span></li>
+          <li><span>Documentación y credenciales de prueba de cada proveedor<small>A nombre de AVM, antes de que empiece su fase: TBO antes del 4 de enero, World2Meet antes del 15 de febrero, Omnibees antes del 15 de marzo de 2027.</small></span></li>
+          <li><span>Cuenta de pasarela de pagos aprobada<small>Wompi, PayU o ePayco, a nombre de AVM, antes de la fase 6.</small></span></li>
+          <li><span>Proveedor aéreo y de asistencia médica con API<small>Contrato y credenciales antes de la fase 8.</small></span></li>
+          <li><span>Términos de compra, cancelación y reembolso<small>Revisados por un abogado, antes de la salida del B2B.</small></span></li>
+          <li><span>Una persona de AVM para probar<small>Unas 2 horas por semana, y 2 o 3 agencias piloto para la fase 10.</small></span></li>
         </ul>
       </div>
       <div class="card">
         <h3>Riesgos</h3>
         <ul class="risk">
-          <li><b>Certificación de proveedores</b><span>TBO, World2Meet y Omnibees revisan la integración antes de abrir producción. Puede tardar de 2 a 6 semanas por proveedor.</span></li>
+          <li><b>Certificación de proveedores</b><span>Cada proveedor revisa la integración antes de abrir producción; puede tardar de 2 a 6 semanas. Mientras tanto se avanza con la fase siguiente.</span></li>
           <li><b>Un solo desarrollador</b><span>Una incapacidad o un imprevisto detiene el avance. El código queda en el repositorio de AVM, documentado.</span></li>
-          <li><b>Cambios de alcance</b><span>Un producto o un proveedor nuevo suma sus semanas; se acuerda por escrito antes de empezarlo.</span></li>
-          <li><b>Aprobación de pagos de LiteAPI</b><span>Solo en el camino 1: sin ella, el sitio cotiza pero no cobra las reservas de LiteAPI.</span></li>
+          <li><b>Cambios de alcance</b><span>Un proveedor o un producto nuevo suma sus semanas y se acuerda por escrito antes de empezarlo.</span></li>
         </ul>
       </div>
     </div>
@@ -357,38 +327,26 @@ section { padding-block: 44px 0; display: grid; gap: 16px }
 
   <section id="inversion">
     <span class="eyebrow">Inversión</span>
-    <h2>Una mensualidad <strong>para ambos proyectos</strong></h2>
+    <h2>14 meses · <strong>una mensualidad</strong></h2>
     <div class="card price">
       <span class="eyebrow">Mensualidad durante el desarrollo</span>
-      <p class="amount">$4.500.000 <span>COP mensuales</span></p>
-      <p class="note">Cubre 20 horas semanales de desarrollo, pruebas, despliegues y reuniones de seguimiento, sea cual sea el proyecto en curso.</p>
+      <p class="amount">$4.500.000 <span>COP mensuales · 14 meses · total $63.000.000</span></p>
+      <p class="note">Del 9 de noviembre de 2026 al 14 ene 2028. Cubre 20 horas semanales de desarrollo, pruebas, despliegues y reuniones de seguimiento.</p>
     </div>
-    <div class="inv-wrap">
-      <table class="inv">
-        <thead><tr><th>Escenario</th><th class="r">Meses</th><th class="r">Inversión total</th></tr></thead>
-        <tbody>
-          <tr><td>Solo B2C, camino 1</td><td class="r">6</td><td class="r">$27.000.000</td></tr>
-          <tr><td>Solo B2C, camino 2</td><td class="r">8</td><td class="r">$36.000.000</td></tr>
-          <tr class="rec"><td>B2C camino 2 y luego B2B (recomendado)</td><td class="r">14</td><td class="r">$63.000.000</td></tr>
-          <tr><td>B2C camino 1 y luego B2B</td><td class="r">16</td><td class="r">$72.000.000</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <p class="note"><b>Después de cada salida a producción:</b> soporte y mantenimiento opcional de $1.500.000 COP mensuales, hasta 15 horas: correcciones, actualizaciones, copias de seguridad y monitoreo del servidor.</p>
-    <p class="note"><b>Costos de terceros, a nombre de AVM:</b> servidor (de 10 a 40 USD al mes), dominio, correos (Resend), comisiones de la pasarela por transacción, comisiones de LiteAPI y de los proveedores, y el presupuesto de pauta.</p>
+    <p class="note"><b>Después de la salida a producción:</b> soporte y mantenimiento de $1.500.000 COP mensuales, hasta 15 horas: correcciones, actualizaciones, copias de seguridad y monitoreo del servidor.</p>
+    <p class="note"><b>Costos de terceros, a nombre de AVM:</b> servidor (de 10 a 40 USD al mes), dominio, correos (Resend), comisiones de la pasarela por transacción, de los proveedores y de LiteAPI, y el presupuesto de pauta.</p>
   </section>
 
   <section id="firma">
     <span class="eyebrow">Aceptación</span>
     <h2>Firma de <strong>la propuesta</strong></h2>
     <ol class="terms">
-      <li>AVM elige un escenario y lo marca abajo. El trabajo empieza el 9 de noviembre de 2026.</li>
+      <li>Las partes aceptan el alcance, el plan de trabajo y lo que queda fuera de alcance, tal como están descritos en esta propuesta.</li>
       <li>Las fechas suponen 20 horas semanales de desarrollo y que AVM entrega a tiempo los requisitos. Un retraso en esas entregas corre las fechas en el mismo tiempo.</li>
       <li>La mensualidad se paga por mes vencido mientras dure el desarrollo. AVM puede detener el proyecto avisando con 30 días; lo construido hasta ese momento queda para AVM.</li>
       <li>El código, los datos y las cuentas de los servicios quedan a nombre de AVM.</li>
       <li>Cambios de alcance después de la firma se acuerdan por escrito, con su ajuste de tiempo y valor.</li>
     </ol>
-    <p class="note">Escenario elegido: &nbsp;☐ B2C camino 1 &nbsp; ☐ B2C camino 2 &nbsp; ☐ B2C camino 2 y B2B &nbsp; ☐ B2C camino 1 y B2B</p>
     <div class="signs">
       <div class="sign"><span class="sline"></span><b>Por AVM Operadores Mayoristas</b><span>Nombre:</span><span>C.C. / NIT:</span><span>Fecha:</span></div>
       <div class="sign"><span class="sline"></span><b>Por el desarrollador</b><span>Nombre: <strong>Santiago Martínez</strong></span><span>C.C. / NIT: <strong>1.076.623.993</strong></span><span>Fecha: <strong>9 de noviembre de 2026</strong></span></div>

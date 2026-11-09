@@ -30,7 +30,11 @@ PRINT = """
   .scen, .paths, .two { grid-template-columns: repeat(2, minmax(0, 1fr)) }
   .scope { grid-template-columns: repeat(3, minmax(0, 1fr)) }
   .dates { grid-template-columns: repeat(4, minmax(0, 1fr)) }
-  #horas, #cronograma, #firma { break-before: page }
+  #plan, #requisitos, #firma { break-before: page }
+  .plan { min-width: 0 !important; font-size: 11.5px }
+  .plan tr { break-inside: avoid }
+  .plan tr.fase td, .plan tr.hito td { -webkit-print-color-adjust: exact; print-color-adjust: exact }
+  .cols { grid-template-columns: repeat(2, minmax(0, 1fr)) }
   h2, .eyebrow { break-after: avoid }
 }
 """
