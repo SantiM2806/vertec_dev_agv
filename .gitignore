@@ -27,3 +27,8 @@ node_modules/
 fotos-originales/
 propuesta/*-print.html
 propuesta/*-completa.html
+
+# Tablero de seguimiento: la clave y el avance viven solo en el servidor
+planeador/clave.php
+planeador/estado.json
+planeador/estado.json.tmp

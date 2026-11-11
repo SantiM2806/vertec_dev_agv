@@ -1,0 +1,10 @@
+# El tablero no se indexa, y estado.json siempre se lee fresco
+<IfModule mod_headers.c>
+  Header set X-Robots-Tag "noindex, nofollow"
+  <Files "estado.json">
+    Header set Cache-Control "no-store"
+  </Files>
+</IfModule>
+<FilesMatch "^(plan\.json|plantilla\.html|LEEME\.md)$">
+  Require all denied
+</FilesMatch>
