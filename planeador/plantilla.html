@@ -312,7 +312,7 @@ async function subir() {
     const j = await r.json().catch(() => ({}));
     if (r.ok && j.ok) avisar("Guardado ✓");
     else if (r.status === 403) { avisar("Clave incorrecta: no se guardó", true); salirEdicion(); }
-    else avisar("No se pudo guardar: " + (j.error || r.status), true);
+    else { avisar("No se pudo guardar en el servidor (" + (j.error || r.status) + "): quedó en este navegador", true); $("#bDescargar").hidden = false; }
   } catch (e) { avisar("Sin conexión: guardado solo en este navegador", true); $("#bDescargar").hidden = false; }
 }
 function avisar(t, err) { const s = $("#save"); s.textContent = t; s.classList.toggle("err", !!err); }
