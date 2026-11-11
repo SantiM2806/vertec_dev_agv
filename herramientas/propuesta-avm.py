@@ -563,11 +563,10 @@ body = f"""</style>
     <h2>{meses} meses · <strong>una mensualidad</strong></h2>
     <div class="card price">
       <span class="eyebrow">Mensualidad durante el desarrollo</span>
-      <p class="amount">$4.500.000 <span>COP mensuales · {meses} meses · total {pesos(4500000 * meses)}</span></p>
+      <p class="amount">$3.500.000 <span>COP mensuales · {meses} meses · total {pesos(3500000 * meses)}</span></p>
       <p class="note">Del 17 de noviembre de 2026 al {fy(fin)}. Cubre el desarrollo, las pruebas, los despliegues y reuniones de seguimiento de ambos proyectos.</p>
     </div>
     <p class="note"><b>Proveedores adicionales</b> (por ejemplo Dingus): 1 mes adicional cada uno, desde la entrega de sus credenciales de prueba.</p>
-    <p class="note"><b>Después de cada salida a producción:</b> soporte y mantenimiento de $1.500.000 COP mensuales: correcciones, actualizaciones, copias de seguridad y monitoreo.</p>
   </section>
 
   <section id="costos">
