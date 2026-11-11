@@ -30,7 +30,13 @@ PRINT = """
   .scen, .paths, .two { grid-template-columns: repeat(2, minmax(0, 1fr)) }
   .scope { grid-template-columns: repeat(3, minmax(0, 1fr)) }
   .dates { grid-template-columns: repeat(4, minmax(0, 1fr)) }
-  #plan, #requisitos, #firma { break-before: page }
+  #cronograma, #plan, #requisitos, #firma { break-before: page }
+  .gw { overflow: visible }
+  .gantt2 { min-width: 0 !important }
+  .gr { grid-template-columns: 170px minmax(0, 1fr); min-height: 30px; break-inside: avoid }
+  .gl { font-size: 10.5px; padding: 4px 8px }
+  .gm span { font-size: 8.5px }
+  .gb, .gb.off, .gh { -webkit-print-color-adjust: exact; print-color-adjust: exact }
   .plan { min-width: 0 !important; font-size: 11.5px }
   .plan tr { break-inside: avoid }
   .plan tr.fase td, .plan tr.hito td { -webkit-print-color-adjust: exact; print-color-adjust: exact }
