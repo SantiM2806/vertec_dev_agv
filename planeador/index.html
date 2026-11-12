@@ -341,7 +341,7 @@ function pintar() {
   if (avmVis.length) {
     const lst = AV.filter(listo).length, venc = AV.filter(a => !listo(a) && !a.opc && a.fechaD < HOY).length;
     html += grupo("avm", "📌", `AVM debe entregar ${venc ? `<span class="tag late">${pl(venc, "vencido", "vencidos")}</span>` : ""}`, (() => { const sig = AV.filter(a => !listo(a) && !a.opc).sort((x, y) => x.fechaD - y.fechaD)[0];
-        return sig ? `Lo que AVM debe tener listo y cuándo · Próximo: <b>${esc(sig.txt.replace(/^AVM /, "").slice(0, 70))}${sig.txt.length > 74 ? "…" : ""}</b> · ${sig.modo === "durante" ? "semana del" : "antes del"} ${fy(sig.fechaD)}` : `${lst}/${AV.length} listos · AVM no tiene pendientes`; })(), lst, AV.length, "avm",
+        return sig ? `Lo que AVM debe tener listo y cuándo · Próximo: <b>${esc((t => t.charAt(0).toUpperCase() + t.slice(1))(sig.txt.replace(/^AVM /, "")).slice(0, 70))}${sig.txt.length > 74 ? "…" : ""}</b> · ${sig.modo === "durante" ? "semana del" : "antes del"} ${fy(sig.fechaD)}` : `${lst}/${AV.length} listos · AVM no tiene pendientes`; })(), lst, AV.length, "avm",
       avmVis.map(a => {
         const l = listo(a), d = dias(HOY, a.fechaD), late = !l && !a.opc && d < 0;
         const control = editar ? `<select class="est ${l ? "hecho" : ""}" data-a="${a.id}"><option value="">Pendiente</option><option value="listo" ${l ? "selected" : ""}>Listo</option></select>`
