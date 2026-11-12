@@ -93,7 +93,45 @@ head += """
 .plan td i { color: var(--muted); font-style: normal; font-size: 12.5px }
 .items .t.ok { color: var(--ok) }
 .plan tr.avm.opc td { background: var(--soft); color: var(--muted) }
+/* Línea gráfica del tablero de seguimiento: colores del logo de AVM (verde #94B63C, naranja #F08248), DM Sans y JetBrains Mono.
+   En pantalla, oscura como el tablero; al imprimir, clara con los mismos colores. B2C en verde, B2B en naranja. */
+:root:not([data-x]) {
+  --f-display: "DM Sans", "Segoe UI", system-ui, sans-serif; --f-body: "DM Sans", "Segoe UI", system-ui, sans-serif; --f-mono: "JetBrains Mono", ui-monospace, Consolas, monospace;
+  --paper: #F5F7F0; --card: #FFFFFF; --ink: #1E2410; --muted: #6B7262; --line: #E3E7DA; --soft: #EEF2E4;
+  --signal: #94B63C; --signal-ink: #14200A; --signal-text: #5F7A1C; --naranja: #F08248; --naranja-text: #B9531D; --amarillo: #D9A21B;
+  --todo: #B9531D; --ok: #5F7A1C; --danger: #D93025; --logo-c: block; --logo-w: none; color-scheme: light;
+}
+@media screen {
+  :root:not([data-x]) {
+    --paper: #0E150B; --card: #172012; --ink: #F1F4EA; --muted: #9AA58C; --line: #2A3622; --soft: #1D2817;
+    --signal-text: #B5D25E; --naranja-text: #F7A57A; --amarillo: #F2C14E; --todo: #F7A57A; --ok: #B5D25E; --danger: #FF6B5E;
+    --logo-c: none; --logo-w: block; color-scheme: dark;
+  }
+  body { background: radial-gradient(1200px 600px at 85% -10%, rgb(148 182 60 / .15), transparent 60%), radial-gradient(900px 500px at 0% 100%, rgb(240 130 72 / .09), transparent 60%), linear-gradient(160deg, #18240F, #0E150B 70%) fixed }
+  .card, .gw, .map-wrap, .plan-wrap, .hitos li { border-color: var(--line) }
+}
+h2 { font-weight: 400 }
+.eyebrow { color: var(--naranja-text) }
+.cover h1 strong { background: linear-gradient(transparent 62%, color-mix(in srgb, var(--signal) 55%, transparent) 62%) }
+.tag.on { background: var(--signal); color: var(--signal-ink) }
+.cols .card:nth-child(2) .tag.on { background: var(--naranja); color: #1B0F06 }
+.gb.b, .plan .pt.b2b { background: var(--naranja); color: #1B0F06 }
+.gb.w { background: var(--amarillo) }
+.gb.cert { background: repeating-linear-gradient(45deg, var(--muted) 0 4px, transparent 4px 8px); border-color: var(--muted) }
+.hitos li.main { border-left-color: var(--naranja) }
+.plan tr.fase td { background: color-mix(in srgb, var(--signal) 12%, var(--card)) }
+.plan tr.avm td { background: color-mix(in srgb, var(--naranja) 12%, var(--card)) }
+.plan tr.avm td.w { color: var(--naranja-text) }
+.plan tr.hito td { background: color-mix(in srgb, var(--signal) 22%, var(--card)) }
+.mp-key { fill: color-mix(in srgb, var(--signal) 22%, var(--card)); stroke: var(--signal) }
+.mp-dark { fill: var(--naranja) }
+.mp-w { fill: #1B0F06 }
 """
+# Fuentes de la línea gráfica del tablero
+import re as _re
+head = _re.sub(r'<link rel="stylesheet" href="https://fonts\.googleapis\.com/css2\?[^"]*">',
+               '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap">', head, count=1)
+
 
 # ---------- Plan semana a semana ----------
 # ("fase", nombre, proyecto) · ("s", texto) una semana · ("avm", texto) responsabilidad de AVM antes de esa semana
