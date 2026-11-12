@@ -64,6 +64,14 @@ button:focus-visible, select:focus-visible { outline: 2px solid var(--verde); ou
 .barra u { position: absolute; top: -3px; bottom: -3px; width: 2px; background: var(--ink); opacity: .7; text-decoration: none }
 
 /* Mensaje de estado */
+.semana { border: 1px solid rgb(148 182 60 / .35); background: var(--card); border-radius: 12px; padding: 16px 18px; margin-bottom: 12px; display: grid; gap: 10px }
+.semana .cab { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; flex-wrap: wrap }
+.semana .cab b { font-size: 16px; font-weight: 700 }
+.semana .cab span { font: 600 11.5px/1 var(--mono); color: var(--verde-l); text-transform: uppercase; letter-spacing: .06em }
+.semana ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 8px }
+.semana li { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 10px; align-items: baseline; font-size: 14.5px }
+.semana li small { font: 500 11.5px/1.4 var(--mono); color: var(--muted) }
+.semana .vacio2 { font-size: 14px; color: var(--muted) }
 .msg { border: 1px solid var(--line); border-left: 3px solid var(--st, var(--naranja)); background: var(--card); border-radius: 10px; padding: 13px 16px; font-size: 14px; color: #D9DFCF }
 .msg b { color: var(--ink) }
 .msg em { color: var(--verde-l) }
@@ -173,6 +181,7 @@ dialog::backdrop { background: rgb(5 8 4 / .7); backdrop-filter: blur(6px) }
 <main class="wrap">
   <div class="stats" id="stats"></div>
   <div class="barra" id="barra" title="La línea blanca marca dónde deberíamos ir según el plan"><i></i><u></u></div>
+  <div class="semana" id="semana"></div>
   <p class="msg" id="msg"></p>
   <div class="chips" id="chips" role="group" aria-label="Filtrar por estado"></div>
   <div id="grupos"></div>
@@ -283,16 +292,31 @@ function pintar() {
   // Mensaje de estado
   const pend = TV.find(t => est(t) !== "hecho"), msg = $("#msg");
   let txt, st;
-  if (HOY < iniV) { st = "var(--naranja)"; txt = `🗓️ <b>Empezamos en ${pl(dias(HOY, iniV), "día", "días")}.</b> La primera entrega es la semana ${TV[0].sem.n} (${f(iniV)} – ${fy(TV[0].sem.fin)}): ${esc(TV[0].txt)}`; }
+  if (HOY < iniV) { st = ""; txt = ""; }
   else if (!pend) { st = "var(--verde)"; txt = `🏁 <b>Proyecto entregado.</b> Todas las tareas del plan están completadas.`; }
   else {
     const atraso = Math.max(0, (SEM ? SEM.n : semanas.length + 1) - pend.sem.n), mov = curso;
     if (tarde(pend)) { st = atraso > 2 ? "var(--rojo)" : "var(--amarillo)"; txt = `⚠️ <b>${pl(atraso, "semana", "semanas")} de atraso.</b> `; }
     else { st = "var(--verde)"; txt = `🚀 <b>Vamos al día.</b> `; }
-    txt += SEM ? `Semana ${SEM.n} de ${semanas.length} (${f(SEM.ini)} – ${f(SEM.fin)}).` : "";
     if (mov) txt += ` <em>(${pl(mov, "tarea", "tareas")} en movimiento)</em>`;
   }
-  msg.style.setProperty("--st", st); msg.innerHTML = txt;
+  msg.style.setProperty("--st", st); msg.innerHTML = txt; msg.hidden = !txt;
+
+  // Cuadro de la semana: fecha y entregables de la semana actual (o de la primera, si aún no empieza)
+  const ref = SEM || (HOY < INI ? semanas[0] : null);
+  const box = $("#semana");
+  if (!ref) box.hidden = true;
+  else {
+    box.hidden = false;
+    const ts = ref.tareas.filter(t => enVista(t.proy));
+    const fin7 = new Date(ref.fin.getTime() + 2 * 864e5);
+    const aw = avm.filter(a => enVista(a.proy) && !listo(a) && !a.opc && a.fechaD <= fin7 && (a.fechaD >= ref.ini || a.fechaD < HOY));
+    const ESTXT = { hecho: "Completado", curso: "En progreso", late: "Atrasado", pend: "Pendiente" };
+    let li = ts.map(t => `<li><span class="tag ${t.proy.toLowerCase()}">${PRE[t.proy]}</span><span>${esc(t.txt)}${t.parte ? ` <small>(${t.parte === 1 ? "1.ª" : "2.ª"} parte)</small>` : ""}</span><span class="est ${estT(t)}">${ESTXT[estT(t)]}</span></li>`).join("");
+    li += aw.map(a => `<li><span class="tag b2b" style="background:rgb(240 130 72 / .18)">AVM</span><span>${esc(a.txt)} <small>· ${a.modo === "durante" ? "semana del" : "antes del"} ${f(a.fechaD)}</small></span><span class="est ${a.fechaD < HOY ? "late" : ""}">${a.fechaD < HOY ? "Vencido" : "Pendiente"}</span></li>`).join("");
+    if (!li) { const sig = TV.find(t => t.sem.ini > ref.fin); li = `<li class="vacio2" style="display:block">Esta semana no hay entregas de este proyecto.${sig ? ` La próxima es la semana ${sig.sem.n} (${f(sig.sem.ini)}): ${esc(sig.txt)}` : ""}</li>`; }
+    box.innerHTML = `<div class="cab"><b>${SEM ? "Semana actual" : "Primera semana"} · ${f(ref.ini)} – ${fy(ref.fin)}</b><span>Semana ${ref.n} de ${semanas.length}</span></div><ul>${li}</ul>`;
+  }
 
   // Filtros
   const F = [["todos", "Todos"], ["pend", "Pendiente"], ["curso", "En progreso"], ["hecho", "Completado"]];
