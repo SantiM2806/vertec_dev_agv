@@ -14,7 +14,11 @@ pagina = ('<!doctype html>\n<html lang="es">\n<head>\n<meta charset="utf-8">\n<m
 os.makedirs(os.path.join(raiz, "dist"), exist_ok=True)
 destino = os.path.join(raiz, "dist", "propuesta.zip")
 with zipfile.ZipFile(destino, "w", zipfile.ZIP_DEFLATED) as z:
-    z.writestr("propuesta/index.html", pagina)
+    # Permisos 644: si no, el servidor web no puede mostrar la página (403)
+    info = zipfile.ZipInfo("propuesta/index.html", date_time=__import__("time").localtime()[:6])
+    info.compress_type = zipfile.ZIP_DEFLATED
+    info.external_attr = 0o100644 << 16
+    z.writestr(info, pagina)
     for a in ("firmar.php", ".htaccess", "firma-codigos.php.ejemplo"):
         z.write(os.path.join(prop, "servidor", a), "propuesta/" + a)
 print("Listo", destino, "·", title)
