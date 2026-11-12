@@ -45,6 +45,12 @@ button:focus-visible, select:focus-visible { outline: 2px solid var(--verde); ou
 .save { font: 600 11.5px/1 var(--mono); color: var(--muted) }
 .save.ok { color: var(--verde-l) } .save.err { color: var(--rojo) }
 
+.vistas { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; max-width: 940px; margin: 18px auto 0; padding: 5px; border: 1px solid var(--line); border-radius: 14px; background: rgb(0 0 0 / .2); width: calc(100% - 32px) }
+.vistas button { padding: 11px 12px; border-radius: 10px; font-weight: 700; font-size: 14.5px; color: var(--muted); display: grid; gap: 1px; text-align: center }
+.vistas button small { font: 600 10.5px/1.3 var(--mono); letter-spacing: .06em; text-transform: uppercase; opacity: .8 }
+.vistas button:hover { color: var(--ink); background: var(--card) }
+.vistas button[aria-pressed="true"] { background: var(--verde); color: #14200A }
+.vistas button[data-v="tbd"][aria-pressed="true"] { background: var(--naranja); color: #1B0F06 }
 .wrap { max-width: 940px; margin: 0 auto; padding: 22px 16px 70px }
 
 /* Indicadores */
@@ -150,7 +156,7 @@ dialog::backdrop { background: rgb(5 8 4 / .7); backdrop-filter: blur(6px) }
 <header class="top">
   <div class="brand">
     <span class="ico"><img src="img/logo-blanco.png" alt="AVM" width="30" height="10"></span>
-    <div><h1>Seguimiento de Proyecto</h1><small>Sitio B2C × Travel Booking &amp; Distribution</small></div>
+    <div><h1>Seguimiento de Proyecto</h1><small id="subtitulo">Vitusi · Sitio B2C</small></div>
   </div>
   <div class="acts">
     <span class="save" id="save" aria-live="polite"></span>
@@ -159,6 +165,10 @@ dialog::backdrop { background: rgb(5 8 4 / .7); backdrop-filter: blur(6px) }
   </div>
 </header>
 <div class="fechahora" id="fechahora"></div>
+<nav class="vistas" aria-label="Proyecto">
+  <button data-v="vitusi" aria-pressed="true">Vitusi<small>Sitio B2C</small></button>
+  <button data-v="tbd" aria-pressed="false">Travel Booking &amp; Distribution<small>Portal B2B para agencias</small></button>
+</nav>
 
 <main class="wrap">
   <div class="stats" id="stats"></div>
@@ -208,7 +218,7 @@ const etapas = [], porFase = {}, tareas = [], avm = [], semanas = [], certs = []
 let act = null;
 for (const it of PLAN.items) {
   if (it.t === "fase") { act = { nombre: it.nombre, corto: it.nombre.split(" · ").slice(1).join(" · "), proy: it.proy, filas: [] }; etapas.push(act); porFase[it.nombre] = act; }
-  else if (it.t === "avm") avm.push({ ...it, fechaD: D(it.fecha) });
+  else if (it.t === "avm") avm.push({ ...it, fechaD: D(it.fecha), proy: /agencias/i.test(it.txt) ? "B2B" : act.proy });
   else if (it.t === "cert") certs.push({ prov: it.prov, fin: D(it.fin) });
   else if (it.t === "sem") {
     const s = { n: it.n, ini: D(it.ini), fin: D(it.fin), tareas: [] }; semanas.push(s);
@@ -256,18 +266,23 @@ const listo = a => estado.avm[a.id] === "listo";
 
 // ---------- Pintar ----------
 let filtro = "todos";
+let vista = (() => { const h = location.hash.slice(1); if (h === "vitusi" || h === "tbd") return h; try { return localStorage.getItem("avm-seg-vista") || "vitusi"; } catch (e) { return "vitusi"; } })();
+const enVista = p => vista === "tbd" ? p === "B2B" : p !== "B2B";
 const abiertos = new Set();
 function pintar() {
-  const total = tareas.length, hechas = tareas.filter(t => est(t) === "hecho").length, curso = tareas.filter(t => est(t) === "curso").length;
-  const pct = Math.round(hechas / total * 100), esperadas = tareas.filter(t => t.sem.fin < HOY).length;
+  const TV = tareas.filter(t => enVista(t.proy)), iniV = TV[0].sem.ini, finV = TV[TV.length - 1].sem.fin;
+  document.querySelectorAll(".vistas button").forEach(b => b.setAttribute("aria-pressed", b.dataset.v === vista));
+  $("#subtitulo").textContent = vista === "tbd" ? "Travel Booking & Distribution · Portal B2B" : "Vitusi · Sitio B2C";
+  const total = TV.length, hechas = TV.filter(t => est(t) === "hecho").length, curso = TV.filter(t => est(t) === "curso").length;
+  const pct = Math.round(hechas / total * 100), esperadas = TV.filter(t => t.sem.fin < HOY).length;
   $("#stats").innerHTML = [[pct + "%", "Progreso", "c-nar"], [hechas, "Completadas", "c-ver"], [curso, "En progreso", "c-ama"], [total - hechas - curso, "Pendientes", "c-gri"]]
     .map(([v, l, c]) => `<div class="stat"><b class="${c}">${v}</b><span>${l}</span></div>`).join("");
   $("#barra i").style.width = pct + "%"; $("#barra u").style.left = `calc(${esperadas / total * 100}% - 1px)`;
 
   // Mensaje de estado
-  const pend = tareas.find(t => est(t) !== "hecho"), msg = $("#msg");
+  const pend = TV.find(t => est(t) !== "hecho"), msg = $("#msg");
   let txt, st;
-  if (HOY < INI) { st = "var(--naranja)"; txt = `🗓️ <b>Empezamos en ${pl(dias(HOY, INI), "día", "días")}.</b> La semana 1 va del ${f(INI)} al ${fy(semanas[0].fin)}: ${esc(semanas[0].tareas[0].txt)}`; }
+  if (HOY < iniV) { st = "var(--naranja)"; txt = `🗓️ <b>Empezamos en ${pl(dias(HOY, iniV), "día", "días")}.</b> La primera entrega es la semana ${TV[0].sem.n} (${f(iniV)} – ${fy(TV[0].sem.fin)}): ${esc(TV[0].txt)}`; }
   else if (!pend) { st = "var(--verde)"; txt = `🏁 <b>Proyecto entregado.</b> Todas las tareas del plan están completadas.`; }
   else {
     const atraso = Math.max(0, (SEM ? SEM.n : semanas.length + 1) - pend.sem.n), mov = curso;
@@ -285,10 +300,10 @@ function pintar() {
   // Grupo AVM
   const pasaF = e => filtro === "todos" || filtro === e || (filtro === "pend" && e === "late");
   let html = "";
-  const avmVis = avm.filter(a => pasaF(listo(a) ? "hecho" : "pend"));
+  const AV = avm.filter(a => enVista(a.proy)), avmVis = AV.filter(a => pasaF(listo(a) ? "hecho" : "pend"));
   if (avmVis.length) {
-    const lst = avm.filter(listo).length, venc = avm.filter(a => !listo(a) && !a.opc && a.fechaD < HOY).length;
-    html += grupo("avm", "📌", `AVM debe entregar ${venc ? `<span class="tag late">${pl(venc, "vencido", "vencidos")}</span>` : ""}`, `${lst}/${avm.length} listos · compromisos de AVM`, lst, avm.length, "avm",
+    const lst = AV.filter(listo).length, venc = AV.filter(a => !listo(a) && !a.opc && a.fechaD < HOY).length;
+    html += grupo("avm", "📌", `AVM debe entregar ${venc ? `<span class="tag late">${pl(venc, "vencido", "vencidos")}</span>` : ""}`, `${lst}/${AV.length} listos · compromisos de AVM`, lst, AV.length, "avm",
       avmVis.map(a => {
         const l = listo(a), d = dias(HOY, a.fechaD), late = !l && !a.opc && d < 0;
         const control = editar ? `<select class="est ${l ? "hecho" : ""}" data-a="${a.id}"><option value="">Pendiente</option><option value="listo" ${l ? "selected" : ""}>Listo</option></select>`
@@ -298,7 +313,7 @@ function pintar() {
   }
   // Etapas
   for (const e of etapas) {
-    if (!e.filas.length) continue;
+    if (!e.filas.length || !enVista(e.proy)) continue;
     const vis = e.filas.filter(t => pasaF(estT(t))); if (!vis.length) continue;
     const h = e.filas.filter(t => est(t) === "hecho").length, n = e.filas.length;
     const ini = e.filas[0].sem.ini, fin = e.filas[n - 1].sem.fin, enCurso = SEM && ini <= SEM.fin && fin >= SEM.ini, late = e.filas.some(tarde);
@@ -313,14 +328,14 @@ function pintar() {
   }
   // Fechas clave
   if (filtro === "todos") {
-    const hs = PLAN.hitos.map(x => ({ txt: x.txt.replace(/ \(.*\)\.?$/, "").replace(/\.$/, ""), d: D(x.fecha) }))
-      .concat(certs.map(c => ({ txt: (c.prov === "Hoteles 3" ? "Tercer proveedor de hoteles" : c.prov) + " en producción (estimado)", d: c.fin }))).sort((a, b) => a.d - b.d);
+    const hs = PLAN.hitos.filter(x => enVista(/Travel Booking/.test(x.txt) ? "B2B" : "B2C")).map(x => ({ txt: x.txt.replace(/ \(.*\)\.?$/, "").replace(/\.$/, ""), d: D(x.fecha) }))
+      .concat((vista === "tbd" ? certs : []).map(c => ({ txt: (c.prov === "Hoteles 3" ? "Tercer proveedor de hoteles" : c.prov) + " en producción (estimado)", d: c.fin }))).sort((a, b) => a.d - b.d);
     const pas = hs.filter(x => x.d < HOY).length, prox = hs.find(x => x.d >= HOY);
     html += grupo("hitos", "🏁", "Fechas clave", `${pas}/${hs.length} cumplidas${prox ? ` · próxima: ${fy(prox.d)}` : ""}`, pas, hs.length, "",
       hs.map(x => `<div class="hito ${x.d < HOY ? "pasado" : ""}"><time>${fy(x.d)}</time><span>${x.d < HOY ? "✓ " : ""}${esc(x.txt)}</span></div>`).join(""));
   }
   $("#grupos").innerHTML = html || `<p class="vacio">No hay tareas con este filtro.</p>`;
-  $("#pie").textContent = (estado.actualizado ? "Última edición: " + new Date(estado.actualizado).toLocaleString("es-CO", { dateStyle: "medium", timeStyle: "short" }) : "Sin ediciones todavía") + ` · Plan del ${fy(INI)} al ${fy(FIN)} · AVM Operadores Mayoristas`;
+  $("#pie").textContent = (estado.actualizado ? "Última edición: " + new Date(estado.actualizado).toLocaleString("es-CO", { dateStyle: "medium", timeStyle: "short" }) : "Sin ediciones todavía") + ` · ${vista === "tbd" ? "Travel Booking & Distribution" : "Vitusi"}: ${fy(iniV)} al ${fy(finV)} · AVM Operadores Mayoristas`;
 }
 function etapaDe(a) { const e = etapas.find(x => x.filas.length && x.filas[0].sem.ini >= a.fechaD); return e ? e.corto : ""; }
 function grupo(id, emo, titulo, sub, h, n, cls, cuerpo, abrirAuto) {
@@ -366,7 +381,10 @@ $("#pinForm").addEventListener("submit", async ev => {
 $("#pinNo").addEventListener("click", () => $("#dlg").close());
 $("#bModo").addEventListener("click", () => editar ? modo(false) : abrirPin());
 $("#bRefrescar").addEventListener("click", () => location.reload());
-document.addEventListener("click", ev => { const c = ev.target.closest("[data-f]"); if (c) { filtro = c.dataset.f; pintar(); } });
+document.addEventListener("click", ev => {
+  const c = ev.target.closest("[data-f]"); if (c) { filtro = c.dataset.f; pintar(); return; }
+  const v = ev.target.closest(".vistas button"); if (v) { vista = v.dataset.v; history.replaceState(null, "", "#" + vista); try { localStorage.setItem("avm-seg-vista", vista); } catch (e) {} pintar(); }
+});
 document.addEventListener("change", ev => {
   const s = ev.target.closest("select[data-t]"); if (s) { if (s.value) estado.tareas[s.dataset.t] = s.value; else delete estado.tareas[s.dataset.t]; cambio(); return; }
   const a = ev.target.closest("select[data-a]"); if (a) { if (a.value) estado.avm[a.dataset.a] = "listo"; else delete estado.avm[a.dataset.a]; cambio(); }
