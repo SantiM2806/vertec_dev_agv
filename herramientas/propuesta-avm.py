@@ -130,7 +130,7 @@ h2 { font-weight: 400 }
 # Fuentes de la línea gráfica del tablero
 import re as _re
 head = _re.sub(r'<link rel="stylesheet" href="https://fonts\.googleapis\.com/css2\?[^"]*">',
-               '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap">', head, count=1)
+               '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=Great+Vibes&family=JetBrains+Mono:wght@500;700&display=swap">', head, count=1)
 
 
 # ---------- Plan semana a semana ----------
@@ -430,6 +430,11 @@ mapping_svg = """<svg viewBox="0 0 960 540" role="img" aria-label="Diagrama del 
   <text x="20" y="520" class="mp-s">Lo mismo se hace con destinos, tipos de habitación y regímenes (por ejemplo «AI», «All Inclusive» y «Todo incluido» son lo mismo).</text>
 </svg>"""
 
+import sys as _sys
+_sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from firma_bloque import FIRMA_CSS, FIRMA_HTML
+head += FIRMA_CSS
+
 body = f"""</style>
 
 <main class="doc">
@@ -621,10 +626,7 @@ body = f"""</style>
       <li>Las fechas suponen que AVM cumple a tiempo sus responsabilidades. Un retraso en ellas, o en la certificación de un proveedor, corre las fechas en el mismo tiempo.</li>
       <li>Cambios de alcance después de la firma se acuerdan por escrito, con su ajuste de tiempo y valor.</li>
     </ol>
-    <div class="signs">
-      <div class="sign"><span class="sline"></span><b>Por AVM Operadores Mayoristas</b><span>Nombre:</span><span>C.C. / NIT:</span><span>Fecha:</span></div>
-      <div class="sign"><span class="sline"></span><b>Por el desarrollador</b><span>Nombre: <strong>Santiago Martínez</strong></span><span>C.C. / NIT: <strong>1.076.623.993</strong></span><span>Fecha: <strong>11 de noviembre de 2026</strong></span></div>
-    </div>
+    {FIRMA_HTML}
   </section>
 
 </main>

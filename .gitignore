@@ -34,3 +34,5 @@ planeador/estado.json
 planeador/estado.json.tmp
 planeador/intentos.json
 planeador/vista-previa/
+propuesta/servidor/firmas.json
+propuesta/servidor/firma-codigos.php

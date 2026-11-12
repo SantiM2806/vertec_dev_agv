@@ -1,0 +1,7 @@
+# La propuesta no se indexa; el registro de firmas solo se lee a través de firmar.php
+<IfModule mod_headers.c>
+  Header set X-Robots-Tag "noindex, nofollow"
+</IfModule>
+<FilesMatch "^(firmas\.json|firma-intentos\.json|firma-codigos\.php|firma-codigos\.php\.ejemplo)$">
+  Require all denied
+</FilesMatch>

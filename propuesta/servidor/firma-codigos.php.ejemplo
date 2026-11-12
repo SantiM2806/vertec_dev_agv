@@ -1,0 +1,8 @@
+<?php
+// Opcional. En cPanel, copia este archivo con el nombre firma-codigos.php y escribe un código para cada parte.
+// Si una parte tiene código, solo puede firmar quien lo escriba. Déjalo vacío ('') para no pedir código.
+// Si firma-codigos.php no existe, cualquiera con el enlace puede firmar.
+return [
+    'avm' => '',
+    'desarrollador' => '',
+];
