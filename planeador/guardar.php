@@ -14,6 +14,19 @@ if (!is_array($entrada)) salir(400, ['ok' => false, 'error' => 'Datos inválidos
 $clave = isset($entrada['clave']) ? (string) $entrada['clave'] : '';
 
 $archivoClave = __DIR__ . '/clave.php';
+
+// Solo verificar la clave (al entrar al modo edición), sin guardar nada
+if (!empty($entrada['verificar'])) {
+    if (!is_file($archivoClave)) {
+        if (is_file(__DIR__ . '/estado.json')) salir(500, ['ok' => false, 'error' => 'Falta clave.php en el servidor']);
+        if (mb_strlen($clave) < 8) salir(400, ['ok' => false, 'error' => 'Primera vez: la clave debe tener al menos 8 caracteres']);
+        salir(200, ['ok' => true, 'nueva' => true]);
+    }
+    $h = require $archivoClave;
+    if (is_string($h) && $clave !== '' && password_verify($clave, $h)) salir(200, ['ok' => true]);
+    sleep(2); salir(403, ['ok' => false, 'error' => 'Clave incorrecta']);
+}
+
 if (!is_file($archivoClave)) {
     // Primer uso: la primera clave que se guarda queda como clave de edición.
     // Solo se permite mientras no exista estado.json (justo después de subir la carpeta).

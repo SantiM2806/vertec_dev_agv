@@ -7,240 +7,323 @@
 <meta name="robots" content="noindex">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700&family=Hanken+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap">
 <style>
-/* Tablero de seguimiento: hoy y avance arriba; plan por etapas, lo que debe tener AVM y cronograma en pestañas */
+/* Tablero de seguimiento: estado de hoy y semanas arriba, lo de esta semana y lo de AVM al lado, detalle en pestañas.
+   Colores: un color por proyecto (B2C azul, B2B violeta, white label verde azulado) y uno por estado (hecho, en curso, atrasado, AVM). */
 :root {
-  --paper: #F6F7F2; --card: #FFFFFF; --ink: #161B1F; --muted: #5B6560; --line: #DCE0D6; --soft: #ECEFE4;
-  --signal: #BBCF26; --signal-ink: #1F2508; --signal-text: #5E6B05; --todo: #9A6A12; --ok: #2F7D4F; --danger: #B4372B; --b2b: #161B1F; --wl: #2F7D4F;
-  --f-display: "Outfit", "Segoe UI", system-ui, sans-serif;
-  --f-body: "Hanken Grotesk", "Segoe UI", system-ui, sans-serif;
-  --f-mono: "JetBrains Mono", ui-monospace, Consolas, monospace;
+  --bg: #F3F5F8; --card: #FFFFFF; --ink: #0F172A; --ink2: #334155; --muted: #64748B; --line: #E2E8F0; --soft: #F1F5F9;
+  --brand: #0E9F57; --brand-soft: #E3F6EC; --brand-ink: #065F35;
+  --b2c: #2563EB; --b2b: #7C3AED; --wl: #0D9488;
+  --ok: #16A34A; --ok-soft: #DCFCE7; --curso: #D97706; --curso-soft: #FEF3C7; --late: #DC2626; --late-soft: #FEE2E2; --avm: #EA580C; --avm-soft: #FFEDD5;
+  --future: #E2E8F0;
+  --f: "Plus Jakarta Sans", "Segoe UI", system-ui, sans-serif; --mono: "JetBrains Mono", ui-monospace, Consolas, monospace;
   --logo-c: block; --logo-w: none;
+  --shadow: 0 1px 2px rgb(15 23 42 / .05), 0 4px 14px rgb(15 23 42 / .05);
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --paper: #111518; --card: #182024; --ink: #EEF1EA; --muted: #A2ACA6; --line: #2C353A; --soft: #20292D;
-    --signal-text: #C9DB4A; --todo: #E2A94A; --ok: #5CC48A; --danger: #E06A5C; --b2b: #DCE3E8; --wl: #5CC48A; --logo-c: none; --logo-w: block; color-scheme: dark;
+    --bg: #0B1220; --card: #111A2E; --ink: #E7ECF3; --ink2: #CBD5E1; --muted: #94A3B8; --line: #22304A; --soft: #18233A;
+    --brand: #22C55E; --brand-soft: #0F2E21; --brand-ink: #86EFAC;
+    --b2c: #60A5FA; --b2b: #A78BFA; --wl: #2DD4BF;
+    --ok: #22C55E; --ok-soft: #0F2E1C; --curso: #F59E0B; --curso-soft: #33240A; --late: #F87171; --late-soft: #3A1414; --avm: #FB923C; --avm-soft: #36200F;
+    --future: #23314B; --logo-c: none; --logo-w: block; --shadow: none; color-scheme: dark;
   }
 }
 :root[data-theme="dark"] {
-  --paper: #111518; --card: #182024; --ink: #EEF1EA; --muted: #A2ACA6; --line: #2C353A; --soft: #20292D;
-  --signal-text: #C9DB4A; --todo: #E2A94A; --ok: #5CC48A; --danger: #E06A5C; --b2b: #DCE3E8; --wl: #5CC48A; --logo-c: none; --logo-w: block; color-scheme: dark;
+  --bg: #0B1220; --card: #111A2E; --ink: #E7ECF3; --ink2: #CBD5E1; --muted: #94A3B8; --line: #22304A; --soft: #18233A;
+  --brand: #22C55E; --brand-soft: #0F2E21; --brand-ink: #86EFAC;
+  --b2c: #60A5FA; --b2b: #A78BFA; --wl: #2DD4BF;
+  --ok: #22C55E; --ok-soft: #0F2E1C; --curso: #F59E0B; --curso-soft: #33240A; --late: #F87171; --late-soft: #3A1414; --avm: #FB923C; --avm-soft: #36200F;
+  --future: #23314B; --logo-c: none; --logo-w: block; --shadow: none; color-scheme: dark;
 }
 * { box-sizing: border-box }
 [hidden] { display: none !important }
 html { -webkit-text-size-adjust: 100% }
-body { margin: 0; background: var(--paper); color: var(--ink); font: 400 15.5px/1.5 var(--f-body); padding: 0 16px 56px }
-.doc { max-width: 1040px; margin: 0 auto }
-h1, h2, h3 { font-family: var(--f-display); margin: 0; text-wrap: balance }
-p { margin: 0 }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 400 15px/1.5 var(--f) }
+h1, h2, h3, p { margin: 0 }
 ul { margin: 0; padding: 0; list-style: none }
-button { font: inherit; color: inherit; cursor: pointer }
-.mono { font-family: var(--f-mono) }
-.eyebrow { font: 700 11px/1 var(--f-mono); letter-spacing: .14em; text-transform: uppercase; color: var(--signal-text) }
+button { font: inherit; color: inherit; cursor: pointer; background: none; border: 0; padding: 0 }
+button:focus-visible, summary:focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; border-radius: 6px }
+.wrap { max-width: 1120px; margin: 0 auto; padding: 0 16px }
 .muted { color: var(--muted) }
 
-/* Encabezado */
-.top { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; padding: 22px 0 14px; border-bottom: 1px solid var(--line) }
-.brand { display: flex; align-items: center; gap: 14px }
-.brand img { height: 34px; width: auto }
+/* Barra superior */
+.bar { background: var(--card); border-bottom: 1px solid var(--line) }
+.bar .wrap { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-block: 12px; flex-wrap: wrap }
+.brand { display: flex; align-items: center; gap: 12px }
+.brand img { height: 32px; width: auto }
 .logo-c { display: var(--logo-c) } .logo-w { display: var(--logo-w) }
-.brand h1 { font-weight: 500; font-size: 19px; line-height: 1.15 }
-.brand small { display: block; font: 500 11.5px/1.4 var(--f-mono); color: var(--muted) }
-.acts { display: flex; gap: 8px; align-items: center; flex-wrap: wrap }
-.btn { border: 1px solid var(--line); background: var(--card); border-radius: 999px; padding: 7px 14px; font-size: 13.5px; font-weight: 600; display: inline-flex; gap: 7px; align-items: center }
+.brand h1 { font-size: 17px; font-weight: 800; letter-spacing: -.01em; line-height: 1.15 }
+.brand small { display: block; font-size: 12.5px; color: var(--muted); font-weight: 500 }
+.acts { display: flex; align-items: center; gap: 10px; flex-wrap: wrap }
+.btn { display: inline-flex; align-items: center; gap: 8px; border-radius: 10px; padding: 9px 14px; font-weight: 700; font-size: 14px; border: 1px solid var(--line); background: var(--card) }
 .btn:hover { border-color: var(--muted) }
-.btn.on { background: var(--ink); color: var(--paper); border-color: var(--ink) }
-.save { font: 500 12px/1 var(--f-mono); color: var(--muted) }
-.save.err { color: var(--danger) }
+.btn.primary { background: var(--brand); border-color: var(--brand); color: #fff }
+.btn.primary:hover { filter: brightness(1.05) }
+.btn.dark { background: var(--ink); border-color: var(--ink); color: var(--card) }
+.btn svg { width: 16px; height: 16px }
+.save { font-size: 12.5px; font-weight: 600; color: var(--muted) }
+.save.ok { color: var(--ok) } .save.err { color: var(--late) }
+.editbanner { background: var(--curso-soft); color: var(--ink); border-bottom: 1px solid color-mix(in srgb, var(--curso) 35%, transparent) }
+.editbanner .wrap { padding-block: 9px; font-size: 13.5px; font-weight: 600; display: flex; gap: 8px; align-items: center }
 
-/* Hoy */
-.hoy { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 12px; padding-top: 20px }
-.card { border: 1px solid var(--line); background: var(--card); border-radius: 16px; padding: 18px 20px; display: grid; gap: 10px; align-content: start; min-width: 0 }
-.fecha { font: 300 clamp(26px, 4vw, 36px)/1.05 var(--f-display); letter-spacing: -.02em }
-.fecha strong { font-weight: 700 }
-.estado { display: inline-flex; align-items: center; gap: 8px; font-weight: 600; font-size: 14.5px }
-.dot { width: 10px; height: 10px; border-radius: 50%; background: var(--muted); flex: none }
-.dot.ok { background: var(--ok) } .dot.warn { background: var(--todo) } .dot.bad { background: var(--danger) }
-.ahora { display: grid; gap: 8px }
-.ahora li { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 10px; align-items: baseline; font-size: 14.5px }
-.pill { font: 700 10px/1 var(--f-mono); letter-spacing: .06em; text-transform: uppercase; padding: 4px 6px; border-radius: 5px; white-space: nowrap }
-.pill.B2C { background: var(--signal); color: var(--signal-ink) }
-.pill.B2B { background: var(--b2b); color: var(--paper) }
-.pill.WL { background: var(--wl); color: var(--paper) }
-.pill.AVM { background: color-mix(in srgb, var(--todo) 22%, transparent); color: var(--todo) }
-.pill.cert { background: var(--soft); color: var(--muted) }
-.stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; padding-top: 12px }
-.stat { border: 1px solid var(--line); background: var(--card); border-radius: 14px; padding: 12px 14px; display: grid; gap: 2px }
-.stat b { font: 700 26px/1.1 var(--f-display); font-variant-numeric: tabular-nums }
-.stat span { font-size: 12.5px; color: var(--muted) }
-.barra { position: relative; height: 10px; border-radius: 99px; background: var(--soft); overflow: hidden; margin-top: 12px }
-.barra i { position: absolute; inset: 0 auto 0 0; background: var(--signal); border-radius: 99px }
-.barra u { position: absolute; top: -2px; bottom: -2px; width: 2px; background: var(--ink); text-decoration: none }
-.leyenda { display: flex; justify-content: space-between; gap: 10px; font-size: 12.5px; color: var(--muted); margin-top: 6px; flex-wrap: wrap }
+/* Estado de hoy */
+.hero { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 18px; align-items: center; margin-top: 20px; padding: 20px 22px; border-radius: 16px; background: var(--card); box-shadow: var(--shadow); border: 1px solid var(--line); border-left: 6px solid var(--st, var(--muted)) }
+.hero .fecha { font-size: 13px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: .06em }
+.hero h2 { font-size: clamp(22px, 3.2vw, 30px); font-weight: 800; letter-spacing: -.02em; line-height: 1.15; margin-top: 4px }
+.hero p.det { color: var(--ink2); margin-top: 6px; max-width: 70ch }
+.sem-big { text-align: center; padding: 10px 18px; border-radius: 14px; background: var(--soft); min-width: 120px }
+.sem-big b { display: block; font-size: 34px; font-weight: 800; line-height: 1; font-variant-numeric: tabular-nums }
+.sem-big span { font-size: 12px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: .06em }
+
+/* Tira de semanas */
+.card { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 18px 20px; box-shadow: var(--shadow); min-width: 0 }
+.card h3 { font-size: 15px; font-weight: 800; display: flex; align-items: center; gap: 8px; justify-content: space-between; flex-wrap: wrap }
+.strip-card { margin-top: 14px }
+.strip { display: grid; grid-template-columns: repeat(var(--n), minmax(0, 1fr)); gap: 3px; margin-top: 14px }
+.wk { height: 30px; border-radius: 5px; background: var(--future); position: relative; display: grid; place-items: end center; padding-bottom: 2px }
+.wk:hover { outline: 2px solid var(--ink2); outline-offset: 1px }
+.wk.hecho { background: var(--ok) } .wk.parcial { background: color-mix(in srgb, var(--ok) 45%, var(--future)) }
+.wk.atrasada { background: var(--late) } .wk.actual { outline: 3px solid var(--ink); outline-offset: 2px; z-index: 1 }
+.wk.hito::after { content: "◆"; position: absolute; top: -15px; font-size: 10px; color: var(--ink2) }
+.wk i { font: 700 8.5px/1 var(--mono); color: color-mix(in srgb, var(--ink) 55%, transparent); font-style: normal }
+.wk.hecho i, .wk.atrasada i { color: #fff }
+.meses { display: grid; grid-template-columns: repeat(var(--n), minmax(0, 1fr)); gap: 3px; margin-top: 6px; font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase }
+.meses span { white-space: nowrap; overflow: visible }
+.ley { display: flex; flex-wrap: wrap; gap: 6px 16px; margin-top: 14px; font-size: 12.5px; color: var(--muted); font-weight: 600 }
+.ley span { display: inline-flex; align-items: center; gap: 6px }
+.sq { width: 14px; height: 14px; border-radius: 4px; display: inline-block; background: var(--future) }
+
+/* KPI */
+.kpis { display: grid; grid-template-columns: 1.1fr 1fr 1fr 1fr; gap: 12px; margin-top: 14px }
+.kpi { display: grid; gap: 8px; align-content: start }
+.kpi .lab { font-size: 12.5px; font-weight: 700; color: var(--muted); display: flex; align-items: center; gap: 7px }
+.kpi .val { font-size: 28px; font-weight: 800; line-height: 1; font-variant-numeric: tabular-nums; letter-spacing: -.02em }
+.kpi .sub { font-size: 12.5px; color: var(--muted) }
+.pbar { height: 10px; border-radius: 99px; background: var(--soft); position: relative; overflow: hidden }
+.pbar i { position: absolute; inset: 0 auto 0 0; border-radius: 99px; background: var(--c, var(--brand)) }
+.pbar u { position: absolute; top: 0; bottom: 0; width: 2px; background: var(--ink); text-decoration: none }
+.dot { width: 10px; height: 10px; border-radius: 3px; display: inline-block; background: var(--c) }
+
+/* Esta semana / AVM */
+.duo { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 12px; margin-top: 14px }
+.lista { display: grid; gap: 8px; margin-top: 12px }
+.vacio { color: var(--muted); font-size: 14px; padding: 8px 0 }
+
+/* Etiquetas */
+.tag { display: inline-flex; align-items: center; gap: 5px; font: 700 11px/1 var(--f); padding: 4px 8px; border-radius: 999px; white-space: nowrap; letter-spacing: .01em }
+.tag.B2C { background: color-mix(in srgb, var(--b2c) 14%, transparent); color: var(--b2c) }
+.tag.B2B { background: color-mix(in srgb, var(--b2b) 14%, transparent); color: var(--b2b) }
+.tag.WL { background: color-mix(in srgb, var(--wl) 14%, transparent); color: var(--wl) }
+.tag.AVM { background: var(--avm-soft); color: var(--avm) }
+.tag.hecho { background: var(--ok-soft); color: var(--ok) }
+.tag.curso { background: var(--curso-soft); color: var(--curso) }
+.tag.late { background: var(--late-soft); color: var(--late) }
+.tag.pend { background: var(--soft); color: var(--muted) }
+.tag.cert { background: var(--soft); color: var(--ink2) }
+
+/* Fila de tarea */
+.tarea { display: grid; grid-template-columns: 28px minmax(0, 1fr) auto; gap: 12px; align-items: start; padding: 12px 14px; border-radius: 12px; border: 1px solid var(--line); background: var(--card) }
+.tarea.hecho { background: color-mix(in srgb, var(--ok) 5%, var(--card)) }
+.tarea.hecho .tt { color: var(--muted); text-decoration: line-through; text-decoration-color: color-mix(in srgb, var(--muted) 60%, transparent) }
+.tarea.curso { border-color: color-mix(in srgb, var(--curso) 55%, var(--line)); background: color-mix(in srgb, var(--curso) 6%, var(--card)) }
+.tarea.late { border-color: color-mix(in srgb, var(--late) 45%, var(--line)) }
+.tarea.avm { border-left: 4px solid var(--avm) }
+.tarea .body { display: grid; gap: 5px; min-width: 0 }
+.tarea .tt { font-weight: 600; color: var(--ink) }
+.tarea .meta { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; font-size: 12.5px; color: var(--muted) }
+.tarea .meta .w { font: 700 12px/1 var(--mono); color: var(--ink2) }
+.tarea .side { display: flex; flex-direction: column; gap: 6px; align-items: flex-end }
+.nota { font-size: 13px; color: var(--ink2); background: var(--soft); border-radius: 8px; padding: 6px 10px; white-space: pre-wrap }
+.nota-ed { width: 100%; font: 13px/1.4 var(--f); border: 1px dashed var(--line); border-radius: 8px; padding: 6px 10px; background: transparent; color: var(--ink); resize: vertical; min-height: 32px }
+.nota-ed:focus { border-style: solid; border-color: var(--brand); outline: 0 }
+.check { width: 26px; height: 26px; border-radius: 8px; border: 2px solid color-mix(in srgb, var(--muted) 60%, transparent); background: var(--card); display: grid; place-items: center; transition: background .12s, border-color .12s }
+.check:hover { border-color: var(--brand); background: var(--brand-soft) }
+.check svg { width: 16px; height: 16px; stroke: #fff; opacity: 0 }
+.check.on { background: var(--ok); border-color: var(--ok) }
+.check.on svg { opacity: 1 }
+.check.avm.on { background: var(--avm); border-color: var(--avm) }
+.mini-btn { font-size: 12px; font-weight: 700; padding: 4px 9px; border-radius: 8px; border: 1px solid var(--line); color: var(--ink2); white-space: nowrap }
+.mini-btn:hover { border-color: var(--curso); color: var(--curso) }
+.mini-btn.on { background: var(--curso); border-color: var(--curso); color: #fff }
 
 /* Pestañas */
-.tabs { display: flex; gap: 6px; padding: 26px 0 14px; flex-wrap: wrap; position: sticky; top: 0; background: var(--paper); z-index: 5 }
-.tab { border: 1px solid var(--line); background: transparent; border-radius: 999px; padding: 8px 15px; font-weight: 600; font-size: 14px }
-.tab[aria-selected="true"] { background: var(--ink); color: var(--paper); border-color: var(--ink) }
-.filtros { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 12px }
-.chip { border: 1px solid var(--line); background: var(--card); border-radius: 999px; padding: 5px 11px; font-size: 13px; font-weight: 600; color: var(--muted) }
-.chip[aria-pressed="true"] { border-color: var(--ink); color: var(--ink); box-shadow: 0 0 0 1px var(--ink) inset }
-.vista { display: none } .vista.on { display: block }
+.tabs { display: flex; gap: 4px; margin-top: 26px; border-bottom: 1px solid var(--line); overflow-x: auto; position: sticky; top: 0; background: var(--bg); z-index: 5 }
+.tab { padding: 12px 14px; font-weight: 700; font-size: 14.5px; color: var(--muted); border-bottom: 3px solid transparent; margin-bottom: -1px; white-space: nowrap }
+.tab:hover { color: var(--ink) }
+.tab[aria-selected="true"] { color: var(--ink); border-bottom-color: var(--brand) }
+.tab .count { font-size: 11.5px; background: var(--soft); color: var(--muted); border-radius: 99px; padding: 2px 7px; margin-left: 4px }
+.vista { display: none; padding-top: 16px } .vista.on { display: block }
+.filtros { display: flex; flex-wrap: wrap; gap: 8px 14px; align-items: center; margin-bottom: 14px }
+.seg { display: inline-flex; background: var(--soft); border-radius: 10px; padding: 3px; gap: 2px; flex-wrap: wrap }
+.seg button { padding: 6px 11px; border-radius: 8px; font-size: 13px; font-weight: 700; color: var(--muted) }
+.seg button[aria-pressed="true"] { background: var(--card); color: var(--ink); box-shadow: var(--shadow) }
 
-/* Plan por etapas */
-.etapa { border: 1px solid var(--line); background: var(--card); border-radius: 16px; margin-bottom: 10px; overflow: hidden }
-.etapa > summary { list-style: none; cursor: pointer; display: grid; grid-template-columns: minmax(0, 1fr) 150px 16px; gap: 14px; align-items: center; padding: 14px 18px }
+/* Etapas */
+.etapa { background: var(--card); border: 1px solid var(--line); border-left: 5px solid var(--c); border-radius: 14px; margin-bottom: 10px; box-shadow: var(--shadow) }
+.etapa > summary { list-style: none; cursor: pointer; display: grid; grid-template-columns: minmax(0, 1fr) 190px 18px; gap: 16px; align-items: center; padding: 14px 18px }
 .etapa > summary::-webkit-details-marker { display: none }
-.etapa > summary h3 { font-weight: 500; font-size: 16.5px; line-height: 1.25; display: flex; gap: 8px; align-items: center; flex-wrap: wrap }
-.etapa > summary small { display: block; font: 500 11.5px/1.5 var(--f-mono); color: var(--muted); margin-top: 3px }
-.etapa.actual { border-color: var(--signal); box-shadow: 0 0 0 1px var(--signal) inset }
-.mini { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 8px; align-items: center; font: 700 12px/1 var(--f-mono); color: var(--muted) }
-.mini .barra { margin: 0; height: 6px }
-.chev { width: 10px; height: 10px; border-right: 2px solid var(--muted); border-bottom: 2px solid var(--muted); transform: rotate(45deg); margin-top: -4px; transition: transform .15s }
+.etapa .tit { display: grid; gap: 4px }
+.etapa .tit b { font-size: 15.5px; font-weight: 800; display: flex; gap: 8px; align-items: center; flex-wrap: wrap }
+.etapa .tit small { font-size: 12.5px; color: var(--muted); font-weight: 600 }
+.etapa .prog { display: grid; gap: 5px; font-size: 12px; font-weight: 700; color: var(--muted) }
+.chev { width: 9px; height: 9px; border-right: 2.5px solid var(--muted); border-bottom: 2.5px solid var(--muted); transform: rotate(45deg); margin-top: -4px; transition: transform .15s }
 .etapa[open] .chev { transform: rotate(-135deg); margin-top: 4px }
-.tareas { border-top: 1px solid var(--line) }
-.t { display: grid; grid-template-columns: 30px 118px minmax(0, 1fr); gap: 10px; align-items: start; padding: 10px 18px; border-top: 1px solid var(--line) }
-.t:first-child { border-top: 0 }
-.t.semana-actual { background: color-mix(in srgb, var(--signal) 12%, var(--card)) }
-.t.avm { background: color-mix(in srgb, var(--todo) 8%, var(--card)) }
-.t.cert { color: var(--muted) }
-.t .cuando { font: 500 12px/1.5 var(--f-mono); color: var(--muted); padding-top: 3px }
-.t .cuando b { color: var(--ink); font-weight: 700 }
-.t .txt { font-size: 15px; display: grid; gap: 3px }
-.t .txt small { color: var(--muted); font-size: 12.5px }
-.t.hito .txt { font-weight: 700 }
-.t.hecho .txt > span { color: var(--muted); text-decoration: line-through; text-decoration-color: color-mix(in srgb, var(--muted) 60%, transparent) }
-.nota { font-size: 13px; color: var(--ink); background: var(--soft); border-radius: 8px; padding: 6px 9px; white-space: pre-wrap }
-.nota-ed { width: 100%; font: 13px/1.4 var(--f-body); border: 1px solid var(--line); border-radius: 8px; padding: 6px 9px; background: var(--card); color: var(--ink); resize: vertical; min-height: 34px }
-.chk { width: 26px; height: 26px; border-radius: 8px; border: 2px solid var(--line); background: var(--card); display: grid; place-items: center; padding: 0 }
-.chk:disabled { cursor: default }
-.chk svg { width: 15px; height: 15px; display: none }
-.chk.curso { border-color: var(--todo); background: linear-gradient(90deg, color-mix(in srgb, var(--todo) 40%, transparent) 50%, transparent 50%) }
-.chk.hecho { border-color: var(--ok); background: var(--ok) }
-.chk.hecho svg { display: block; stroke: #fff }
-.badge { font: 700 10px/1 var(--f-mono); letter-spacing: .06em; text-transform: uppercase; padding: 4px 6px; border-radius: 5px; background: var(--soft); color: var(--muted); white-space: nowrap }
-.badge.vencido { background: color-mix(in srgb, var(--danger) 16%, transparent); color: var(--danger) }
-.badge.listo { background: color-mix(in srgb, var(--ok) 16%, transparent); color: var(--ok) }
-.badge.pronto { background: color-mix(in srgb, var(--todo) 18%, transparent); color: var(--todo) }
-
-/* Vista AVM */
-.avm-grid { display: grid; gap: 10px }
-.avm-it { display: grid; grid-template-columns: 30px minmax(0, 1fr) auto; gap: 12px; align-items: start; border: 1px solid var(--line); background: var(--card); border-radius: 14px; padding: 13px 16px }
-.avm-it .txt { display: grid; gap: 4px }
-.avm-it .txt small { font: 500 12px/1.4 var(--f-mono); color: var(--muted) }
-.avm-it.hecho .txt > span { color: var(--muted) }
-.grupo { font: 700 11px/1 var(--f-mono); letter-spacing: .12em; text-transform: uppercase; color: var(--muted); margin: 18px 0 2px }
-.siempre { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin-bottom: 6px }
+.etapa .lista { padding: 0 18px 16px; margin-top: 0 }
 
 /* Cronograma */
-.gw { overflow-x: auto; border: 1px solid var(--line); border-radius: 16px; background: var(--card) }
-.gantt { min-width: 900px }
-.gr { display: grid; grid-template-columns: 220px minmax(0, 1fr); border-top: 1px solid var(--line); min-height: 38px }
-.gr:first-child { border-top: 0; min-height: 30px }
-.gl { padding: 6px 12px 6px 14px; font: 600 12.5px/1.25 var(--f-body); display: grid; align-content: center }
-.gl small { font: 700 9.5px/1.3 var(--f-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted) }
-.gt { position: relative; margin-right: 12px }
-.gt u { position: absolute; top: 0; bottom: 0; background: color-mix(in srgb, var(--signal) 9%, transparent); text-decoration: none }
-.gm span { position: absolute; top: 0; bottom: 0; display: grid; place-items: center; font: 700 10.5px/1 var(--f-mono); text-transform: uppercase; border-left: 1.5px solid var(--line) }
-.gb { position: absolute; top: 50%; height: 14px; transform: translateY(-50%); border-radius: 5px; overflow: hidden; background: color-mix(in srgb, var(--c) 30%, transparent) }
+.gw { overflow-x: auto; border: 1px solid var(--line); border-radius: 14px; background: var(--card); box-shadow: var(--shadow) }
+.gantt { min-width: 920px }
+.gr { display: grid; grid-template-columns: 230px minmax(0, 1fr); border-top: 1px solid var(--line); min-height: 40px }
+.gr:first-child { border-top: 0; min-height: 32px }
+.gl { padding: 6px 12px 6px 16px; font-size: 13px; font-weight: 700; display: grid; align-content: center; gap: 2px }
+.gl .tag { justify-self: start; font-size: 10px; padding: 2px 6px }
+.gt { position: relative; margin-right: 14px }
+.gt u { position: absolute; top: 0; bottom: 0; background: color-mix(in srgb, var(--ink) 3.5%, transparent); text-decoration: none }
+.gm span { position: absolute; top: 0; bottom: 0; display: grid; place-items: center; font-size: 11px; font-weight: 800; color: var(--muted); text-transform: uppercase; border-left: 1px solid var(--line) }
+.gb { position: absolute; top: 50%; height: 16px; transform: translateY(-50%); border-radius: 6px; overflow: hidden; background: color-mix(in srgb, var(--c) 25%, transparent); border: 1px solid color-mix(in srgb, var(--c) 55%, transparent) }
 .gb i { position: absolute; inset: 0 auto 0 0; background: var(--c) }
-.gb.cert { height: 10px; background: repeating-linear-gradient(45deg, var(--todo) 0 4px, transparent 4px 8px); border: 1px solid var(--todo) }
-.hoyl { position: absolute; top: 0; bottom: 0; width: 2px; background: var(--danger); z-index: 2 }
-.hoyl b { position: absolute; top: 2px; left: 4px; font: 700 9.5px/1 var(--f-mono); color: var(--danger); text-transform: uppercase; white-space: nowrap }
-.gleg { display: flex; flex-wrap: wrap; gap: 8px 18px; font-size: 13px; color: var(--muted); margin-top: 10px }
-.gleg span { display: inline-flex; align-items: center; gap: 6px }
-.sw { width: 22px; height: 10px; border-radius: 4px; display: inline-block }
+.gb.cert { height: 10px; background: repeating-linear-gradient(45deg, var(--avm) 0 4px, transparent 4px 8px); border-color: var(--avm) }
+.hoyl { position: absolute; top: 0; bottom: 0; width: 2px; background: var(--late); z-index: 2 }
+.hoyl b { position: absolute; top: 3px; left: 5px; font-size: 10px; font-weight: 800; color: var(--late); text-transform: uppercase }
 
 /* Hitos */
-.hitos { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px }
-.hitos li { border-left: 4px solid var(--line); background: var(--card); border-radius: 0 12px 12px 0; padding: 11px 14px; display: grid; gap: 2px }
-.hitos li.ok { border-left-color: var(--ok) } .hitos li.prox { border-left-color: var(--signal) }
-.hitos time { font: 700 11.5px/1 var(--f-mono); color: var(--muted) }
-.hitos b { font: 600 14.5px/1.3 var(--f-display) }
+.hitos { display: grid; gap: 0; position: relative; padding-left: 26px }
+.hitos::before { content: ""; position: absolute; left: 9px; top: 6px; bottom: 6px; width: 2px; background: var(--line) }
+.hitos li { position: relative; padding: 0 0 18px }
+.hitos li::before { content: ""; position: absolute; left: -23px; top: 4px; width: 14px; height: 14px; border-radius: 50%; background: var(--card); border: 3px solid var(--future) }
+.hitos li.ok::before { background: var(--ok); border-color: var(--ok) }
+.hitos li.prox::before { border-color: var(--brand); box-shadow: 0 0 0 4px var(--brand-soft) }
+.hitos time { font-size: 12.5px; font-weight: 700; color: var(--muted) }
+.hitos b { display: block; font-size: 15px; font-weight: 700 }
 
-footer { margin-top: 36px; padding-top: 14px; border-top: 1px solid var(--line); font: 500 12px/1.5 var(--f-mono); color: var(--muted); display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap }
-.vacio { padding: 18px; color: var(--muted); text-align: center }
+/* Ventana de clave */
+dialog { border: 0; border-radius: 16px; padding: 0; background: var(--card); color: var(--ink); width: min(420px, calc(100% - 32px)); box-shadow: 0 20px 60px rgb(0 0 0 / .25) }
+dialog::backdrop { background: rgb(15 23 42 / .45) }
+.dlg { padding: 22px; display: grid; gap: 12px }
+.dlg h3 { font-size: 18px; font-weight: 800 }
+.dlg input { width: 100%; font: 15px var(--f); padding: 11px 12px; border-radius: 10px; border: 1px solid var(--line); background: var(--bg); color: var(--ink) }
+.dlg input:focus { outline: 2px solid var(--brand); border-color: transparent }
+.dlg .err { color: var(--late); font-size: 13px; font-weight: 600 }
+.dlg .row { display: flex; gap: 8px; justify-content: flex-end }
 
-@media (max-width: 760px) {
-  .hoy, .siempre { grid-template-columns: 1fr }
-  .stats { grid-template-columns: repeat(2, minmax(0, 1fr)) }
-  .hitos { grid-template-columns: 1fr }
-  .etapa > summary { grid-template-columns: minmax(0, 1fr) 16px }
-  .etapa > summary .mini { grid-column: 1 / -1; grid-row: 2 }
-  .t { grid-template-columns: 30px minmax(0, 1fr) }
-  .t .cuando { grid-column: 2 }
-  .t .txt { grid-column: 2 }
-  .avm-it { grid-template-columns: 30px minmax(0, 1fr) }
-  .avm-it .badge { grid-column: 2; justify-self: start }
+footer { margin: 34px 0 40px; padding-top: 14px; border-top: 1px solid var(--line); font-size: 12.5px; color: var(--muted); display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap }
+
+/* En las tarjetas de arriba el estado va debajo del texto, para que el texto tenga todo el ancho */
+.duo .tarea { grid-template-columns: 28px minmax(0, 1fr) }
+.duo .tarea .side { grid-column: 2; flex-direction: row; align-items: center; flex-wrap: wrap }
+@media (max-width: 860px) {
+  .kpis { grid-template-columns: repeat(2, minmax(0, 1fr)) }
+  .duo { grid-template-columns: 1fr }
+}
+@media (max-width: 640px) {
+  .hero { grid-template-columns: 1fr }
+  .sem-big { justify-self: start; display: flex; gap: 8px; align-items: baseline; padding: 8px 12px }
+  .sem-big b { font-size: 24px }
+  .strip { gap: 2px } .meses { gap: 2px }
+  .wk { height: 22px } .wk i { display: none }
+  .etapa > summary { grid-template-columns: minmax(0, 1fr) 18px }
+  .etapa .prog { grid-column: 1 / -1; grid-row: 2 }
+  .tarea { grid-template-columns: 28px minmax(0, 1fr) }
+  .tarea .side { grid-column: 2; flex-direction: row; align-items: center; flex-wrap: wrap }
+  .brand small { display: none }
 }
 </style>
 </head>
 <body>
-<div class="doc">
-  <header class="top">
+<header class="bar">
+  <div class="wrap">
     <div class="brand">
-      <img class="logo-c" src="img/logo-color.png" alt="AVM" width="103" height="34"><img class="logo-w" src="img/logo-blanco.png" alt="AVM" width="103" height="34">
-      <div><h1>Seguimiento del desarrollo</h1><small>Sitio B2C · Travel Booking &amp; Distribution</small></div>
+      <img class="logo-c" src="img/logo-color.png" alt="AVM" width="97" height="32"><img class="logo-w" src="img/logo-blanco.png" alt="AVM" width="97" height="32">
+      <div><h1>Seguimiento del proyecto</h1><small>Sitio B2C y Travel Booking &amp; Distribution</small></div>
     </div>
     <div class="acts">
       <span class="save" id="save" aria-live="polite"></span>
       <button class="btn" id="bDescargar" hidden>Descargar estado</button>
-      <button class="btn" id="bEditar" aria-pressed="false"><span aria-hidden="true">🔒</span> <span>Lectura</span></button>
+      <button class="btn primary" id="bEditar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg><span>Editar avance</span></button>
     </div>
-  </header>
+  </div>
+</header>
+<div class="editbanner" id="banner" hidden><div class="wrap">✏️ Modo edición: marca el cuadro cuando una entrega esté lista y usa «En curso» para lo que se está trabajando. Se guarda solo.</div></div>
 
-  <section class="hoy" aria-label="Hoy">
-    <div class="card">
-      <span class="eyebrow" id="hoyEyebrow">Hoy</span>
+<main class="wrap">
+  <section class="hero" id="hero" aria-label="Estado de hoy">
+    <div>
       <p class="fecha" id="hoyFecha"></p>
-      <span class="estado" id="hoyEstado"></span>
-      <p class="muted" id="hoyDetalle"></p>
+      <h2 id="hoyEstado"></h2>
+      <p class="det" id="hoyDetalle"></p>
     </div>
-    <div class="card">
-      <span class="eyebrow">En esta semana</span>
-      <ul class="ahora" id="ahora"></ul>
+    <div class="sem-big" id="semBig"></div>
+  </section>
+
+  <section class="card strip-card" aria-label="Semanas del proyecto">
+    <h3><span>Las <span id="nSem"></span> semanas del proyecto</span> <span class="muted" style="font-weight:600;font-size:13px">Pasa el cursor o toca una semana para ver qué tiene</span></h3>
+    <div class="strip" id="strip"></div>
+    <div class="meses" id="meses"></div>
+    <div class="ley">
+      <span><i class="sq" style="background:var(--ok)"></i>Entregada</span>
+      <span><i class="sq" style="background:color-mix(in srgb,var(--ok) 45%,var(--future))"></i>Parcial o en curso</span>
+      <span><i class="sq" style="background:var(--late)"></i>Atrasada</span>
+      <span><i class="sq" style="outline:3px solid var(--ink);outline-offset:1px"></i>Semana actual</span>
+      <span><i class="sq"></i>Por venir</span>
+      <span>◆ Salida a producción</span>
     </div>
   </section>
 
-  <div class="stats" id="stats"></div>
-  <div class="barra" id="barra" role="img"><i></i><u></u></div>
-  <div class="leyenda"><span id="leyIzq"></span><span>La línea marca dónde deberíamos ir según el plan</span></div>
+  <section class="kpis" id="kpis" aria-label="Avance"></section>
+
+  <section class="duo">
+    <div class="card"><h3 id="tSemana">Esta semana</h3><div class="lista" id="estaSemana"></div></div>
+    <div class="card"><h3>Pendiente de AVM <span class="tag AVM" id="avmCount"></span></h3><div class="lista" id="avmProx"></div></div>
+  </section>
 
   <nav class="tabs" role="tablist">
-    <button class="tab" role="tab" data-v="plan" aria-selected="true">Plan de trabajo</button>
-    <button class="tab" role="tab" data-v="avm" aria-selected="false">Lo que debe tener AVM</button>
+    <button class="tab" role="tab" data-v="plan" aria-selected="true">Plan por etapas</button>
+    <button class="tab" role="tab" data-v="avm" aria-selected="false">Compromisos de AVM</button>
     <button class="tab" role="tab" data-v="crono" aria-selected="false">Cronograma</button>
     <button class="tab" role="tab" data-v="hitos" aria-selected="false">Hitos</button>
   </nav>
 
   <section class="vista on" id="v-plan">
-    <div class="filtros" id="fEstado"></div>
-    <div class="filtros" id="fProy"></div>
+    <div class="filtros">
+      <div class="seg" id="fEstado" role="group" aria-label="Filtrar por estado"></div>
+      <div class="seg" id="fProy" role="group" aria-label="Filtrar por proyecto"></div>
+    </div>
     <div id="etapas"></div>
   </section>
 
   <section class="vista" id="v-avm">
-    <p class="muted" style="margin-bottom:12px">Lo que AVM debe tener listo y en qué fecha. Si llega tarde, la etapa que depende de eso se corre el mismo tiempo.</p>
-    <div class="siempre">
-      <div class="card"><span class="pill AVM" style="justify-self:start">Todo el proyecto</span><b>Una persona designada para decidir</b><span class="muted">Aprueba los entregables y toma las decisiones importantes: modelo de voucher, backoffice, UX/UI del sitio.</span></div>
-      <div class="card"><span class="pill AVM" style="justify-self:start">Cada semana</span><b>Revisión del avance</b><span class="muted">Cada semana termina con un avance visible en el sitio de prueba para que AVM lo revise y lo apruebe.</span></div>
+    <div class="lista" style="margin-top:0">
+      <div class="tarea avm"><span></span><div class="body"><span class="tt">Una persona designada para decidir</span><span class="meta">Durante todo el proyecto: aprueba los entregables y toma las decisiones importantes (modelo de voucher, backoffice, UX/UI del sitio).</span></div></div>
+      <div class="tarea avm"><span></span><div class="body"><span class="tt">Revisión semanal del avance</span><span class="meta">Cada semana termina con un avance visible en el sitio de prueba para que AVM lo revise.</span></div></div>
     </div>
-    <div class="avm-grid" id="avmLista"></div>
+    <div class="lista" id="avmLista"></div>
   </section>
 
   <section class="vista" id="v-crono">
     <div class="gw"><div class="gantt" id="gantt"></div></div>
-    <p class="gleg"><span><i class="sw" style="background:var(--signal)"></i>B2C</span><span><i class="sw" style="background:var(--b2b)"></i>B2B</span><span><i class="sw" style="background:var(--wl)"></i>White label</span><span><i class="sw" style="background:repeating-linear-gradient(45deg,var(--todo) 0 4px,transparent 4px 8px);border:1px solid var(--todo)"></i>Certificación del proveedor (estimada)</span><span><i class="sw" style="background:var(--danger);width:3px"></i>Hoy</span><span>La parte sólida de cada barra es lo que ya está hecho</span></p>
+    <div class="ley">
+      <span><i class="sq" style="background:var(--b2c)"></i>B2C</span><span><i class="sq" style="background:var(--b2b)"></i>B2B</span><span><i class="sq" style="background:var(--wl)"></i>White label</span>
+      <span><i class="sq" style="background:repeating-linear-gradient(45deg,var(--avm) 0 3px,transparent 3px 6px);border:1px solid var(--avm)"></i>Certificación del proveedor (estimada)</span>
+      <span><i class="sq" style="background:var(--late);width:3px"></i>Hoy</span><span>La parte sólida de cada barra es lo ya entregado</span>
+    </div>
   </section>
 
-  <section class="vista" id="v-hitos">
-    <ul class="hitos" id="hitos"></ul>
-  </section>
+  <section class="vista" id="v-hitos"><ul class="hitos card" id="hitos" style="padding-left:46px"></ul></section>
 
-  <footer><span id="actualizado"></span><span>Plan: <span id="rango"></span></span></footer>
-</div>
+  <footer><span id="actualizado"></span><span id="rango"></span></footer>
+</main>
+
+<dialog id="dlg">
+  <form class="dlg" method="dialog" id="dlgForm">
+    <h3>Clave de edición</h3>
+    <p class="muted" id="dlgTxt">Escribe la clave para marcar avances. La primera vez, la clave que escribas (mínimo 8 caracteres) queda como clave de edición.</p>
+    <input type="password" id="dlgClave" autocomplete="current-password" required minlength="1" aria-label="Clave de edición">
+    <p class="err" id="dlgErr" hidden></p>
+    <div class="row"><button type="button" class="btn" id="dlgNo">Cancelar</button><button class="btn primary" id="dlgSi">Entrar</button></div>
+  </form>
+</dialog>
 
 <script id="plan" type="application/json">/*PLAN*/</script>
 <script>
@@ -248,268 +331,297 @@ footer { margin-top: 36px; padding-top: 14px; border-top: 1px solid var(--line);
 const PLAN = JSON.parse(document.getElementById("plan").textContent);
 const MES = ["ene","feb","mar","abr","may","jun","jul","ago","sep","oct","nov","dic"];
 const MESL = ["enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre"];
-const DIA = ["domingo","lunes","martes","miércoles","jueves","viernes","sábado"];
+const DIA = ["Domingo","Lunes","Martes","Miércoles","Jueves","Viernes","Sábado"];
 const $ = s => document.querySelector(s);
 const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 const D = s => { const [y, m, d] = s.split("-").map(Number); return new Date(y, m - 1, d); };
 const f = d => d.getDate() + " " + MES[d.getMonth()];
 const fy = d => f(d) + " " + d.getFullYear();
 const dias = (a, b) => Math.round((b - a) / 864e5);
-const CHECK = '<svg viewBox="0 0 16 16" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8.5 6.5 12 13 4.5"/></svg>';
+const plural = (n, a, b) => n + " " + (n === 1 ? a : b);
+const CHECK = '<svg viewBox="0 0 16 16" fill="none" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8.5 6.5 12 13 4.5"/></svg>';
+const PROY = { B2C: "B2C", B2B: "B2B", WL: "White label" };
+const COL = { B2C: "var(--b2c)", B2B: "var(--b2b)", WL: "var(--wl)" };
+const nomProv = p => p === "Hoteles 3" ? "Tercer proveedor de hoteles" : p;
 
 // Hoy (se puede simular con ?hoy=2027-03-01)
 const qHoy = new URLSearchParams(location.search).get("hoy");
 const HOY = qHoy && /^\d{4}-\d{2}-\d{2}$/.test(qHoy) ? D(qHoy) : (() => { const n = new Date(); return new Date(n.getFullYear(), n.getMonth(), n.getDate()); })();
 
 // ---------- Datos del plan ----------
-const etapas = []; const porFase = {}; const tareas = []; const avm = []; const certs = []; const semanas = [];
+const etapas = [], porFase = {}, tareas = [], avm = [], certs = [], semanas = [];
 let actual = null;
 for (const it of PLAN.items) {
-  if (it.t === "fase") { const e = { nombre: it.nombre, proy: it.proy, filas: [] }; etapas.push(e); porFase[it.nombre] = e; actual = e; }
-  else if (it.t === "avm") { const a = { ...it, tipo: "avm", etapa: actual.nombre, fechaD: D(it.fecha) }; avm.push(a); actual.filas.push(a); }
-  else if (it.t === "cert") { const c = { ...it, tipo: "cert", iniD: D(it.ini), finD: D(it.fin), etapa: actual.nombre }; certs.push(c); actual.filas.push(c); }
+  if (it.t === "fase") { const e = { nombre: it.nombre, corto: it.nombre.split(" · ").slice(1).join(" · "), proy: it.proy, filas: [] }; etapas.push(e); porFase[it.nombre] = e; actual = e; }
+  else if (it.t === "avm") { const a = { ...it, tipo: "avm", etapa: actual, fechaD: D(it.fecha) }; avm.push(a); actual.filas.push(a); }
+  else if (it.t === "cert") { const c = { ...it, tipo: "cert", iniD: D(it.ini), finD: D(it.fin), etapa: actual }; certs.push(c); actual.filas.push(c); }
   else if (it.t === "sem") {
-    const s = { n: it.n, ini: D(it.ini), fin: D(it.fin), hito: it.hito }; semanas.push(s);
+    const s = { n: it.n, ini: D(it.ini), fin: D(it.fin), hito: it.hito, tareas: [] }; semanas.push(s);
     it.tareas.forEach((x, i) => {
-      const t = { id: `S${String(it.n).padStart(2, "0")}-${i}`, tipo: "tarea", sem: s, txt: x.txt, proy: x.proy, fase: x.fase, parte: x.parte, hito: it.hito && x.parte !== 1 };
-      tareas.push(t); porFase[x.fase].filas.push(t);
+      const t = { id: `S${String(it.n).padStart(2, "0")}-${i}`, tipo: "tarea", sem: s, txt: x.txt, proy: x.proy, fase: porFase[x.fase], parte: x.parte, hito: it.hito && x.parte !== 1 };
+      tareas.push(t); s.tareas.push(t); porFase[x.fase].filas.push(t);
     });
   }
 }
-for (const e of etapas) {
-  const ts = e.filas.filter(r => r.tipo === "tarea");
-  e.ini = ts.length ? ts[0].sem.ini : null; e.fin = ts.length ? ts[ts.length - 1].sem.fin : null; e.tareas = ts;
-}
-const INI = D(PLAN.inicio), FIN = D(PLAN.fin);
+for (const e of etapas) { e.tareas = e.filas.filter(r => r.tipo === "tarea"); e.ini = e.tareas[0]?.sem.ini; e.fin = e.tareas[e.tareas.length - 1]?.sem.fin; }
+const INI = semanas[0].ini, FIN = D(PLAN.fin);
 
 // ---------- Estado ----------
 let estado = { tareas: {}, avm: {}, notas: {}, actualizado: null };
-let editar = false, clave = "", servidor = false, tGuardar = null;
+let editar = false, clave = "", servidor = location.protocol === "http:" || location.protocol === "https:", tGuardar = null, pendiente = null;
 const LS = "avm-seguimiento-estado";
-function leerLocal() { try { return JSON.parse(localStorage.getItem(LS) || "null"); } catch (e) { return null; } }
-function guardarLocal() { try { localStorage.setItem(LS, JSON.stringify(estado)); } catch (e) {} }
+const leerLocal = () => { try { return JSON.parse(localStorage.getItem(LS) || "null"); } catch (e) { return null; } };
+const guardarLocal = () => { try { localStorage.setItem(LS, JSON.stringify(estado)); } catch (e) {} };
 async function cargar() {
-  // En un servidor web se guarda con guardar.php; abierto como archivo local, en este navegador
-  servidor = location.protocol === "http:" || location.protocol === "https:";
-  let delServidor = false;
-  try {
-    const r = await fetch("estado.json?" + Date.now(), { cache: "no-store" });
-    if (r.ok) { const j = await r.json(); if (j && typeof j === "object") { estado = { ...estado, ...j }; delServidor = true; } }
-  } catch (e) {}
-  if (!delServidor) { const l = leerLocal(); if (l) estado = { ...estado, ...l }; }
+  let ok = false;
+  try { const r = await fetch("estado.json?" + Date.now(), { cache: "no-store" }); if (r.ok) { const j = await r.json(); if (j && typeof j === "object") { estado = { ...estado, ...j }; ok = true; } } } catch (e) {}
+  if (!ok) { const l = leerLocal(); if (l) estado = { ...estado, ...l }; }
+  for (const k of ["tareas", "avm", "notas"]) if (!estado[k] || Array.isArray(estado[k])) estado[k] = {};
   pintar();
 }
-function marcarCambio() {
-  estado.actualizado = new Date().toISOString();
-  guardarLocal(); avisar("Guardando…");
-  clearTimeout(tGuardar); tGuardar = setTimeout(subir, 700);
-  pintar();
+function cambio() {
+  estado.actualizado = new Date().toISOString(); guardarLocal(); avisar("Guardando…");
+  clearTimeout(tGuardar); tGuardar = setTimeout(subir, 600); pintar();
 }
 async function subir() {
-  if (!servidor) { avisar("Guardado en este navegador"); $("#bDescargar").hidden = false; return; }
+  if (!servidor) { avisar("Guardado en este navegador", "ok"); $("#bDescargar").hidden = false; return; }
   try {
     const r = await fetch("guardar.php", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ clave, estado }) });
     const j = await r.json().catch(() => ({}));
-    if (r.ok && j.ok) avisar("Guardado ✓");
-    else if (r.status === 403) { avisar("Clave incorrecta: no se guardó", true); salirEdicion(); }
-    else { avisar("No se pudo guardar en el servidor (" + (j.error || r.status) + "): quedó en este navegador", true); $("#bDescargar").hidden = false; }
-  } catch (e) { avisar("Sin conexión: guardado solo en este navegador", true); $("#bDescargar").hidden = false; }
+    if (r.ok && j.ok) avisar("✓ Guardado", "ok");
+    else if (r.status === 403) { avisar("Clave incorrecta: no se guardó", "err"); salirEdicion(); }
+    else { avisar("No se pudo guardar (" + (j.error || r.status) + ")", "err"); $("#bDescargar").hidden = false; }
+  } catch (e) { avisar("Sin conexión: quedó en este navegador", "err"); $("#bDescargar").hidden = false; }
 }
-function avisar(t, err) { const s = $("#save"); s.textContent = t; s.classList.toggle("err", !!err); }
+function avisar(t, cls) { const s = $("#save"); s.textContent = t; s.className = "save " + (cls || ""); }
 
 // ---------- Cálculos ----------
 const est = id => estado.tareas[id] || "";
 const hecha = t => est(t.id) === "hecho";
-function semanaDe(d) { return semanas.find(s => d >= s.ini && d <= new Date(s.fin.getTime() + 2 * 864e5)) || null; }
-function resumen() {
-  const total = tareas.length, hechas = tareas.filter(hecha).length, curso = tareas.filter(t => est(t.id) === "curso").length;
-  const esperadas = tareas.filter(t => t.sem.fin < HOY).length;
-  const primeraPend = tareas.find(t => !hecha(t));
-  return { total, hechas, curso, pend: total - hechas - curso, esperadas, primeraPend };
+const avmListo = a => estado.avm[a.id] === "listo";
+const semanaDe = d => semanas.find(s => d >= s.ini && d <= new Date(s.fin.getTime() + 2 * 864e5)) || null;
+const SEM = semanaDe(HOY);
+function estadoSemana(s) {
+  const h = s.tareas.filter(hecha).length, c = s.tareas.filter(t => est(t.id) === "curso").length;
+  if (h === s.tareas.length) return "hecho";
+  if (s.fin < HOY && s !== SEM) return "atrasada";
+  if (h || c) return "parcial";
+  return "";
 }
+function tareaTarde(t) { return !hecha(t) && t.sem.fin < HOY && t.sem !== SEM; }
 
 // ---------- Pintar ----------
 function pintar() {
-  const r = resumen(); const sem = semanaDe(HOY);
-  // Hoy
-  $("#hoyFecha").innerHTML = `${DIA[HOY.getDay()]} <strong>${HOY.getDate()} de ${MESL[HOY.getMonth()]}</strong> ${HOY.getFullYear()}`;
-  let eb = "Hoy", txtEst, cls, det;
-  if (HOY < semanas[0].ini) {
-    const fd = dias(HOY, semanas[0].ini);
-    eb = "Hoy · antes del inicio"; cls = "warn"; txtEst = `El desarrollo empieza en ${fd} ${fd === 1 ? "día" : "días"}`;
-    det = `Semana 1: ${f(semanas[0].ini)} – ${f(semanas[0].fin)} ${semanas[0].fin.getFullYear()}.`;
-  } else if (HOY > FIN && r.hechas === r.total) { eb = "Proyecto terminado"; cls = "ok"; txtEst = "Todo el plan está entregado"; det = ""; }
+  const total = tareas.length, hechas = tareas.filter(hecha).length, curso = tareas.filter(t => est(t.id) === "curso").length;
+  const esperadas = tareas.filter(t => t.sem.fin < HOY).length;
+  const primeraPend = tareas.find(t => !hecha(t));
+
+  // Estado de hoy
+  $("#hoyFecha").textContent = `${DIA[HOY.getDay()]} ${HOY.getDate()} de ${MESL[HOY.getMonth()]} de ${HOY.getFullYear()}`;
+  let st, titulo, det;
+  if (HOY < INI) {
+    const fd = dias(HOY, INI); st = "var(--b2c)";
+    titulo = `El desarrollo empieza en ${plural(fd, "día", "días")}`;
+    det = `La semana 1 va del ${f(INI)} al ${fy(semanas[0].fin)}. Primera entrega: ${semanas[0].tareas.map(t => t.txt).join(" · ")}`;
+  } else if (!primeraPend) { st = "var(--ok)"; titulo = "Proyecto entregado completo"; det = "Todas las entregas del plan están marcadas como hechas."; }
   else {
-    eb = sem ? `Semana ${sem.n} de ${PLAN.semanas}` : (HOY > FIN ? "Después del cierre del plan" : "Entre semanas");
-    const atraso = r.primeraPend ? Math.max(0, (sem ? sem.n : PLAN.semanas + 1) - r.primeraPend.sem.n) : 0;
-    const dif = r.hechas - r.esperadas;
-    if (r.primeraPend && r.primeraPend.sem.fin < HOY) {
-      cls = atraso > 2 ? "bad" : "warn";
-      txtEst = `Vamos ${atraso} ${atraso === 1 ? "semana" : "semanas"} detrás del plan`;
-    } else { cls = "ok"; txtEst = dif > 0 ? "Vamos adelantados al plan" : "Vamos al día con el plan"; }
-    det = r.primeraPend ? `Lo siguiente pendiente es de la semana ${r.primeraPend.sem.n}: ${r.primeraPend.txt}` : "No hay tareas pendientes.";
+    const atraso = Math.max(0, (SEM ? SEM.n : semanas.length + 1) - primeraPend.sem.n);
+    if (tareaTarde(primeraPend)) { st = atraso > 2 ? "var(--late)" : "var(--curso)"; titulo = `Vamos ${plural(atraso, "semana", "semanas")} detrás del plan`; }
+    else { st = "var(--ok)"; titulo = hechas > esperadas ? "Vamos adelantados al plan" : "Vamos al día con el plan"; }
+    det = `Lo siguiente por entregar (semana ${primeraPend.sem.n}): ${primeraPend.txt}`;
   }
-  $("#hoyEyebrow").textContent = eb;
-  $("#hoyEstado").innerHTML = `<i class="dot ${cls}"></i>${txtEst}`;
-  $("#hoyDetalle").textContent = det;
+  $("#hero").style.setProperty("--st", st);
+  $("#hoyEstado").textContent = titulo; $("#hoyDetalle").textContent = det;
+  $("#semBig").innerHTML = SEM ? `<span>Semana</span><b>${SEM.n}</b><span>de ${semanas.length}</span>` : HOY < INI ? `<span>Faltan</span><b>${dias(HOY, INI)}</b><span>días</span>` : `<span>Plan</span><b>✓</b><span>cerrado</span>`;
 
-  // En esta semana (o la primera si aún no empieza)
-  const ref = sem || (HOY < INI ? semanas[0] : null);
-  const enSem = ref ? tareas.filter(t => t.sem === ref) : [];
-  const avmProx = avm.filter(a => estado.avm[a.id] !== "listo" && dias(HOY, a.fechaD) <= 14 && !(a.opc && a.fechaD < HOY));
-  const certAct = certs.filter(c => HOY >= c.iniD && HOY <= c.finD);
-  let li = enSem.map(t => `<li><span class="pill ${t.proy}">${t.proy === "WL" ? "WL" : t.proy}</span><span>${esc(t.txt)}${t.parte ? ` <span class="muted">(${t.parte === 1 ? "1.ª" : "2.ª"} parte)</span>` : ""}</span></li>`);
-  li = li.concat(certAct.map(c => `<li><span class="pill cert">Cert.</span><span>${esc(c.prov === "Hoteles 3" ? "Tercer proveedor de hoteles" : c.prov)} en revisión del proveedor hasta ~${f(c.finD)}</span></li>`));
-  li = li.concat(avmProx.map(a => `<li><span class="pill AVM">AVM</span><span>${esc(a.txt)} <span class="muted">· ${a.modo === "durante" ? "semana del" : "antes del"} ${f(a.fechaD)}${a.fechaD < HOY ? " (vencido)" : ""}</span></span></li>`));
-  $("#ahora").innerHTML = li.join("") || `<li><span></span><span class="muted">Nada programado para esta semana.</span></li>`;
+  // Tira de semanas
+  $("#nSem").textContent = semanas.length;
+  const strip = $("#strip"); strip.style.setProperty("--n", semanas.length); $("#meses").style.setProperty("--n", semanas.length);
+  strip.innerHTML = semanas.map(s => {
+    const e = estadoSemana(s), tit = `Semana ${s.n} · ${f(s.ini)} – ${f(s.fin)}\n` + s.tareas.map(t => (hecha(t) ? "✓ " : est(t.id) === "curso" ? "◐ " : "○ ") + `[${PROY[t.proy]}] ${t.txt}`).join("\n");
+    return `<button class="wk ${e} ${s === SEM ? "actual" : ""} ${s.hito ? "hito" : ""}" data-sem="${s.n}" title="${esc(tit)}" aria-label="${esc(tit)}"><i>${s.n}</i></button>`;
+  }).join("");
+  let mes = -1;
+  $("#meses").innerHTML = semanas.map(s => { const m = s.ini.getMonth(); const r = m !== mes ? MES[m] + (m === 0 || mes === -1 ? " " + String(s.ini.getFullYear()).slice(2) : "") : ""; mes = m; return `<span>${r}</span>`; }).join("");
 
-  // Contadores y barra
-  const pct = r.total ? Math.round(r.hechas / r.total * 100) : 0, pEsp = r.total ? r.esperadas / r.total * 100 : 0;
-  $("#stats").innerHTML = [[pct + "%", "Avance"], [r.hechas, "Hechas"], [r.curso, "En curso"], [r.pend, "Pendientes"]]
-    .map(([v, l]) => `<div class="stat"><b>${v}</b><span>${l}</span></div>`).join("");
-  $("#barra i").style.width = pct + "%"; $("#barra u").style.left = `calc(${pEsp}% - 1px)`;
-  $("#barra").setAttribute("aria-label", `Avance ${pct} %, según el plan ${Math.round(pEsp)} %`);
-  $("#leyIzq").textContent = `${r.hechas} de ${r.total} entregas · según el plan deberían ir ${r.esperadas}`;
+  // KPI
+  const pct = total ? Math.round(hechas / total * 100) : 0, pEsp = total ? esperadas / total * 100 : 0;
+  const kp = p => { const ts = tareas.filter(t => t.proy === p); const h = ts.filter(hecha).length; return { h, n: ts.length, p: ts.length ? Math.round(h / ts.length * 100) : 0 }; };
+  const k = { B2C: kp("B2C"), B2B: kp("B2B") };
+  const prox = PLAN.hitos.map(h => ({ txt: h.txt, d: D(h.fecha) })).find(h => h.d >= HOY);
+  $("#kpis").innerHTML = `
+    <div class="card kpi"><span class="lab">Avance general</span><span class="val">${pct}%</span><div class="pbar" title="La línea negra marca dónde deberíamos ir"><i style="width:${pct}%"></i><u style="left:calc(${pEsp}% - 1px)"></u></div><span class="sub">${hechas} de ${total} entregas · según el plan, ${esperadas}${curso ? ` · ${curso} en curso` : ""}</span></div>
+    ${["B2C", "B2B"].map(p => `<div class="card kpi"><span class="lab"><i class="dot" style="--c:${COL[p]}"></i>${p === "B2C" ? "Sitio B2C" : "B2B · Travel Booking"}</span><span class="val">${k[p].p}%</span><div class="pbar" style="--c:${COL[p]}"><i style="width:${k[p].p}%"></i></div><span class="sub">${k[p].h} de ${k[p].n} entregas</span></div>`).join("")}
+    <div class="card kpi"><span class="lab">Próximo hito</span>${prox ? `<span class="val">${dias(HOY, prox.d)} <span style="font-size:15px;font-weight:700">días</span></span><span class="sub"><b style="color:var(--ink)">${fy(prox.d)}</b> · ${esc(prox.txt)}</span>` : `<span class="sub">No quedan hitos.</span>`}</div>`;
 
-  pintarFiltros(); pintarPlan(sem); pintarAvm(); pintarGantt(); pintarHitos();
-  $("#actualizado").textContent = estado.actualizado ? "Última actualización: " + new Date(estado.actualizado).toLocaleString("es-CO", { dateStyle: "medium", timeStyle: "short" }) : "Sin actualizaciones todavía";
-  $("#rango").textContent = `${fy(INI)} – ${fy(FIN)} · ${PLAN.semanas} semanas`;
+  // Esta semana
+  const ref = SEM || (HOY < INI ? semanas[0] : null);
+  $("#tSemana").innerHTML = ref ? `${SEM ? "Esta semana" : "Primera semana"} <span class="muted" style="font-weight:600;font-size:13px">S${ref.n} · ${f(ref.ini)} – ${f(ref.fin)}</span>` : "Esta semana";
+  const atras = tareas.filter(tareaTarde);
+  let h = (ref ? ref.tareas.map(t => filaTarea(t, false)).join("") : "");
+  if (atras.length) h += `<p class="muted" style="font-size:12.5px;font-weight:700;margin-top:6px">ATRASADO DE SEMANAS ANTERIORES</p>` + atras.slice(0, 4).map(t => filaTarea(t, true)).join("") + (atras.length > 4 ? `<p class="muted">y ${atras.length - 4} más en el plan.</p>` : "");
+  const enCert = certs.filter(c => HOY >= c.iniD && HOY <= c.finD);
+  h += enCert.map(c => `<div class="tarea"><span></span><div class="body"><span class="tt">${esc(nomProv(c.prov))} en certificación</span><span class="meta"><span class="tag cert">Revisión del proveedor</span>hasta ~${f(c.finD)}</span></div></div>`).join("");
+  $("#estaSemana").innerHTML = h || `<p class="vacio">No hay entregas programadas esta semana.</p>`;
+
+  // AVM próximo
+  const avmPend = avm.filter(a => !avmListo(a) && !a.opc);
+  const avmCerca = avmPend.filter(a => dias(HOY, a.fechaD) <= 21);
+  $("#avmCount").textContent = avmPend.filter(a => a.fechaD < HOY).length ? plural(avmPend.filter(a => a.fechaD < HOY).length, "vencido", "vencidos") : plural(avmCerca.length, "próximo", "próximos");
+  $("#avmProx").innerHTML = (avmCerca.length ? avmCerca : avmPend.slice(0, 2)).map(filaAvm).join("") || `<p class="vacio">AVM no tiene compromisos pendientes por ahora.</p>`;
+
+  pintarPlan(); pintarAvm(); pintarGantt(); pintarHitos();
+  $("#actualizado").textContent = estado.actualizado ? "Última actualización: " + new Date(estado.actualizado).toLocaleString("es-CO", { dateStyle: "medium", timeStyle: "short" }) : "Aún no hay avances marcados";
+  $("#rango").textContent = `Plan: ${fy(INI)} – ${fy(FIN)} · ${semanas.length} semanas`;
+  document.querySelector('.tab[data-v="avm"]').innerHTML = `Compromisos de AVM${avmPend.filter(a => a.fechaD < HOY).length ? ` <span class="count" style="background:var(--late-soft);color:var(--late)">${avmPend.filter(a => a.fechaD < HOY).length}</span>` : ""}`;
+}
+
+function filaTarea(t, conSemana) {
+  const v = est(t.id), tarde = tareaTarde(t);
+  const nota = estado.notas[t.id] || "";
+  const estadoTag = v === "hecho" ? `<span class="tag hecho">Entregado</span>` : v === "curso" ? `<span class="tag curso">En curso</span>` : tarde ? `<span class="tag late">Atrasado</span>` : "";
+  return `<div class="tarea ${v} ${tarde ? "late" : ""}">
+    <button class="check ${v === "hecho" ? "on" : ""}" data-t="${t.id}" aria-pressed="${v === "hecho"}" aria-label="${v === "hecho" ? "Entregado: clic para desmarcar" : "Marcar como entregado"}" title="${v === "hecho" ? "Entregado" : "Marcar como entregado"}">${CHECK}</button>
+    <div class="body"><span class="tt">${t.hito ? "◆ " : ""}${esc(t.txt)}</span>
+      <span class="meta"><span class="tag ${t.proy}">${PROY[t.proy]}</span>${conSemana !== false ? `<span class="w">S${String(t.sem.n).padStart(2, "0")}</span>${f(t.sem.ini)} – ${f(t.sem.fin)}` : ""}${t.parte ? ` · ${t.parte === 1 ? "1.ª" : "2.ª"} parte, en paralelo con ${t.proy === "B2C" ? "el B2B" : "el B2C"}` : ""}</span>
+      ${editar ? `<textarea class="nota-ed" data-nota="${t.id}" rows="1" placeholder="Agregar una nota (opcional)">${esc(nota)}</textarea>` : nota ? `<span class="nota">${esc(nota)}</span>` : ""}</div>
+    <div class="side">${estadoTag}${v !== "hecho" ? `<button class="mini-btn ${v === "curso" ? "on" : ""}" data-c="${t.id}" aria-pressed="${v === "curso"}">En curso</button>` : ""}</div></div>`;
+}
+function avmTag(a) {
+  if (avmListo(a)) return `<span class="tag hecho">Listo</span>`;
+  if (a.opc) return `<span class="tag pend">Opcional</span>`;
+  const d = dias(HOY, a.fechaD);
+  if (d < 0) return `<span class="tag late">Vencido hace ${plural(-d, "día", "días")}</span>`;
+  if (d <= 21) return `<span class="tag curso">En ${plural(d, "día", "días")}</span>`;
+  return `<span class="tag pend">Pendiente</span>`;
+}
+function filaAvm(a) {
+  const l = avmListo(a);
+  return `<div class="tarea avm ${l ? "hecho" : ""}">
+    <button class="check avm ${l ? "on" : ""}" data-a="${a.id}" aria-pressed="${l}" aria-label="${l ? "Listo: clic para desmarcar" : "Marcar como listo"}" title="${l ? "Listo" : "Marcar como listo"}">${CHECK}</button>
+    <div class="body"><span class="tt">${esc(a.txt)}</span><span class="meta"><span class="tag AVM">AVM</span>${a.modo === "durante" ? "Semana del" : "Antes del"} ${fy(a.fechaD)} · ${esc(a.etapa.corto)}</span></div>
+    <div class="side">${avmTag(a)}</div></div>`;
 }
 
 let fEstado = "todos", fProy = "todos";
 const abiertas = new Set();
-function pintarFiltros() {
-  const E = [["todos", "Todas"], ["pend", "Pendientes"], ["curso", "En curso"], ["hecho", "Hechas"]];
-  const P = [["todos", "B2C y B2B"], ["B2C", "B2C"], ["B2B", "B2B"], ["WL", "White label"]];
-  $("#fEstado").innerHTML = E.map(([k, l]) => `<button class="chip" data-fe="${k}" aria-pressed="${fEstado === k}">${l}</button>`).join("");
-  $("#fProy").innerHTML = P.map(([k, l]) => `<button class="chip" data-fp="${k}" aria-pressed="${fProy === k}">${l}</button>`).join("");
+function pasa(t) {
+  const e = est(t.id) || (tareaTarde(t) ? "late" : "pend");
+  const okE = fEstado === "todos" || fEstado === e || (fEstado === "pend" && e === "late");
+  return okE && (fProy === "todos" || fProy === t.proy);
 }
-function pasaFiltro(t) {
-  const e = est(t.id) || "pend";
-  return (fEstado === "todos" || fEstado === e) && (fProy === "todos" || fProy === t.proy);
-}
-function chk(id, valor, tipo) {
-  const c = valor === "hecho" || valor === "listo" ? "hecho" : valor === "curso" ? "curso" : "";
-  const lab = c === "hecho" ? "Hecho" : c === "curso" ? "En curso" : "Pendiente";
-  return `<button class="chk ${c}" data-${tipo}="${id}" ${editar ? "" : "disabled"} aria-label="${lab}${editar ? ": clic para cambiar" : ""}" title="${lab}">${CHECK}</button>`;
-}
-function badgeAvm(a) {
-  if (estado.avm[a.id] === "listo") return `<span class="badge listo">Listo</span>`;
-  const d = dias(HOY, a.fechaD);
-  if (a.opc) return `<span class="badge">Opcional</span>`;
-  if (d < 0) return `<span class="badge vencido">Vencido hace ${-d} d</span>`;
-  if (d <= 14) return `<span class="badge pronto">En ${d} d</span>`;
-  return `<span class="badge">${a.opc ? "Opcional" : "Pendiente"}</span>`;
-}
-function pintarPlan(sem) {
+function pintarPlan() {
+  const E = [["todos", "Todas"], ["pend", "Pendientes"], ["late", "Atrasadas"], ["curso", "En curso"], ["hecho", "Entregadas"]];
+  const P = [["todos", "Todos los proyectos"], ["B2C", "B2C"], ["B2B", "B2B"], ["WL", "White label"]];
+  $("#fEstado").innerHTML = E.map(([k, l]) => `<button data-fe="${k}" aria-pressed="${fEstado === k}">${l}</button>`).join("");
+  $("#fProy").innerHTML = P.map(([k, l]) => `<button data-fp="${k}" aria-pressed="${fProy === k}">${k !== "todos" ? `<i class="dot" style="--c:${COL[k]};margin-right:6px"></i>` : ""}${l}</button>`).join("");
   const out = [];
   for (const e of etapas) {
-    const ts = e.tareas; if (!ts.length) continue;
-    const h = ts.filter(hecha).length, p = Math.round(h / ts.length * 100);
-    const esActual = sem && e.ini <= sem.fin && e.fin >= sem.ini;
-    const filas = e.filas.map(r => {
-      if (r.tipo === "tarea") {
-        if (!pasaFiltro(r)) return "";
-        const v = est(r.id), nota = estado.notas[r.id] || "";
-        const notaHtml = editar ? `<textarea class="nota-ed" data-nota="${r.id}" rows="1" placeholder="Nota (opcional)">${esc(nota)}</textarea>` : (nota ? `<span class="nota">${esc(nota)}</span>` : "");
-        return `<div class="t ${v} ${r.hito ? "hito" : ""} ${sem && r.sem === sem ? "semana-actual" : ""}">${chk(r.id, v, "t")}
-          <span class="cuando"><b>S${String(r.sem.n).padStart(2, "0")}</b><br>${f(r.sem.ini)} – ${f(r.sem.fin)}</span>
-          <span class="txt"><span>${r.hito ? "◆ " : ""}${esc(r.txt)}</span>${r.parte ? `<small>${r.parte === 1 ? "1.ª" : "2.ª"} parte · en paralelo con ${r.proy === "B2C" ? "el B2B" : "el B2C"}</small>` : ""}${notaHtml}</span></div>`;
-      }
-      if (fEstado !== "todos" || (fProy !== "todos" && fProy !== e.proy)) return "";
-      if (r.tipo === "avm") {
-        const v = estado.avm[r.id] || "";
-        return `<div class="t avm ${v === "listo" ? "hecho" : ""}">${chk(r.id, v, "a")}<span class="cuando"><b>AVM</b><br>${r.modo === "durante" ? "semana del" : "antes del"} ${f(r.fechaD)}</span><span class="txt"><span>${esc(r.txt)}</span>${badgeAvm(r).replace('class="badge', 'style="justify-self:start" class="badge')}</span></div>`;
-      }
-      return `<div class="t cert"><span></span><span class="cuando"><b>⧗</b><br>${f(r.iniD)} – ${f(r.finD)}</span><span class="txt"><span>${esc(r.txt)}</span></span></div>`;
-    }).join("");
+    if (!e.tareas.length) continue;
+    const filas = e.filas.map(r => r.tipo === "tarea" ? (pasa(r) ? filaTarea(r) : "") :
+      (fEstado !== "todos" || (fProy !== "todos" && fProy !== e.proy)) ? "" :
+      r.tipo === "avm" ? filaAvm(r) :
+      `<div class="tarea"><span></span><div class="body"><span class="tt">${esc(r.txt)}</span><span class="meta"><span class="tag cert">Certificación</span>~${f(r.iniD)} – ${f(r.finD)}</span></div></div>`).join("");
     if (!filas.trim()) continue;
-    const abierta = abiertas.has(e.nombre) || (abiertas.size === 0 && esActual);
-    out.push(`<details class="etapa ${esActual ? "actual" : ""}" data-e="${esc(e.nombre)}" ${abierta || fEstado !== "todos" ? "open" : ""}>
-      <summary><span><h3><span class="pill ${e.proy}">${e.proy === "WL" ? "White label" : e.proy}</span>${esc(e.nombre.split(" · ").slice(1).join(" · "))}${esActual ? ' <span class="badge pronto">En curso</span>' : ""}</h3>
-      <small>${fy(e.ini)} – ${fy(e.fin)} · ${h}/${ts.length} hechas</small></span>
-      <span class="mini"><span class="barra"><i style="width:${p}%;background:${p === 100 ? "var(--ok)" : "var(--signal)"}"></i></span>${p}%</span><i class="chev"></i></summary>
-      <div class="tareas">${filas}</div></details>`);
+    const h = e.tareas.filter(hecha).length, p = Math.round(h / e.tareas.length * 100);
+    const enCurso = SEM && e.ini <= SEM.fin && e.fin >= SEM.ini, tarde = e.tareas.some(tareaTarde);
+    const badge = p === 100 ? `<span class="tag hecho">Completada</span>` : tarde ? `<span class="tag late">Atrasada</span>` : enCurso ? `<span class="tag curso">En curso</span>` : e.ini > HOY ? `<span class="tag pend">Próxima</span>` : "";
+    const abierta = abiertas.has(e.nombre) || (abiertas.size === 0 && (enCurso || (HOY < INI && e === etapas[0]))) || fEstado !== "todos";
+    out.push(`<details class="etapa" style="--c:${COL[e.proy]}" data-e="${esc(e.nombre)}" ${abierta ? "open" : ""}>
+      <summary><span class="tit"><b><span class="tag ${e.proy}">${PROY[e.proy]}</span>${esc(e.corto)} ${badge}</b><small>${fy(e.ini)} – ${fy(e.fin)} · ${plural(e.tareas.length, "entrega", "entregas")}</small></span>
+      <span class="prog"><span>${h} de ${e.tareas.length} · ${p}%</span><span class="pbar" style="--c:${p === 100 ? "var(--ok)" : COL[e.proy]}"><i style="width:${p}%"></i></span></span><i class="chev"></i></summary>
+      <div class="lista">${filas}</div></details>`);
   }
   $("#etapas").innerHTML = out.join("") || `<p class="vacio">No hay entregas con este filtro.</p>`;
 }
 function pintarAvm() {
-  const grupos = [["Vencido o en las próximas 2 semanas", a => estado.avm[a.id] !== "listo" && !a.opc && dias(HOY, a.fechaD) <= 14],
-                  ["Más adelante", a => estado.avm[a.id] !== "listo" && !a.opc && dias(HOY, a.fechaD) > 14],
-                  ["Opcional", a => estado.avm[a.id] !== "listo" && a.opc],
-                  ["Listo", a => estado.avm[a.id] === "listo"]];
-  let html = "";
-  for (const [tit, fn] of grupos) {
-    const l = avm.filter(fn); if (!l.length) continue;
-    html += `<p class="grupo">${tit}</p>` + l.map(a => `<div class="avm-it ${estado.avm[a.id] === "listo" ? "hecho" : ""}">${chk(a.id, estado.avm[a.id] || "", "a")}
-      <span class="txt"><span>${esc(a.txt)}</span><small>${a.modo === "durante" ? "Semana del" : "Antes del"} ${fy(a.fechaD)} · ${esc(a.etapa)}</small></span>${badgeAvm(a)}</div>`).join("");
-  }
-  html += `<p class="grupo">Aprobaciones de los proveedores</p>` + certs.map(c => {
-    const b = HOY > c.finD ? '<span class="badge">Fecha estimada pasada</span>' : HOY >= c.iniD ? '<span class="badge pronto">En revisión</span>' : '<span class="badge">Estimada</span>';
-    return `<div class="avm-it"><span></span><span class="txt"><span>${esc(c.txt)}</span><small>~${fy(c.iniD)} – ${fy(c.finD)}</small></span>${b}</div>`;
-  }).join("");
-  $("#avmLista").innerHTML = html;
+  const g = [["Vencidos", a => !avmListo(a) && !a.opc && a.fechaD < HOY], ["Próximos", a => !avmListo(a) && !a.opc && a.fechaD >= HOY], ["Opcional", a => !avmListo(a) && a.opc], ["Listos", avmListo]];
+  let h = "";
+  for (const [t, fn] of g) { const l = avm.filter(fn); if (l.length) h += `<p class="muted" style="font-size:12.5px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;margin-top:12px">${t}</p>` + l.map(filaAvm).join(""); }
+  h += `<p class="muted" style="font-size:12.5px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;margin-top:12px">Aprobaciones de los proveedores</p>` +
+    certs.map(c => `<div class="tarea"><span></span><div class="body"><span class="tt">Certificación de ${esc(nomProv(c.prov))}</span><span class="meta">Estimada entre el ${fy(c.iniD)} y el ${fy(c.finD)}. La revisa el proveedor.</span></div><div class="side">${HOY > c.finD ? '<span class="tag pend">Fecha pasada</span>' : HOY >= c.iniD ? '<span class="tag curso">En revisión</span>' : '<span class="tag pend">Estimada</span>'}</div></div>`).join("");
+  $("#avmLista").innerHTML = h;
 }
 function pintarGantt() {
   const G0 = INI, G1 = new Date(semanas[semanas.length - 1].ini.getTime() + 7 * 864e5), tot = dias(G0, G1);
   const pct = d => Math.max(0, Math.min(100, dias(G0, d) / tot * 100));
   const lunes = d => new Date(d.getFullYear(), d.getMonth(), d.getDate() - ((d.getDay() + 6) % 7));
-  const bar = (a, b, extra, title) => { const x = pct(lunes(a)), w = pct(new Date(lunes(b).getTime() + 7 * 864e5)) - x; return `<span class="gb ${extra.cls || ""}" style="left:${x}%;width:${w}%;--c:${extra.c || "var(--muted)"}" title="${esc(title)}">${extra.in || ""}</span>`; };
-  let bandas = "", cab = ""; let m = new Date(G0.getFullYear(), G0.getMonth(), 1), k = 0;
-  while (m < G1) { const s = new Date(m.getFullYear(), m.getMonth() + 1, 1); const a = m < G0 ? G0 : m, b = s > G1 ? G1 : s;
+  const bar = (a, b, c, cls, inner, title) => { const x = pct(lunes(a)), w = pct(new Date(lunes(b).getTime() + 7 * 864e5)) - x; return `<span class="gb ${cls}" style="left:${x}%;width:${w}%;--c:${c}" title="${esc(title)}">${inner}</span>`; };
+  let bandas = "", cab = "", m = new Date(G0.getFullYear(), G0.getMonth(), 1), k = 0;
+  while (m < G1) { const s = new Date(m.getFullYear(), m.getMonth() + 1, 1), a = m < G0 ? G0 : m, b = s > G1 ? G1 : s;
     if (k % 2 === 0) bandas += `<u style="left:${pct(a)}%;width:${pct(b) - pct(a)}%"></u>`;
     cab += `<span style="left:${pct(a)}%;width:${pct(b) - pct(a)}%">${MES[m.getMonth()]}${m.getMonth() === 0 ? " " + m.getFullYear() : ""}</span>`; m = s; k++; }
-  const hoy = HOY >= G0 && HOY <= G1 ? `<span class="hoyl" style="left:${pct(HOY)}%"><b>hoy</b></span>` : "";
-  const col = { B2C: "var(--signal)", B2B: "var(--b2b)", WL: "var(--wl)" };
+  const hoy = (lbl) => HOY >= G0 && HOY <= G1 ? `<span class="hoyl" style="left:${pct(HOY)}%">${lbl ? "<b>hoy</b>" : ""}</span>` : "";
   let rows = `<div class="gr"><span class="gl"></span><span class="gt gm">${bandas}${cab}</span></div>`;
   etapas.forEach((e, i) => {
     if (!e.tareas.length) return;
     const p = Math.round(e.tareas.filter(hecha).length / e.tareas.length * 100);
-    const cs = certs.filter(c => c.etapa === e.nombre).map(c => bar(c.iniD, new Date(c.finD.getTime() - 864e5), { cls: "cert" }, "Certificación " + c.prov)).join("");
-    rows += `<div class="gr"><span class="gl"><small>${e.proy === "WL" ? "White label" : e.proy}</small>${esc(e.nombre.split(" · ").slice(1).join(" · "))}</span><span class="gt">${bandas}${bar(e.ini, e.fin, { c: col[e.proy], in: `<i style="width:${p}%"></i>` }, `${e.nombre}: ${p}% hecho`)}${cs}${i === 0 ? hoy.replace("<b>hoy</b>", "<b>hoy</b>") : hoy.replace("<b>hoy</b>", "")}</span></div>`;
+    const cs = certs.filter(c => c.etapa === e).map(c => bar(c.iniD, new Date(c.finD.getTime() - 864e5), "var(--avm)", "cert", "", "Certificación " + nomProv(c.prov))).join("");
+    rows += `<div class="gr"><span class="gl"><span class="tag ${e.proy}">${PROY[e.proy]}</span>${esc(e.corto)}</span><span class="gt">${bandas}${bar(e.ini, e.fin, COL[e.proy], "", `<i style="width:${p}%"></i>`, `${e.corto}: ${p}% entregado`)}${cs}${hoy(i === 0)}</span></div>`;
   });
   $("#gantt").innerHTML = rows;
 }
 function pintarHitos() {
   const items = PLAN.hitos.map(h => ({ txt: h.txt, d: D(h.fecha), est: false }))
-    .concat(certs.map(c => ({ txt: (c.prov === "Hoteles 3" ? "Tercer proveedor de hoteles" : c.prov) + " conectado (estimado)", d: c.finD, est: true })))
-    .sort((a, b) => a.d - b.d);
+    .concat(certs.map(c => ({ txt: nomProv(c.prov) + " conectado (fecha estimada)", d: c.finD, est: true }))).sort((a, b) => a.d - b.d);
   const prox = items.find(h => h.d >= HOY);
-  $("#hitos").innerHTML = items.map(h => `<li class="${h.d < HOY ? "ok" : h === prox ? "prox" : ""}"><time>${h.est ? "~ " : ""}${fy(h.d)}${h === prox ? ` · en ${dias(HOY, h.d)} días` : ""}</time><b>${esc(h.txt)}</b></li>`).join("");
+  $("#hitos").innerHTML = items.map(h => `<li class="${h.d < HOY ? "ok" : h === prox ? "prox" : ""}"><time>${h.est ? "~ " : ""}${fy(h.d)}${h === prox ? ` · faltan ${plural(dias(HOY, h.d), "día", "días")}` : ""}</time><b>${esc(h.txt)}</b></li>`).join("");
 }
 
-// ---------- Eventos ----------
+// ---------- Edición ----------
+function entrarEdicion(despues) {
+  if (editar) { despues && despues(); return; }
+  if (!servidor) { activar(); despues && despues(); return; }
+  pendiente = despues || null;
+  $("#dlgErr").hidden = true; $("#dlgClave").value = "";
+  $("#dlg").showModal(); $("#dlgClave").focus();
+}
+function activar() {
+  editar = true; $("#banner").hidden = false;
+  const b = $("#bEditar"); b.classList.remove("primary"); b.classList.add("dark"); b.querySelector("span").textContent = "Terminar edición";
+  pintar();
+}
+function salirEdicion() {
+  editar = false; clave = ""; $("#banner").hidden = true;
+  const b = $("#bEditar"); b.classList.add("primary"); b.classList.remove("dark"); b.querySelector("span").textContent = "Editar avance";
+  pintar();
+}
+$("#dlgForm").addEventListener("submit", async ev => {
+  ev.preventDefault();
+  const k = $("#dlgClave").value; if (!k) return;
+  $("#dlgSi").disabled = true;
+  try {
+    const r = await fetch("guardar.php", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ clave: k, verificar: true }) });
+    const j = await r.json().catch(() => ({}));
+    if (r.ok && j.ok) { clave = k; $("#dlg").close(); activar(); if (j.nueva) avisar("Clave creada: guarda el primer avance para fijarla", "ok"); const p = pendiente; pendiente = null; p && p(); }
+    else { $("#dlgErr").textContent = r.status === 403 ? "Clave incorrecta." : (j.error || "No se pudo verificar la clave (" + r.status + ")."); $("#dlgErr").hidden = false; }
+  } catch (e) { $("#dlgErr").textContent = "No hay conexión con el servidor."; $("#dlgErr").hidden = false; }
+  $("#dlgSi").disabled = false;
+});
+$("#dlgNo").addEventListener("click", () => { pendiente = null; $("#dlg").close(); });
+
 document.addEventListener("click", ev => {
   const tab = ev.target.closest(".tab");
   if (tab) { document.querySelectorAll(".tab").forEach(t => t.setAttribute("aria-selected", t === tab)); document.querySelectorAll(".vista").forEach(v => v.classList.toggle("on", v.id === "v-" + tab.dataset.v)); try { localStorage.setItem("avm-seg-tab", tab.dataset.v); } catch (e) {} return; }
   const fe = ev.target.closest("[data-fe]"); if (fe) { fEstado = fe.dataset.fe; pintar(); return; }
   const fp = ev.target.closest("[data-fp]"); if (fp) { fProy = fp.dataset.fp; pintar(); return; }
-  const c = ev.target.closest(".chk"); if (c && editar) {
-    ev.preventDefault();
-    if (c.dataset.t) { const v = est(c.dataset.t); estado.tareas[c.dataset.t] = v === "" ? "curso" : v === "curso" ? "hecho" : ""; if (!estado.tareas[c.dataset.t]) delete estado.tareas[c.dataset.t]; }
-    if (c.dataset.a) { if (estado.avm[c.dataset.a] === "listo") delete estado.avm[c.dataset.a]; else estado.avm[c.dataset.a] = "listo"; }
-    marcarCambio(); return;
+  const wk = ev.target.closest(".wk"); if (wk) {
+    const s = semanas.find(x => x.n === +wk.dataset.sem); fEstado = "todos"; fProy = "todos";
+    s.tareas.forEach(t => abiertas.add(t.fase.nombre)); document.querySelector('.tab[data-v="plan"]').click(); pintar();
+    const el = document.querySelector(`[data-t="${s.tareas[0].id}"]`); el && el.closest(".tarea").scrollIntoView({ behavior: "smooth", block: "center" }); return;
   }
+  const t = ev.target.closest("[data-t]"); if (t) { const id = t.dataset.t; entrarEdicion(() => { if (est(id) === "hecho") delete estado.tareas[id]; else estado.tareas[id] = "hecho"; cambio(); }); return; }
+  const c = ev.target.closest("[data-c]"); if (c) { const id = c.dataset.c; entrarEdicion(() => { if (est(id) === "curso") delete estado.tareas[id]; else estado.tareas[id] = "curso"; cambio(); }); return; }
+  const a = ev.target.closest("[data-a]"); if (a) { const id = a.dataset.a; entrarEdicion(() => { if (estado.avm[id] === "listo") delete estado.avm[id]; else estado.avm[id] = "listo"; cambio(); }); return; }
 });
 document.addEventListener("toggle", ev => { const d = ev.target; if (d.classList && d.classList.contains("etapa")) { if (d.open) abiertas.add(d.dataset.e); else abiertas.delete(d.dataset.e); } }, true);
-document.addEventListener("change", ev => {
-  const n = ev.target.closest("[data-nota]"); if (!n) return;
-  const v = n.value.trim(); if (v) estado.notas[n.dataset.nota] = v; else delete estado.notas[n.dataset.nota];
-  marcarCambio();
-});
-function salirEdicion() { editar = false; clave = ""; const b = $("#bEditar"); b.classList.remove("on"); b.setAttribute("aria-pressed", "false"); b.innerHTML = '<span aria-hidden="true">🔒</span> <span>Lectura</span>'; pintar(); }
-$("#bEditar").addEventListener("click", () => {
-  if (editar) { salirEdicion(); return; }
-  if (servidor) { const k = prompt("Clave de edición"); if (!k) return; clave = k; }
-  editar = true; const b = $("#bEditar"); b.classList.add("on"); b.setAttribute("aria-pressed", "true"); b.innerHTML = '<span aria-hidden="true">✎</span> <span>Editando</span>';
-  avisar(servidor ? "Clic en el cuadro: pendiente → en curso → hecho" : "Sin servidor: se guarda en este navegador");
-  pintar();
-});
+document.addEventListener("change", ev => { const n = ev.target.closest("[data-nota]"); if (!n) return; const v = n.value.trim(); if (v) estado.notas[n.dataset.nota] = v; else delete estado.notas[n.dataset.nota]; cambio(); });
+$("#bEditar").addEventListener("click", () => editar ? salirEdicion() : entrarEdicion());
 $("#bDescargar").addEventListener("click", () => {
   const a = document.createElement("a"); a.href = URL.createObjectURL(new Blob([JSON.stringify(estado, null, 1)], { type: "application/json" }));
   a.download = "estado.json"; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 1000);
 });
-try { const t = localStorage.getItem("avm-seg-tab"); if (t) { const b = document.querySelector(`.tab[data-v="${t}"]`); if (b) b.click(); } } catch (e) {}
+try { const t = localStorage.getItem("avm-seg-tab"); if (t) document.querySelector(`.tab[data-v="${t}"]`)?.click(); } catch (e) {}
 cargar();
 </script>
 </body>
