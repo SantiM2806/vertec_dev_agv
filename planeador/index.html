@@ -85,7 +85,19 @@ button:focus-visible, select:focus-visible { outline: 2px solid var(--verde); ou
 /* Grupos */
 .grupo { border: 1px solid var(--line); background: var(--card); border-radius: 12px; margin-bottom: 12px; overflow: hidden }
 .grupo.actual { border-color: rgb(148 182 60 / .55); box-shadow: 0 0 0 1px rgb(148 182 60 / .25) inset }
-.grupo.avm { border-color: rgb(240 130 72 / .45) }
+/* Compromisos de AVM: naranja, para que AVM vea qué debe entregar y cuándo */
+.grupo.avm { border: 1.5px solid var(--naranja); background: linear-gradient(90deg, rgb(240 130 72 / .20), rgb(240 130 72 / .08)) }
+.grupo.avm > summary:hover { background: rgb(240 130 72 / .12) }
+.grupo.avm .tt b { color: var(--naranja-l); font-size: 16px }
+.grupo.avm .tt small { color: #F3C4A8 }
+.grupo.avm .tt small b { color: var(--ink); font: inherit; font-weight: 700; display: inline }
+.grupo.avm .mbar i { background: var(--naranja) }
+.grupo.avm .pct, .grupo.avm .chev { color: var(--naranja-l) }
+.grupo.avm .tareas { border-top-color: rgb(240 130 72 / .35) }
+.grupo.avm .t + .t { border-top-color: rgb(240 130 72 / .15) }
+.fecha-avm { display: inline-block; font: 700 11.5px/1 var(--mono); color: #1B0F06; background: var(--naranja); border-radius: 6px; padding: 4px 7px; margin-top: 3px; justify-self: start }
+.fecha-avm.late { background: var(--rojo); color: #fff }
+.fecha-avm.ok { background: rgb(148 182 60 / .25); color: var(--verde-l) }
 .grupo > summary { list-style: none; cursor: pointer; display: grid; grid-template-columns: 28px minmax(0, 1fr) 64px 42px 16px; gap: 14px; align-items: center; padding: 14px 18px }
 .grupo > summary::-webkit-details-marker { display: none }
 .grupo > summary:hover { background: var(--card-h) }
@@ -328,12 +340,13 @@ function pintar() {
   const AV = avm.filter(a => enVista(a.proy)), avmVis = AV.filter(a => pasaF(listo(a) ? "hecho" : "pend"));
   if (avmVis.length) {
     const lst = AV.filter(listo).length, venc = AV.filter(a => !listo(a) && !a.opc && a.fechaD < HOY).length;
-    html += grupo("avm", "📌", `AVM debe entregar ${venc ? `<span class="tag late">${pl(venc, "vencido", "vencidos")}</span>` : ""}`, `${lst}/${AV.length} listos · compromisos de AVM`, lst, AV.length, "avm",
+    html += grupo("avm", "📌", `AVM debe entregar ${venc ? `<span class="tag late">${pl(venc, "vencido", "vencidos")}</span>` : ""}`, (() => { const sig = AV.filter(a => !listo(a) && !a.opc).sort((x, y) => x.fechaD - y.fechaD)[0];
+        return sig ? `Lo que AVM debe tener listo y cuándo · Próximo: <b>${esc(sig.txt.replace(/^AVM /, "").slice(0, 70))}${sig.txt.length > 74 ? "…" : ""}</b> · ${sig.modo === "durante" ? "semana del" : "antes del"} ${fy(sig.fechaD)}` : `${lst}/${AV.length} listos · AVM no tiene pendientes`; })(), lst, AV.length, "avm",
       avmVis.map(a => {
         const l = listo(a), d = dias(HOY, a.fechaD), late = !l && !a.opc && d < 0;
         const control = editar ? `<select class="est ${l ? "hecho" : ""}" data-a="${a.id}"><option value="">Pendiente</option><option value="listo" ${l ? "selected" : ""}>Listo</option></select>`
           : `<span class="est ${l ? "hecho" : late ? "late" : ""}">${l ? "Listo" : late ? "Vencido" : a.opc ? "Opcional" : "Pendiente"}</span>`;
-        return `<div class="t ${l ? "hecho" : ""}"><i class="dot avm ${l ? "hecho" : ""}"></i><div class="tx"><span>${esc(a.txt.replace(/^Opcional: /, ""))}</span><small class="${late ? "late" : ""}">${a.modo === "durante" ? "Semana del" : "Antes del"} ${fy(a.fechaD)} · ${esc(etapaDe(a))}</small></div>${control}</div>`;
+        return `<div class="t ${l ? "hecho" : ""}"><i class="dot avm ${l ? "hecho" : ""}"></i><div class="tx"><span>${esc(a.txt.replace(/^Opcional: /, ""))}</span><span class="fecha-avm ${l ? "ok" : late ? "late" : ""}">${l ? "✓ Listo" : (a.modo === "durante" ? "Semana del " : "Antes del ") + fy(a.fechaD)}${late ? " · vencido" : ""}</span><small>${a.opc ? "Opcional · " : ""}Para: ${esc(etapaDe(a))}</small></div>${control}</div>`;
       }).join(""));
   }
   // Etapas
@@ -362,7 +375,7 @@ function pintar() {
   $("#grupos").innerHTML = html || `<p class="vacio">No hay tareas con este filtro.</p>`;
   $("#pie").textContent = (estado.actualizado ? "Última edición: " + new Date(estado.actualizado).toLocaleString("es-CO", { dateStyle: "medium", timeStyle: "short" }) : "Sin ediciones todavía") + ` · ${vista === "b2b" ? "Travel Booking & Distribution" : "B2C"}: ${fy(iniV)} al ${fy(finV)} · AVM Operadores Mayoristas`;
 }
-function etapaDe(a) { const e = etapas.find(x => x.filas.length && x.filas[0].sem.ini >= a.fechaD); return e ? e.corto : ""; }
+function etapaDe(a) { const e = etapas.find(x => x.filas.length && x.proy === a.proy && x.filas[0].sem.ini >= a.fechaD) || etapas.find(x => x.filas.length && x.proy === a.proy); return e ? e.corto : ""; }
 function grupo(id, emo, titulo, sub, h, n, cls, cuerpo, abrirAuto) {
   const p = n ? Math.round(h / n * 100) : 0;
   const abierto = abiertos.has(id) || filtro !== "todos";
@@ -416,6 +429,7 @@ document.addEventListener("change", ev => {
 });
 document.addEventListener("toggle", ev => { const d = ev.target; if (d.dataset && d.dataset.g && filtro === "todos") d.open ? abiertos.add(d.dataset.g) : abiertos.delete(d.dataset.g); }, true);
 // Al entrar, queda abierta la etapa de la semana actual (o la primera, si aún no empieza)
+abiertos.add("avm");
 { const ref = SEM || (HOY < INI ? semanas[0] : null); if (ref) ref.tareas.forEach(t => { const e = etapas.find(x => x.filas.includes(t)); e && abiertos.add(e.nombre); }); }
 cargar();
 if (Q.has("verpin")) abrirPin();   // solo para la vista previa de la ventana del PIN
