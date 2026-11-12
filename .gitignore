@@ -32,3 +32,5 @@ propuesta/*-completa.html
 planeador/clave.php
 planeador/estado.json
 planeador/estado.json.tmp
+planeador/intentos.json
+planeador/vista-previa/

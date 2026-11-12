@@ -5,6 +5,6 @@
     Header set Cache-Control "no-store"
   </Files>
 </IfModule>
-<FilesMatch "^(plan\.json|plantilla\.html|LEEME\.md)$">
+<FilesMatch "^(plan\.json|plantilla\.html|LEEME\.md|intentos\.json|clave\.php)$">
   Require all denied
 </FilesMatch>

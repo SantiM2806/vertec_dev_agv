@@ -7,622 +7,375 @@
 <meta name="robots" content="noindex">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap">
 <style>
-/* Tablero de seguimiento: estado de hoy y semanas arriba, lo de esta semana y lo de AVM al lado, detalle en pestañas.
-   Colores: un color por proyecto (B2C azul, B2B violeta, white label verde azulado) y uno por estado (hecho, en curso, atrasado, AVM). */
+/* Tablero oscuro con los colores de AVM (verde #94B63C y naranja #F08248 del logo).
+   Arriba: indicadores, barra y estado. Abajo: grupos desplegables por etapa. Edición con PIN. */
 :root {
-  --bg: #F3F5F8; --card: #FFFFFF; --ink: #0F172A; --ink2: #334155; --muted: #64748B; --line: #E2E8F0; --soft: #F1F5F9;
-  --brand: #0E9F57; --brand-soft: #E3F6EC; --brand-ink: #065F35;
-  --b2c: #2563EB; --b2b: #7C3AED; --wl: #0D9488;
-  --ok: #16A34A; --ok-soft: #DCFCE7; --curso: #D97706; --curso-soft: #FEF3C7; --late: #DC2626; --late-soft: #FEE2E2; --avm: #EA580C; --avm-soft: #FFEDD5;
-  --future: #E2E8F0;
-  --f: "Plus Jakarta Sans", "Segoe UI", system-ui, sans-serif; --mono: "JetBrains Mono", ui-monospace, Consolas, monospace;
-  --logo-c: block; --logo-w: none;
-  --shadow: 0 1px 2px rgb(15 23 42 / .05), 0 4px 14px rgb(15 23 42 / .05);
-}
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --bg: #0B1220; --card: #111A2E; --ink: #E7ECF3; --ink2: #CBD5E1; --muted: #94A3B8; --line: #22304A; --soft: #18233A;
-    --brand: #22C55E; --brand-soft: #0F2E21; --brand-ink: #86EFAC;
-    --b2c: #60A5FA; --b2b: #A78BFA; --wl: #2DD4BF;
-    --ok: #22C55E; --ok-soft: #0F2E1C; --curso: #F59E0B; --curso-soft: #33240A; --late: #F87171; --late-soft: #3A1414; --avm: #FB923C; --avm-soft: #36200F;
-    --future: #23314B; --logo-c: none; --logo-w: block; --shadow: none; color-scheme: dark;
-  }
-}
-:root[data-theme="dark"] {
-  --bg: #0B1220; --card: #111A2E; --ink: #E7ECF3; --ink2: #CBD5E1; --muted: #94A3B8; --line: #22304A; --soft: #18233A;
-  --brand: #22C55E; --brand-soft: #0F2E21; --brand-ink: #86EFAC;
-  --b2c: #60A5FA; --b2b: #A78BFA; --wl: #2DD4BF;
-  --ok: #22C55E; --ok-soft: #0F2E1C; --curso: #F59E0B; --curso-soft: #33240A; --late: #F87171; --late-soft: #3A1414; --avm: #FB923C; --avm-soft: #36200F;
-  --future: #23314B; --logo-c: none; --logo-w: block; --shadow: none; color-scheme: dark;
+  --bg1: #0E150B; --bg2: #18240F; --card: rgb(255 255 255 / .045); --card-h: rgb(255 255 255 / .075); --line: rgb(255 255 255 / .09);
+  --ink: #F1F4EA; --muted: #9AA58C; --dim: #6C7660;
+  --verde: #94B63C; --verde-l: #B5D25E; --naranja: #F08248; --naranja-l: #F7A57A; --amarillo: #F2C14E; --rojo: #FF6B5E;
+  --f: "DM Sans", "Segoe UI", system-ui, sans-serif; --mono: "JetBrains Mono", ui-monospace, Consolas, monospace;
+  color-scheme: dark;
 }
 * { box-sizing: border-box }
 [hidden] { display: none !important }
-html { -webkit-text-size-adjust: 100% }
-body { margin: 0; background: var(--bg); color: var(--ink); font: 400 15px/1.5 var(--f) }
+html { -webkit-text-size-adjust: 100%; background: var(--bg1) }
+body { margin: 0; min-height: 100vh; color: var(--ink); font: 400 14.5px/1.5 var(--f);
+  background: radial-gradient(1200px 600px at 80% -10%, rgb(148 182 60 / .16), transparent 60%), radial-gradient(900px 500px at 0% 100%, rgb(240 130 72 / .10), transparent 60%), linear-gradient(160deg, var(--bg2), var(--bg1) 70%) fixed }
 h1, h2, h3, p { margin: 0 }
-ul { margin: 0; padding: 0; list-style: none }
 button { font: inherit; color: inherit; cursor: pointer; background: none; border: 0; padding: 0 }
-button:focus-visible, summary:focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; border-radius: 6px }
-.wrap { max-width: 1120px; margin: 0 auto; padding: 0 16px }
-.muted { color: var(--muted) }
+button:focus-visible, select:focus-visible { outline: 2px solid var(--verde); outline-offset: 2px }
+.mono { font-family: var(--mono) }
 
-/* Barra superior */
-.bar { background: var(--card); border-bottom: 1px solid var(--line) }
-.bar .wrap { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-block: 12px; flex-wrap: wrap }
+/* Encabezado */
+.top { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 14px 20px; border-bottom: 1px solid var(--line); background: rgb(0 0 0 / .18); flex-wrap: wrap }
 .brand { display: flex; align-items: center; gap: 12px }
-.brand img { height: 32px; width: auto }
-.logo-c { display: var(--logo-c) } .logo-w { display: var(--logo-w) }
-.brand h1 { font-size: 17px; font-weight: 800; letter-spacing: -.01em; line-height: 1.15 }
-.brand small { display: block; font-size: 12.5px; color: var(--muted); font-weight: 500 }
-.acts { display: flex; align-items: center; gap: 10px; flex-wrap: wrap }
-.btn { display: inline-flex; align-items: center; gap: 8px; border-radius: 10px; padding: 9px 14px; font-weight: 700; font-size: 14px; border: 1px solid var(--line); background: var(--card) }
-.btn:hover { border-color: var(--muted) }
-.btn.primary { background: var(--brand); border-color: var(--brand); color: #fff }
-.btn.primary:hover { filter: brightness(1.05) }
-.btn.dark { background: var(--ink); border-color: var(--ink); color: var(--card) }
-.btn svg { width: 16px; height: 16px }
-.save { font-size: 12.5px; font-weight: 600; color: var(--muted) }
-.save.ok { color: var(--ok) } .save.err { color: var(--late) }
-.editbanner { background: var(--curso-soft); color: var(--ink); border-bottom: 1px solid color-mix(in srgb, var(--curso) 35%, transparent) }
-.editbanner .wrap { padding-block: 9px; font-size: 13.5px; font-weight: 600; display: flex; gap: 8px; align-items: center }
+.brand .ico { width: 42px; height: 42px; border-radius: 10px; background: var(--verde); display: grid; place-items: center; padding: 6px }
+.brand .ico img { width: 100%; height: auto; filter: brightness(0) invert(1) }
+.brand h1 { font-size: 17px; font-weight: 700 }
+.brand small { display: block; font: 700 11px/1.3 var(--mono); color: var(--naranja); letter-spacing: .06em; text-transform: uppercase }
+.acts { display: flex; gap: 8px; align-items: center }
+.ibtn { width: 36px; height: 34px; border-radius: 10px; border: 1px solid var(--line); background: var(--card); display: grid; place-items: center; color: var(--verde-l) }
+.ibtn:hover { background: var(--card-h) }
+.pill { display: inline-flex; align-items: center; gap: 6px; height: 34px; padding: 0 14px; border-radius: 99px; border: 1px solid var(--line); background: var(--card); font-size: 13px; font-weight: 600 }
+.pill:hover { background: var(--card-h) }
+.pill.on { background: var(--naranja); border-color: var(--naranja); color: #1B0F06 }
+.fechahora { padding: 8px 20px; font: 500 11.5px/1 var(--mono); color: var(--dim) }
+.save { font: 600 11.5px/1 var(--mono); color: var(--muted) }
+.save.ok { color: var(--verde-l) } .save.err { color: var(--rojo) }
 
-/* Estado de hoy */
-.hero { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 18px; align-items: center; margin-top: 20px; padding: 20px 22px; border-radius: 16px; background: var(--card); box-shadow: var(--shadow); border: 1px solid var(--line); border-left: 6px solid var(--st, var(--muted)) }
-.hero .fecha { font-size: 13px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: .06em }
-.hero h2 { font-size: clamp(22px, 3.2vw, 30px); font-weight: 800; letter-spacing: -.02em; line-height: 1.15; margin-top: 4px }
-.hero p.det { color: var(--ink2); margin-top: 6px; max-width: 70ch }
-.sem-big { text-align: center; padding: 10px 18px; border-radius: 14px; background: var(--soft); min-width: 120px }
-.sem-big b { display: block; font-size: 34px; font-weight: 800; line-height: 1; font-variant-numeric: tabular-nums }
-.sem-big span { font-size: 12px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: .06em }
+.wrap { max-width: 940px; margin: 0 auto; padding: 22px 16px 70px }
 
-/* Tira de semanas */
-.card { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 18px 20px; box-shadow: var(--shadow); min-width: 0 }
-.card h3 { font-size: 15px; font-weight: 800; display: flex; align-items: center; gap: 8px; justify-content: space-between; flex-wrap: wrap }
-.strip-card { margin-top: 14px }
-.strip { display: grid; grid-template-columns: repeat(var(--n), minmax(0, 1fr)); gap: 3px; margin-top: 14px }
-.wk { height: 30px; border-radius: 5px; background: var(--future); position: relative; display: grid; place-items: end center; padding-bottom: 2px }
-.wk:hover { outline: 2px solid var(--ink2); outline-offset: 1px }
-.wk.hecho { background: var(--ok) } .wk.parcial { background: color-mix(in srgb, var(--ok) 45%, var(--future)) }
-.wk.atrasada { background: var(--late) } .wk.actual { outline: 3px solid var(--ink); outline-offset: 2px; z-index: 1 }
-.wk.hito::after { content: "◆"; position: absolute; top: -15px; font-size: 10px; color: var(--ink2) }
-.wk i { font: 700 8.5px/1 var(--mono); color: color-mix(in srgb, var(--ink) 55%, transparent); font-style: normal }
-.wk.hecho i, .wk.atrasada i { color: #fff }
-.meses { display: grid; grid-template-columns: repeat(var(--n), minmax(0, 1fr)); gap: 3px; margin-top: 6px; font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase }
-.meses span { white-space: nowrap; overflow: visible }
-.ley { display: flex; flex-wrap: wrap; gap: 6px 16px; margin-top: 14px; font-size: 12.5px; color: var(--muted); font-weight: 600 }
-.ley span { display: inline-flex; align-items: center; gap: 6px }
-.sq { width: 14px; height: 14px; border-radius: 4px; display: inline-block; background: var(--future) }
+/* Indicadores */
+.stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px }
+.stat { border: 1px solid var(--line); background: var(--card); border-radius: 12px; padding: 14px 10px; text-align: center }
+.stat b { display: block; font: 700 24px/1.1 var(--mono); font-variant-numeric: tabular-nums }
+.stat span { font-size: 11.5px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--muted) }
+.c-nar { color: var(--naranja) } .c-ver { color: var(--verde-l) } .c-ama { color: var(--amarillo) } .c-gri { color: #C9D1BD }
+.barra { height: 7px; border-radius: 99px; background: rgb(255 255 255 / .07); margin: 20px 0 18px; overflow: hidden; position: relative }
+.barra i { position: absolute; inset: 0 auto 0 0; border-radius: 99px; background: linear-gradient(90deg, var(--naranja), var(--amarillo) 45%, var(--verde)) }
+.barra u { position: absolute; top: -3px; bottom: -3px; width: 2px; background: var(--ink); opacity: .7; text-decoration: none }
 
-/* KPI */
-.kpis { display: grid; grid-template-columns: 1.1fr 1fr 1fr 1fr; gap: 12px; margin-top: 14px }
-.kpi { display: grid; gap: 8px; align-content: start }
-.kpi .lab { font-size: 12.5px; font-weight: 700; color: var(--muted); display: flex; align-items: center; gap: 7px }
-.kpi .val { font-size: 28px; font-weight: 800; line-height: 1; font-variant-numeric: tabular-nums; letter-spacing: -.02em }
-.kpi .sub { font-size: 12.5px; color: var(--muted) }
-.pbar { height: 10px; border-radius: 99px; background: var(--soft); position: relative; overflow: hidden }
-.pbar i { position: absolute; inset: 0 auto 0 0; border-radius: 99px; background: var(--c, var(--brand)) }
-.pbar u { position: absolute; top: 0; bottom: 0; width: 2px; background: var(--ink); text-decoration: none }
-.dot { width: 10px; height: 10px; border-radius: 3px; display: inline-block; background: var(--c) }
+/* Mensaje de estado */
+.msg { border: 1px solid var(--line); border-left: 3px solid var(--st, var(--naranja)); background: var(--card); border-radius: 10px; padding: 13px 16px; font-size: 14px; color: #D9DFCF }
+.msg b { color: var(--ink) }
+.msg em { color: var(--verde-l) }
 
-/* Esta semana / AVM */
-.duo { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 12px; margin-top: 14px }
-.lista { display: grid; gap: 8px; margin-top: 12px }
-.vacio { color: var(--muted); font-size: 14px; padding: 8px 0 }
+/* Filtros */
+.chips { display: flex; gap: 8px; flex-wrap: wrap; margin: 20px 0 14px }
+.chip { height: 30px; padding: 0 13px; border-radius: 99px; border: 1px solid var(--line); background: var(--card); font-size: 13px; color: #C9D1BD }
+.chip:hover { background: var(--card-h) }
+.chip[aria-pressed="true"] { background: rgb(240 130 72 / .18); border-color: var(--naranja); color: var(--naranja-l); font-weight: 600 }
 
-/* Etiquetas */
-.tag { display: inline-flex; align-items: center; gap: 5px; font: 700 11px/1 var(--f); padding: 4px 8px; border-radius: 999px; white-space: nowrap; letter-spacing: .01em }
-.tag.B2C { background: color-mix(in srgb, var(--b2c) 14%, transparent); color: var(--b2c) }
-.tag.B2B { background: color-mix(in srgb, var(--b2b) 14%, transparent); color: var(--b2b) }
-.tag.WL { background: color-mix(in srgb, var(--wl) 14%, transparent); color: var(--wl) }
-.tag.AVM { background: var(--avm-soft); color: var(--avm) }
-.tag.hecho { background: var(--ok-soft); color: var(--ok) }
-.tag.curso { background: var(--curso-soft); color: var(--curso) }
-.tag.late { background: var(--late-soft); color: var(--late) }
-.tag.pend { background: var(--soft); color: var(--muted) }
-.tag.cert { background: var(--soft); color: var(--ink2) }
+/* Grupos */
+.grupo { border: 1px solid var(--line); background: var(--card); border-radius: 12px; margin-bottom: 12px; overflow: hidden }
+.grupo.actual { border-color: rgb(148 182 60 / .55); box-shadow: 0 0 0 1px rgb(148 182 60 / .25) inset }
+.grupo.avm { border-color: rgb(240 130 72 / .45) }
+.grupo > summary { list-style: none; cursor: pointer; display: grid; grid-template-columns: 28px minmax(0, 1fr) 64px 42px 16px; gap: 14px; align-items: center; padding: 14px 18px }
+.grupo > summary::-webkit-details-marker { display: none }
+.grupo > summary:hover { background: var(--card-h) }
+.grupo .emo { font-size: 20px; text-align: center }
+.grupo .tt b { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; font-size: 15px; font-weight: 700 }
+.grupo .tt small { display: block; font: 500 11.5px/1.5 var(--mono); color: var(--muted) }
+.tag { font: 700 10px/1 var(--mono); letter-spacing: .05em; text-transform: uppercase; padding: 3px 6px; border-radius: 5px; background: rgb(255 255 255 / .08); color: #C9D1BD }
+.tag.b2c { background: rgb(148 182 60 / .18); color: var(--verde-l) }
+.tag.b2b { background: rgb(240 130 72 / .18); color: var(--naranja-l) }
+.tag.wl { background: rgb(242 193 78 / .16); color: var(--amarillo) }
+.tag.now { background: var(--verde); color: #14200A }
+.tag.late { background: rgb(255 107 94 / .18); color: var(--rojo) }
+.mbar { height: 5px; border-radius: 99px; background: rgb(255 255 255 / .08); overflow: hidden }
+.mbar i { display: block; height: 100%; border-radius: 99px; background: var(--naranja) }
+.mbar i.full { background: var(--verde) }
+.pct { font: 600 12px/1 var(--mono); color: var(--muted); text-align: right }
+.chev { color: var(--muted); font-size: 12px; transition: transform .15s; text-align: center }
+.grupo[open] .chev { transform: rotate(180deg) }
 
-/* Fila de tarea */
-.tarea { display: grid; grid-template-columns: 28px minmax(0, 1fr) auto; gap: 12px; align-items: start; padding: 12px 14px; border-radius: 12px; border: 1px solid var(--line); background: var(--card) }
-.tarea.hecho { background: color-mix(in srgb, var(--ok) 5%, var(--card)) }
-.tarea.hecho .tt { color: var(--muted); text-decoration: line-through; text-decoration-color: color-mix(in srgb, var(--muted) 60%, transparent) }
-.tarea.curso { border-color: color-mix(in srgb, var(--curso) 55%, var(--line)); background: color-mix(in srgb, var(--curso) 6%, var(--card)) }
-.tarea.late { border-color: color-mix(in srgb, var(--late) 45%, var(--line)) }
-.tarea.avm { border-left: 4px solid var(--avm) }
-.tarea .body { display: grid; gap: 5px; min-width: 0 }
-.tarea .tt { font-weight: 600; color: var(--ink) }
-.tarea .meta { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; font-size: 12.5px; color: var(--muted) }
-.tarea .meta .w { font: 700 12px/1 var(--mono); color: var(--ink2) }
-.tarea .side { display: flex; flex-direction: column; gap: 6px; align-items: flex-end }
-.nota { font-size: 13px; color: var(--ink2); background: var(--soft); border-radius: 8px; padding: 6px 10px; white-space: pre-wrap }
-.nota-ed { width: 100%; font: 13px/1.4 var(--f); border: 1px dashed var(--line); border-radius: 8px; padding: 6px 10px; background: transparent; color: var(--ink); resize: vertical; min-height: 32px }
-.nota-ed:focus { border-style: solid; border-color: var(--brand); outline: 0 }
-.check { width: 26px; height: 26px; border-radius: 8px; border: 2px solid color-mix(in srgb, var(--muted) 60%, transparent); background: var(--card); display: grid; place-items: center; transition: background .12s, border-color .12s }
-.check:hover { border-color: var(--brand); background: var(--brand-soft) }
-.check svg { width: 16px; height: 16px; stroke: #fff; opacity: 0 }
-.check.on { background: var(--ok); border-color: var(--ok) }
-.check.on svg { opacity: 1 }
-.check.avm.on { background: var(--avm); border-color: var(--avm) }
-.mini-btn { font-size: 12px; font-weight: 700; padding: 4px 9px; border-radius: 8px; border: 1px solid var(--line); color: var(--ink2); white-space: nowrap }
-.mini-btn:hover { border-color: var(--curso); color: var(--curso) }
-.mini-btn.on { background: var(--curso); border-color: var(--curso); color: #fff }
+/* Tareas */
+.tareas { border-top: 1px solid var(--line); padding: 6px 0 }
+.t { display: grid; grid-template-columns: 22px minmax(0, 1fr) auto; gap: 12px; align-items: start; padding: 10px 18px 10px 60px }
+.t + .t { border-top: 1px solid rgb(255 255 255 / .04) }
+.t .dot { width: 12px; height: 12px; border-radius: 50%; margin-top: 5px; border: 2px solid var(--dim) }
+.t .dot.hecho { background: var(--verde); border-color: var(--verde) }
+.t .dot.curso { border-color: var(--amarillo); background: linear-gradient(90deg, var(--amarillo) 50%, transparent 50%) }
+.t .dot.late { border-color: var(--rojo) }
+.t .dot.avm { border-color: var(--naranja) }
+.t .dot.avm.hecho { background: var(--naranja) }
+.t .tx { display: grid; gap: 2px; min-width: 0 }
+.t .tx span { font-size: 14.5px }
+.t.hecho .tx span { color: var(--muted); text-decoration: line-through; text-decoration-color: rgb(255 255 255 / .2) }
+.t .tx small { font: 500 11.5px/1.5 var(--mono); color: var(--dim) }
+.t .tx small.late { color: var(--rojo) }
+.est { font: 600 11.5px/1 var(--f); padding: 5px 9px; border-radius: 99px; white-space: nowrap; background: rgb(255 255 255 / .06); color: var(--muted) }
+.est.hecho { background: rgb(148 182 60 / .16); color: var(--verde-l) }
+.est.curso { background: rgb(242 193 78 / .14); color: var(--amarillo) }
+.est.late { background: rgb(255 107 94 / .14); color: var(--rojo) }
+select.est { appearance: none; border: 1px solid var(--line); font-family: var(--f); cursor: pointer; padding-right: 22px;
+  background-image: linear-gradient(45deg, transparent 50%, currentColor 50%), linear-gradient(135deg, currentColor 50%, transparent 50%);
+  background-position: calc(100% - 12px) 50%, calc(100% - 8px) 50%; background-size: 4px 4px; background-repeat: no-repeat }
+select.est option { background: #1B2513; color: var(--ink) }
+.hito { display: grid; grid-template-columns: 120px minmax(0, 1fr); gap: 12px; padding: 9px 18px 9px 60px; font-size: 14px }
+.hito time { font: 500 12px/1.6 var(--mono); color: var(--muted) }
+.hito.pasado { color: var(--muted) }
+.vacio { padding: 18px; text-align: center; color: var(--muted) }
 
-/* Pestañas */
-.tabs { display: flex; gap: 4px; margin-top: 26px; border-bottom: 1px solid var(--line); overflow-x: auto; position: sticky; top: 0; background: var(--bg); z-index: 5 }
-.tab { padding: 12px 14px; font-weight: 700; font-size: 14.5px; color: var(--muted); border-bottom: 3px solid transparent; margin-bottom: -1px; white-space: nowrap }
-.tab:hover { color: var(--ink) }
-.tab[aria-selected="true"] { color: var(--ink); border-bottom-color: var(--brand) }
-.tab .count { font-size: 11.5px; background: var(--soft); color: var(--muted); border-radius: 99px; padding: 2px 7px; margin-left: 4px }
-.vista { display: none; padding-top: 16px } .vista.on { display: block }
-.filtros { display: flex; flex-wrap: wrap; gap: 8px 14px; align-items: center; margin-bottom: 14px }
-.seg { display: inline-flex; background: var(--soft); border-radius: 10px; padding: 3px; gap: 2px; flex-wrap: wrap }
-.seg button { padding: 6px 11px; border-radius: 8px; font-size: 13px; font-weight: 700; color: var(--muted) }
-.seg button[aria-pressed="true"] { background: var(--card); color: var(--ink); box-shadow: var(--shadow) }
+footer { position: fixed; left: 0; right: 0; bottom: 0; padding: 10px 16px; text-align: center; font: 500 11px/1.4 var(--mono); color: var(--dim); background: linear-gradient(transparent, rgb(0 0 0 / .45)) }
 
-/* Etapas */
-.etapa { background: var(--card); border: 1px solid var(--line); border-left: 5px solid var(--c); border-radius: 14px; margin-bottom: 10px; box-shadow: var(--shadow) }
-.etapa > summary { list-style: none; cursor: pointer; display: grid; grid-template-columns: minmax(0, 1fr) 190px 18px; gap: 16px; align-items: center; padding: 14px 18px }
-.etapa > summary::-webkit-details-marker { display: none }
-.etapa .tit { display: grid; gap: 4px }
-.etapa .tit b { font-size: 15.5px; font-weight: 800; display: flex; gap: 8px; align-items: center; flex-wrap: wrap }
-.etapa .tit small { font-size: 12.5px; color: var(--muted); font-weight: 600 }
-.etapa .prog { display: grid; gap: 5px; font-size: 12px; font-weight: 700; color: var(--muted) }
-.chev { width: 9px; height: 9px; border-right: 2.5px solid var(--muted); border-bottom: 2.5px solid var(--muted); transform: rotate(45deg); margin-top: -4px; transition: transform .15s }
-.etapa[open] .chev { transform: rotate(-135deg); margin-top: 4px }
-.etapa .lista { padding: 0 18px 16px; margin-top: 0 }
+/* PIN */
+dialog { border: 1px solid rgb(240 130 72 / .35); border-radius: 16px; padding: 0; background: #17210F; color: var(--ink); width: min(340px, calc(100% - 32px)); box-shadow: 0 30px 80px rgb(0 0 0 / .6) }
+dialog::backdrop { background: rgb(5 8 4 / .7); backdrop-filter: blur(6px) }
+.pin { padding: 26px 26px 24px; display: grid; gap: 14px }
+.pin h3 { font-size: 17px; font-weight: 700; color: var(--naranja) }
+.pin p { font-size: 13px; color: var(--muted); margin-top: -8px }
+.cajas { display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px }
+.cajas input { width: 100%; aspect-ratio: 1 / 1.15; text-align: center; font: 700 20px var(--mono); color: var(--ink); background: rgb(255 255 255 / .05); border: 1px solid var(--line); border-radius: 10px; -webkit-text-security: disc }
+.cajas input:focus { outline: 0; border-color: var(--naranja); background: rgb(240 130 72 / .08) }
+.pin .err { color: var(--rojo); font-size: 12.5px; text-align: center }
+.pin .go { height: 42px; border-radius: 10px; font-weight: 700; color: #1B0F06; background: linear-gradient(90deg, var(--naranja), #F5A04F) }
+.pin .go:disabled { opacity: .6 }
+.pin .no { font-size: 12.5px; color: var(--muted); justify-self: center }
 
-/* Cronograma */
-.gw { overflow-x: auto; border: 1px solid var(--line); border-radius: 14px; background: var(--card); box-shadow: var(--shadow) }
-.gantt { min-width: 920px }
-.gr { display: grid; grid-template-columns: 230px minmax(0, 1fr); border-top: 1px solid var(--line); min-height: 40px }
-.gr:first-child { border-top: 0; min-height: 32px }
-.gl { padding: 6px 12px 6px 16px; font-size: 13px; font-weight: 700; display: grid; align-content: center; gap: 2px }
-.gl .tag { justify-self: start; font-size: 10px; padding: 2px 6px }
-.gt { position: relative; margin-right: 14px }
-.gt u { position: absolute; top: 0; bottom: 0; background: color-mix(in srgb, var(--ink) 3.5%, transparent); text-decoration: none }
-.gm span { position: absolute; top: 0; bottom: 0; display: grid; place-items: center; font-size: 11px; font-weight: 800; color: var(--muted); text-transform: uppercase; border-left: 1px solid var(--line) }
-.gb { position: absolute; top: 50%; height: 16px; transform: translateY(-50%); border-radius: 6px; overflow: hidden; background: color-mix(in srgb, var(--c) 25%, transparent); border: 1px solid color-mix(in srgb, var(--c) 55%, transparent) }
-.gb i { position: absolute; inset: 0 auto 0 0; background: var(--c) }
-.gb.cert { height: 10px; background: repeating-linear-gradient(45deg, var(--avm) 0 4px, transparent 4px 8px); border-color: var(--avm) }
-.hoyl { position: absolute; top: 0; bottom: 0; width: 2px; background: var(--late); z-index: 2 }
-.hoyl b { position: absolute; top: 3px; left: 5px; font-size: 10px; font-weight: 800; color: var(--late); text-transform: uppercase }
-
-/* Hitos */
-.hitos { display: grid; gap: 0; position: relative; padding-left: 26px }
-.hitos::before { content: ""; position: absolute; left: 9px; top: 6px; bottom: 6px; width: 2px; background: var(--line) }
-.hitos li { position: relative; padding: 0 0 18px }
-.hitos li::before { content: ""; position: absolute; left: -23px; top: 4px; width: 14px; height: 14px; border-radius: 50%; background: var(--card); border: 3px solid var(--future) }
-.hitos li.ok::before { background: var(--ok); border-color: var(--ok) }
-.hitos li.prox::before { border-color: var(--brand); box-shadow: 0 0 0 4px var(--brand-soft) }
-.hitos time { font-size: 12.5px; font-weight: 700; color: var(--muted) }
-.hitos b { display: block; font-size: 15px; font-weight: 700 }
-
-/* Ventana de clave */
-dialog { border: 0; border-radius: 16px; padding: 0; background: var(--card); color: var(--ink); width: min(420px, calc(100% - 32px)); box-shadow: 0 20px 60px rgb(0 0 0 / .25) }
-dialog::backdrop { background: rgb(15 23 42 / .45) }
-.dlg { padding: 22px; display: grid; gap: 12px }
-.dlg h3 { font-size: 18px; font-weight: 800 }
-.dlg input { width: 100%; font: 15px var(--f); padding: 11px 12px; border-radius: 10px; border: 1px solid var(--line); background: var(--bg); color: var(--ink) }
-.dlg input:focus { outline: 2px solid var(--brand); border-color: transparent }
-.dlg .err { color: var(--late); font-size: 13px; font-weight: 600 }
-.dlg .row { display: flex; gap: 8px; justify-content: flex-end }
-
-footer { margin: 34px 0 40px; padding-top: 14px; border-top: 1px solid var(--line); font-size: 12.5px; color: var(--muted); display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap }
-
-/* En las tarjetas de arriba el estado va debajo del texto, para que el texto tenga todo el ancho */
-.duo .tarea { grid-template-columns: 28px minmax(0, 1fr) }
-.duo .tarea .side { grid-column: 2; flex-direction: row; align-items: center; flex-wrap: wrap }
-@media (max-width: 860px) {
-  .kpis { grid-template-columns: repeat(2, minmax(0, 1fr)) }
-  .duo { grid-template-columns: 1fr }
-}
 @media (max-width: 640px) {
-  .hero { grid-template-columns: 1fr }
-  .sem-big { justify-self: start; display: flex; gap: 8px; align-items: baseline; padding: 8px 12px }
-  .sem-big b { font-size: 24px }
-  .strip { gap: 2px } .meses { gap: 2px }
-  .wk { height: 22px } .wk i { display: none }
-  .etapa > summary { grid-template-columns: minmax(0, 1fr) 18px }
-  .etapa .prog { grid-column: 1 / -1; grid-row: 2 }
-  .tarea { grid-template-columns: 28px minmax(0, 1fr) }
-  .tarea .side { grid-column: 2; flex-direction: row; align-items: center; flex-wrap: wrap }
-  .brand small { display: none }
+  .stats { grid-template-columns: repeat(2, minmax(0, 1fr)) }
+  .grupo > summary { grid-template-columns: 26px minmax(0, 1fr) 40px 14px; gap: 10px; padding: 13px 14px }
+  .grupo > summary .mbar { display: none }
+  .t { grid-template-columns: 18px minmax(0, 1fr); padding: 10px 14px 10px 20px }
+  .t .est { grid-column: 2; justify-self: start }
+  .hito { grid-template-columns: 1fr; gap: 0; padding: 8px 14px 8px 20px }
+  .brand small { font-size: 9.5px }
 }
 </style>
 </head>
 <body>
-<header class="bar">
-  <div class="wrap">
-    <div class="brand">
-      <img class="logo-c" src="img/logo-color.png" alt="AVM" width="97" height="32"><img class="logo-w" src="img/logo-blanco.png" alt="AVM" width="97" height="32">
-      <div><h1>Seguimiento del proyecto</h1><small>Sitio B2C y Travel Booking &amp; Distribution</small></div>
-    </div>
-    <div class="acts">
-      <span class="save" id="save" aria-live="polite"></span>
-      <button class="btn" id="bDescargar" hidden>Descargar estado</button>
-      <button class="btn primary" id="bEditar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg><span>Editar avance</span></button>
-    </div>
+<header class="top">
+  <div class="brand">
+    <span class="ico"><img src="img/logo-blanco.png" alt="AVM" width="30" height="10"></span>
+    <div><h1>Seguimiento de Proyecto</h1><small>Sitio B2C × Travel Booking &amp; Distribution</small></div>
+  </div>
+  <div class="acts">
+    <span class="save" id="save" aria-live="polite"></span>
+    <button class="ibtn" id="bRefrescar" title="Actualizar" aria-label="Actualizar"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-2.6-6.4"/><path d="M21 3v6h-6"/></svg></button>
+    <button class="pill" id="bModo">🔒 Lectura</button>
   </div>
 </header>
-<div class="editbanner" id="banner" hidden><div class="wrap">✏️ Modo edición: marca el cuadro cuando una entrega esté lista y usa «En curso» para lo que se está trabajando. Se guarda solo.</div></div>
+<div class="fechahora" id="fechahora"></div>
 
 <main class="wrap">
-  <section class="hero" id="hero" aria-label="Estado de hoy">
-    <div>
-      <p class="fecha" id="hoyFecha"></p>
-      <h2 id="hoyEstado"></h2>
-      <p class="det" id="hoyDetalle"></p>
-    </div>
-    <div class="sem-big" id="semBig"></div>
-  </section>
-
-  <section class="card strip-card" aria-label="Semanas del proyecto">
-    <h3><span>Las <span id="nSem"></span> semanas del proyecto</span> <span class="muted" style="font-weight:600;font-size:13px">Pasa el cursor o toca una semana para ver qué tiene</span></h3>
-    <div class="strip" id="strip"></div>
-    <div class="meses" id="meses"></div>
-    <div class="ley">
-      <span><i class="sq" style="background:var(--ok)"></i>Entregada</span>
-      <span><i class="sq" style="background:color-mix(in srgb,var(--ok) 45%,var(--future))"></i>Parcial o en curso</span>
-      <span><i class="sq" style="background:var(--late)"></i>Atrasada</span>
-      <span><i class="sq" style="outline:3px solid var(--ink);outline-offset:1px"></i>Semana actual</span>
-      <span><i class="sq"></i>Por venir</span>
-      <span>◆ Salida a producción</span>
-    </div>
-  </section>
-
-  <section class="kpis" id="kpis" aria-label="Avance"></section>
-
-  <section class="duo">
-    <div class="card"><h3 id="tSemana">Esta semana</h3><div class="lista" id="estaSemana"></div></div>
-    <div class="card"><h3>Pendiente de AVM <span class="tag AVM" id="avmCount"></span></h3><div class="lista" id="avmProx"></div></div>
-  </section>
-
-  <nav class="tabs" role="tablist">
-    <button class="tab" role="tab" data-v="plan" aria-selected="true">Plan por etapas</button>
-    <button class="tab" role="tab" data-v="avm" aria-selected="false">Compromisos de AVM</button>
-    <button class="tab" role="tab" data-v="crono" aria-selected="false">Cronograma</button>
-    <button class="tab" role="tab" data-v="hitos" aria-selected="false">Hitos</button>
-  </nav>
-
-  <section class="vista on" id="v-plan">
-    <div class="filtros">
-      <div class="seg" id="fEstado" role="group" aria-label="Filtrar por estado"></div>
-      <div class="seg" id="fProy" role="group" aria-label="Filtrar por proyecto"></div>
-    </div>
-    <div id="etapas"></div>
-  </section>
-
-  <section class="vista" id="v-avm">
-    <div class="lista" style="margin-top:0">
-      <div class="tarea avm"><span></span><div class="body"><span class="tt">Una persona designada para decidir</span><span class="meta">Durante todo el proyecto: aprueba los entregables y toma las decisiones importantes (modelo de voucher, backoffice, UX/UI del sitio).</span></div></div>
-      <div class="tarea avm"><span></span><div class="body"><span class="tt">Revisión semanal del avance</span><span class="meta">Cada semana termina con un avance visible en el sitio de prueba para que AVM lo revise.</span></div></div>
-    </div>
-    <div class="lista" id="avmLista"></div>
-  </section>
-
-  <section class="vista" id="v-crono">
-    <div class="gw"><div class="gantt" id="gantt"></div></div>
-    <div class="ley">
-      <span><i class="sq" style="background:var(--b2c)"></i>B2C</span><span><i class="sq" style="background:var(--b2b)"></i>B2B</span><span><i class="sq" style="background:var(--wl)"></i>White label</span>
-      <span><i class="sq" style="background:repeating-linear-gradient(45deg,var(--avm) 0 3px,transparent 3px 6px);border:1px solid var(--avm)"></i>Certificación del proveedor (estimada)</span>
-      <span><i class="sq" style="background:var(--late);width:3px"></i>Hoy</span><span>La parte sólida de cada barra es lo ya entregado</span>
-    </div>
-  </section>
-
-  <section class="vista" id="v-hitos"><ul class="hitos card" id="hitos" style="padding-left:46px"></ul></section>
-
-  <footer><span id="actualizado"></span><span id="rango"></span></footer>
+  <div class="stats" id="stats"></div>
+  <div class="barra" id="barra" title="La línea blanca marca dónde deberíamos ir según el plan"><i></i><u></u></div>
+  <p class="msg" id="msg"></p>
+  <div class="chips" id="chips" role="group" aria-label="Filtrar por estado"></div>
+  <div id="grupos"></div>
 </main>
+<footer id="pie"></footer>
 
 <dialog id="dlg">
-  <form class="dlg" method="dialog" id="dlgForm">
-    <h3>Clave de edición</h3>
-    <p class="muted" id="dlgTxt">Escribe la clave para marcar avances. La primera vez, la clave que escribas (mínimo 8 caracteres) queda como clave de edición.</p>
-    <input type="password" id="dlgClave" autocomplete="current-password" required minlength="1" aria-label="Clave de edición">
-    <p class="err" id="dlgErr" hidden></p>
-    <div class="row"><button type="button" class="btn" id="dlgNo">Cancelar</button><button class="btn primary" id="dlgSi">Entrar</button></div>
+  <form class="pin" id="pinForm">
+    <h3>Acceso administrador</h3>
+    <p>Ingrese el PIN para editar</p>
+    <div class="cajas" id="cajas">
+      <input inputmode="numeric" maxlength="1" aria-label="Dígito 1" autocomplete="one-time-code"><input inputmode="numeric" maxlength="1" aria-label="Dígito 2"><input inputmode="numeric" maxlength="1" aria-label="Dígito 3"><input inputmode="numeric" maxlength="1" aria-label="Dígito 4"><input inputmode="numeric" maxlength="1" aria-label="Dígito 5"><input inputmode="numeric" maxlength="1" aria-label="Dígito 6">
+    </div>
+    <span class="err" id="pinErr" hidden></span>
+    <button class="go" id="pinGo">Ingresar</button>
+    <button type="button" class="no" id="pinNo">Cancelar</button>
   </form>
 </dialog>
 
-<script id="plan" type="application/json">{"inicio":"2026-11-16","fin":"2027-11-12","semanas":52,"items":[{"t":"fase","nombre":"B2C · Cotizaciones, hoteles, vuelos y actividades con LiteAPI","proy":"B2C"},{"t":"avm","id":"avm01","txt":"Opcional: AVM empieza a construir la base de datos de agencias (nombre comercial, NIT, correo y teléfono) para la conciliación contable.","fecha":"2026-11-16","modo":"antes","opc":true},{"t":"sem","n":1,"ini":"2026-11-17","fin":"2026-11-20","hito":false,"tareas":[{"proy":"B2C","fase":"B2C · Cotizaciones, hoteles, vuelos y actividades con LiteAPI","txt":"PDF de la cotización y del voucher de viaje, con el diseño moderno de la marca.","parte":0}]},{"t":"sem","n":2,"ini":"2026-11-23","fin":"2026-11-27","hito":false,"tareas":[{"proy":"B2C","fase":"B2C · Cotizaciones, hoteles, vuelos y actividades con LiteAPI","txt":"Reserva de hoteles con LiteAPI: verificación de precio, reserva y confirmación.","parte":0}]},{"t":"avm","id":"avm02","txt":"AVM solicita a LiteAPI, con mi acompañamiento, la aprobación de pagos en producción y el acceso a Flights y Experiences.","fecha":"2026-11-30","modo":"durante","opc":false},{"t":"sem","n":3,"ini":"2026-11-30","fin":"2026-12-04","hito":false,"tareas":[{"proy":"B2C","fase":"B2C · Cotizaciones, hoteles, vuelos y actividades con LiteAPI","txt":"Vuelos con LiteAPI: búsqueda, precios y resultados.","parte":0}]},{"t":"sem","n":4,"ini":"2026-12-07","fin":"2026-12-11","hito":false,"tareas":[{"proy":"B2C","fase":"B2C · Cotizaciones, hoteles, vuelos y actividades con LiteAPI","txt":"Vuelos con LiteAPI: datos de pasajeros, reserva y emisión.","parte":0}]},{"t":"sem","n":5,"ini":"2026-12-14","fin":"2026-12-18","hito":false,"tareas":[{"proy":"B2C","fase":"B2C · Cotizaciones, hoteles, vuelos y actividades con LiteAPI","txt":"Actividades con LiteAPI: búsqueda, precio y reserva.","parte":0}]},{"t":"fase","nombre":"B2C · Pagos en línea","proy":"B2C"},{"t":"avm","id":"avm03","txt":"Pasarela de pagos aprobada y lista para integrar (Wompi, PayU, ePayco u otra), a nombre de AVM.","fecha":"2026-12-21","modo":"antes","opc":false},{"t":"sem","n":6,"ini":"2026-12-21","fin":"2026-12-25","hito":false,"tareas":[{"proy":"B2C","fase":"B2C · Pagos en línea","txt":"Pasarela de pagos: tarjeta crédito y débito, PSE y Nequi, con confirmación automática.","parte":0}]},{"t":"sem","n":7,"ini":"2026-12-28","fin":"2027-01-01","hito":false,"tareas":[{"proy":"B2C","fase":"B2C · Pagos en línea","txt":"Pasarela de pagos: semana de pruebas con pagos reales, reembolsos y conciliación.","parte":0}]},{"t":"fase","nombre":"B2C · SEO, analítica y automatizaciones","proy":"B2C"},{"t":"fase","nombre":"B2B · Travel Booking & Distribution: base del portal","proy":"B2B"},{"t":"sem","n":8,"ini":"2027-01-04","fin":"2027-01-08","hito":false,"tareas":[{"proy":"B2C","fase":"B2C · SEO, analítica y automatizaciones","txt":"SEO técnico por destino (una sola configuración para todo el sitio), Google Analytics 4 y conversiones de Google Ads.","parte":1},{"proy":"B2B","fase":"B2B · Travel Booking & Distribution: base del portal","txt":"Plataforma B2B con su propia marca y su propio backoffice; usuarios del equipo de AVM.","parte":1}]},{"t":"sem","n":9,"ini":"2027-01-12","fin":"2027-01-15","hito":false,"tareas":[{"proy":"B2C","fase":"B2C · SEO, analítica y automatizaciones","txt":"SEO técnico por destino (una sola configuración para todo el sitio), Google Analytics 4 y conversiones de Google Ads.","parte":2},{"proy":"B2B","fase":"B2B · Travel Booking & Distribution: base del portal","txt":"Plataforma B2B con su propia marca y su propio backoffice; usuarios del equipo de AVM.","parte":2}]},{"t":"sem","n":10,"ini":"2027-01-18","fin":"2027-01-22","hito":false,"tareas":[{"proy":"B2C","fase":"B2C · SEO, analítica y automatizaciones","txt":"Automatizaciones: ajustes finales a la recaptura de búsquedas y cotizaciones sin compra, y a las campañas promocionales.","parte":1},{"proy":"B2B","fase":"B2B · Travel Booking & Distribution: base del portal","txt":"Registro de agencias: solicitud con RNT y NIT, revisión y aprobación de AVM.","parte":1}]},{"t":"sem","n":11,"ini":"2027-01-25","fin":"2027-01-29","hito":false,"tareas":[{"proy":"B2C","fase":"B2C · SEO, analítica y automatizaciones","txt":"Automatizaciones: ajustes finales a la recaptura de búsquedas y cotizaciones sin compra, y a las campañas promocionales.","parte":2},{"proy":"B2B","fase":"B2B · Travel Booking & Distribution: base del portal","txt":"Registro de agencias: solicitud con RNT y NIT, revisión y aprobación de AVM.","parte":2}]},{"t":"fase","nombre":"B2C · Identidad visual, pruebas y salida","proy":"B2C"},{"t":"avm","id":"avm04","txt":"AVM entrega la identidad visual de la marca B2C: logo, colores y tipografía.","fecha":"2027-02-01","modo":"antes","opc":false},{"t":"sem","n":12,"ini":"2027-02-01","fin":"2027-02-05","hito":false,"tareas":[{"proy":"B2C","fase":"B2C · Identidad visual, pruebas y salida","txt":"Identidad visual de la marca B2C aplicada a todo el sitio.","parte":1},{"proy":"B2B","fase":"B2B · Travel Booking & Distribution: base del portal","txt":"Usuarios por agencia con roles y carga de la base de datos de agencias de AVM.","parte":1}]},{"t":"sem","n":13,"ini":"2027-02-08","fin":"2027-02-12","hito":false,"tareas":[{"proy":"B2C","fase":"B2C · Identidad visual, pruebas y salida","txt":"Identidad visual de la marca B2C aplicada a todo el sitio.","parte":2},{"proy":"B2B","fase":"B2B · Travel Booking & Distribution: base del portal","txt":"Usuarios por agencia con roles y carga de la base de datos de agencias de AVM.","parte":2}]},{"t":"sem","n":14,"ini":"2027-02-15","fin":"2027-02-19","hito":false,"tareas":[{"proy":"B2C","fase":"B2C · Identidad visual, pruebas y salida","txt":"Pruebas de punta a punta con el equipo de AVM y correcciones.","parte":1},{"proy":"B2B","fase":"B2B · Travel Booking & Distribution: base del portal","txt":"Precios por agencia, grupo, producto y proveedor: reglas de markup y comisión.","parte":1}]},{"t":"sem","n":15,"ini":"2027-02-22","fin":"2027-02-26","hito":false,"tareas":[{"proy":"B2C","fase":"B2C · Identidad visual, pruebas y salida","txt":"Pruebas de punta a punta con el equipo de AVM y correcciones.","parte":2},{"proy":"B2B","fase":"B2B · Travel Booking & Distribution: base del portal","txt":"Precios por agencia, grupo, producto y proveedor: reglas de markup y comisión.","parte":2}]},{"t":"sem","n":16,"ini":"2027-03-01","fin":"2027-03-05","hito":false,"tareas":[{"proy":"B2C","fase":"B2C · Identidad visual, pruebas y salida","txt":"Pruebas finales, correcciones y revisión de seguridad.","parte":1},{"proy":"B2B","fase":"B2B · Travel Booking & Distribution: base del portal","txt":"Precios: prioridad de reglas y simulador del precio final.","parte":1}]},{"t":"sem","n":17,"ini":"2027-03-08","fin":"2027-03-12","hito":false,"tareas":[{"proy":"B2C","fase":"B2C · Identidad visual, pruebas y salida","txt":"Pruebas finales, correcciones y revisión de seguridad.","parte":2},{"proy":"B2B","fase":"B2B · Travel Booking & Distribution: base del portal","txt":"Precios: prioridad de reglas y simulador del precio final.","parte":2}]},{"t":"sem","n":18,"ini":"2027-03-15","fin":"2027-03-19","hito":true,"tareas":[{"proy":"B2C","fase":"B2C · Identidad visual, pruebas y salida","txt":"Salida a producción del sitio B2C (requiere la aprobación de LiteAPI en producción).","parte":0}]},{"t":"fase","nombre":"B2B · Integración TBO (hoteles)","proy":"B2B"},{"t":"avm","id":"avm05","txt":"Contrato de uso de API con TBO firmado y credenciales de prueba entregadas.","fecha":"2027-03-22","modo":"antes","opc":false},{"t":"sem","n":19,"ini":"2027-03-23","fin":"2027-03-26","hito":false,"tareas":[{"proy":"B2B","fase":"B2B · Integración TBO (hoteles)","txt":"TBO: conexión, autenticación, catálogo, disponibilidad y tarifas.","parte":0}]},{"t":"sem","n":20,"ini":"2027-03-29","fin":"2027-04-02","hito":false,"tareas":[{"proy":"B2B","fase":"B2B · Integración TBO (hoteles)","txt":"TBO: flujo de reserva (verificación de precio, datos de pasajeros y reserva).","parte":0}]},{"t":"sem","n":21,"ini":"2027-04-05","fin":"2027-04-09","hito":false,"tareas":[{"proy":"B2B","fase":"B2B · Integración TBO (hoteles)","txt":"TBO: cancelación, voucher del proveedor y registro en el expediente.","parte":0}]},{"t":"sem","n":22,"ini":"2027-04-12","fin":"2027-04-16","hito":false,"tareas":[{"proy":"B2B","fase":"B2B · Integración TBO (hoteles)","txt":"TBO: pruebas, correcciones y envío a certificación.","parte":0}]},{"t":"cert","id":"cert-TBO","prov":"TBO","txt":"Certificación de TBO: revisión del proveedor, en paralelo con lo siguiente. Estimado: 3 semanas.","ini":"2027-04-19","fin":"2027-05-07"},{"t":"fase","nombre":"B2B · Mapping: un solo catálogo","proy":"B2B"},{"t":"sem","n":23,"ini":"2027-04-19","fin":"2027-04-23","hito":false,"tareas":[{"proy":"B2B","fase":"B2B · Mapping: un solo catálogo","txt":"Mapping: catálogo maestro de destinos y hoteles con LiteAPI y TBO.","parte":0}]},{"t":"sem","n":24,"ini":"2027-04-26","fin":"2027-04-30","hito":false,"tareas":[{"proy":"B2B","fase":"B2B · Mapping: un solo catálogo","txt":"Mapping: habitaciones y regímenes, mejor precio y revisión manual de dudosos en el backoffice.","parte":0}]},{"t":"fase","nombre":"B2B · Integración Omnibees (hoteles)","proy":"B2B"},{"t":"avm","id":"avm06","txt":"Contrato de uso de API con Omnibees firmado y credenciales de prueba entregadas.","fecha":"2027-05-03","modo":"antes","opc":false},{"t":"sem","n":25,"ini":"2027-05-03","fin":"2027-05-07","hito":false,"tareas":[{"proy":"B2B","fase":"B2B · Integración Omnibees (hoteles)","txt":"Omnibees: conexión, autenticación, catálogo, disponibilidad y tarifas.","parte":0}]},{"t":"sem","n":26,"ini":"2027-05-11","fin":"2027-05-14","hito":false,"tareas":[{"proy":"B2B","fase":"B2B · Integración Omnibees (hoteles)","txt":"Omnibees: flujo de reserva (verificación de precio, datos de pasajeros y reserva).","parte":0}]},{"t":"sem","n":27,"ini":"2027-05-17","fin":"2027-05-21","hito":false,"tareas":[{"proy":"B2B","fase":"B2B · Integración Omnibees (hoteles)","txt":"Omnibees: cancelación, voucher del proveedor y registro en el expediente.","parte":0}]},{"t":"sem","n":28,"ini":"2027-05-24","fin":"2027-05-28","hito":false,"tareas":[{"proy":"B2B","fase":"B2B · Integración Omnibees (hoteles)","txt":"Omnibees: pruebas, correcciones y envío a certificación.","parte":0}]},{"t":"cert","id":"cert-Omnibees","prov":"Omnibees","txt":"Certificación de Omnibees: revisión del proveedor, en paralelo con lo siguiente. Estimado: 3 semanas.","ini":"2027-05-31","fin":"2027-06-18"},{"t":"fase","nombre":"B2B · Integración del tercer proveedor de hoteles","proy":"B2B"},{"t":"avm","id":"avm07","txt":"Tercer proveedor de hoteles elegido, con contrato de uso de API firmado y credenciales de prueba entregadas.","fecha":"2027-05-31","modo":"antes","opc":false},{"t":"sem","n":29,"ini":"2027-06-01","fin":"2027-06-04","hito":false,"tareas":[{"proy":"B2B","fase":"B2B · Integración del tercer proveedor de hoteles","txt":"Tercer proveedor de hoteles: conexión, autenticación, catálogo, disponibilidad y tarifas.","parte":0}]},{"t":"sem","n":30,"ini":"2027-06-08","fin":"2027-06-11","hito":false,"tareas":[{"proy":"B2B","fase":"B2B · Integración del tercer proveedor de hoteles","txt":"Tercer proveedor de hoteles: flujo de reserva y mapping al catálogo maestro.","parte":0}]},{"t":"sem","n":31,"ini":"2027-06-14","fin":"2027-06-18","hito":false,"tareas":[{"proy":"B2B","fase":"B2B · Integración del tercer proveedor de hoteles","txt":"Tercer proveedor de hoteles: cancelación, voucher del proveedor y registro en el expediente.","parte":0}]},{"t":"sem","n":32,"ini":"2027-06-21","fin":"2027-06-25","hito":false,"tareas":[{"proy":"B2B","fase":"B2B · Integración del tercer proveedor de hoteles","txt":"Tercer proveedor de hoteles: pruebas, correcciones y envío a certificación.","parte":0}]},{"t":"cert","id":"cert-Hoteles 3","prov":"Hoteles 3","txt":"Certificación de Hoteles 3: revisión del proveedor, en paralelo con lo siguiente. Estimado: 3 semanas.","ini":"2027-06-28","fin":"2027-07-16"},{"t":"fase","nombre":"B2B · Producto propio","proy":"B2B"},{"t":"avm","id":"avm08","txt":"AVM tiene listo el catálogo completo de producto propio que va a cargar: hoteles, traslados, actividades y circuitos, con tarifas y temporadas.","fecha":"2027-06-28","modo":"antes","opc":false},{"t":"sem","n":33,"ini":"2027-06-28","fin":"2027-07-02","hito":false,"tareas":[{"proy":"B2B","fase":"B2B · Producto propio","txt":"Producto propio en el B2B: carga del catálogo de AVM, temporadas, cupos y precios por agencia.","parte":0}]},{"t":"fase","nombre":"B2B · Asistencia médica","proy":"B2B"},{"t":"avm","id":"avm09","txt":"Proveedor de asistencia médica elegido, con acuerdo firmado y credenciales de prueba.","fecha":"2027-07-05","modo":"antes","opc":false},{"t":"sem","n":34,"ini":"2027-07-06","fin":"2027-07-09","hito":false,"tareas":[{"proy":"B2B","fase":"B2B · Asistencia médica","txt":"Asistencia médica: conexión, autenticación, planes y tarifas.","parte":0}]},{"t":"sem","n":35,"ini":"2027-07-12","fin":"2027-07-16","hito":false,"tareas":[{"proy":"B2B","fase":"B2B · Asistencia médica","txt":"Asistencia médica: cotización por días, edades y destino.","parte":0}]},{"t":"sem","n":36,"ini":"2027-07-19","fin":"2027-07-23","hito":false,"tareas":[{"proy":"B2B","fase":"B2B · Asistencia médica","txt":"Asistencia médica: emisión, cancelación y voucher dentro del expediente.","parte":0}]},{"t":"sem","n":37,"ini":"2027-07-26","fin":"2027-07-30","hito":false,"tareas":[{"proy":"B2B","fase":"B2B · Asistencia médica","txt":"Asistencia médica: pruebas, correcciones y envío a certificación.","parte":0}]},{"t":"cert","id":"cert-Asistencia médica","prov":"Asistencia médica","txt":"Certificación de Asistencia médica: revisión del proveedor, en paralelo con lo siguiente. Estimado: 2 semanas.","ini":"2027-08-02","fin":"2027-08-13"},{"t":"fase","nombre":"B2B · Pagos y crédito de agencia","proy":"B2B"},{"t":"avm","id":"avm10","txt":"Pasarela de pagos del B2B aprobada y lista para integrar, a nombre de AVM.","fecha":"2027-08-02","modo":"antes","opc":false},{"t":"sem","n":38,"ini":"2027-08-02","fin":"2027-08-06","hito":false,"tareas":[{"proy":"B2B","fase":"B2B · Pagos y crédito de agencia","txt":"Pasarela de pagos B2B: tarjeta crédito y débito, billeteras virtuales y PSE.","parte":0}]},{"t":"sem","n":39,"ini":"2027-08-09","fin":"2027-08-13","hito":false,"tareas":[{"proy":"B2B","fase":"B2B · Pagos y crédito de agencia","txt":"Pasarela de pagos B2B: semana de pruebas con pagos reales, reembolsos y conciliación.","parte":0}]},{"t":"sem","n":40,"ini":"2027-08-17","fin":"2027-08-20","hito":false,"tareas":[{"proy":"B2B","fase":"B2B · Pagos y crédito de agencia","txt":"Crédito de agencia: cupo o saldo prepagado, reservas contra el cupo y movimientos.","parte":0}]},{"t":"sem","n":41,"ini":"2027-08-23","fin":"2027-08-27","hito":false,"tareas":[{"proy":"B2B","fase":"B2B · Pagos y crédito de agencia","txt":"Crédito de agencia: estado de cuenta, abonos, alertas y bloqueo por mora.","parte":0}]},{"t":"fase","nombre":"B2B · Cotizaciones, vouchers y operación","proy":"B2B"},{"t":"sem","n":42,"ini":"2027-08-30","fin":"2027-09-03","hito":false,"tareas":[{"proy":"B2B","fase":"B2B · Cotizaciones, vouchers y operación","txt":"Cotizaciones y vouchers modernos con la marca de cada agencia: enlace, PDF y WhatsApp; un voucher por viaje.","parte":0}]},{"t":"sem","n":43,"ini":"2027-09-06","fin":"2027-09-10","hito":false,"tareas":[{"proy":"B2B","fase":"B2B · Cotizaciones, vouchers y operación","txt":"Operación: reservas y cancelaciones por agencia en el backoffice.","parte":0}]},{"t":"sem","n":44,"ini":"2027-09-13","fin":"2027-09-17","hito":false,"tareas":[{"proy":"B2B","fase":"B2B · Cotizaciones, vouchers y operación","txt":"Operación: reportes de ventas por agencia, proveedor y producto.","parte":0}]},{"t":"sem","n":45,"ini":"2027-09-20","fin":"2027-09-24","hito":false,"tareas":[{"proy":"B2B","fase":"B2B · Cotizaciones, vouchers y operación","txt":"Operación: conciliación con proveedores y registro contable de ventas por agencia.","parte":0}]},{"t":"fase","nombre":"B2B · Pruebas y salida a producción","proy":"B2B"},{"t":"avm","id":"avm11","txt":"AVM elige 2 o 3 agencias piloto.","fecha":"2027-09-27","modo":"antes","opc":false},{"t":"sem","n":46,"ini":"2027-09-27","fin":"2027-10-01","hito":false,"tareas":[{"proy":"B2B","fase":"B2B · Pruebas y salida a producción","txt":"Pruebas con agencias piloto y correcciones.","parte":0}]},{"t":"sem","n":47,"ini":"2027-10-04","fin":"2027-10-08","hito":false,"tareas":[{"proy":"B2B","fase":"B2B · Pruebas y salida a producción","txt":"Pruebas finales con agencias piloto, correcciones y revisión de seguridad.","parte":0}]},{"t":"sem","n":48,"ini":"2027-10-11","fin":"2027-10-15","hito":false,"tareas":[{"proy":"B2B","fase":"B2B · Pruebas y salida a producción","txt":"Capacitación del equipo de AVM y manual de uso.","parte":0}]},{"t":"sem","n":49,"ini":"2027-10-19","fin":"2027-10-22","hito":true,"tareas":[{"proy":"B2B","fase":"B2B · Pruebas y salida a producción","txt":"Salida a producción de Travel Booking & Distribution con las primeras agencias.","parte":0}]},{"t":"fase","nombre":"White label · El B2C con los proveedores del B2B","proy":"WL"},{"t":"sem","n":50,"ini":"2027-10-25","fin":"2027-10-29","hito":false,"tareas":[{"proy":"WL","fase":"White label · El B2C con los proveedores del B2B","txt":"El sitio B2C consulta los proveedores del B2B a través del catálogo común.","parte":0}]},{"t":"sem","n":51,"ini":"2027-11-02","fin":"2027-11-05","hito":false,"tareas":[{"proy":"WL","fase":"White label · El B2C con los proveedores del B2B","txt":"Precios del B2C sobre el neto de cada proveedor, con el markup de la marca B2C.","parte":0}]},{"t":"sem","n":52,"ini":"2027-11-08","fin":"2027-11-12","hito":true,"tareas":[{"proy":"WL","fase":"White label · El B2C con los proveedores del B2B","txt":"Pruebas y salida: el B2C vende con LiteAPI y con los proveedores del B2B.","parte":0}]}],"fases":[{"nombre":"B2C · Cotizaciones, hoteles, vuelos y actividades con LiteAPI","proy":"B2C","ini":"2026-11-17","fin":"2026-12-18","semanas":5},{"nombre":"B2C · Pagos en línea","proy":"B2C","ini":"2026-12-21","fin":"2027-01-01","semanas":2},{"nombre":"B2C · SEO, analítica y automatizaciones","proy":"B2C","ini":"2027-01-04","fin":"2027-01-29","semanas":4},{"nombre":"B2B · Travel Booking & Distribution: base del portal","proy":"B2B","ini":"2027-01-04","fin":"2027-03-12","semanas":10},{"nombre":"B2C · Identidad visual, pruebas y salida","proy":"B2C","ini":"2027-02-01","fin":"2027-03-19","semanas":7},{"nombre":"B2B · Integración TBO (hoteles)","proy":"B2B","ini":"2027-03-23","fin":"2027-04-16","semanas":4},{"nombre":"B2B · Mapping: un solo catálogo","proy":"B2B","ini":"2027-04-19","fin":"2027-04-30","semanas":2},{"nombre":"B2B · Integración Omnibees (hoteles)","proy":"B2B","ini":"2027-05-03","fin":"2027-05-28","semanas":4},{"nombre":"B2B · Integración del tercer proveedor de hoteles","proy":"B2B","ini":"2027-06-01","fin":"2027-06-25","semanas":4},{"nombre":"B2B · Producto propio","proy":"B2B","ini":"2027-06-28","fin":"2027-07-02","semanas":1},{"nombre":"B2B · Asistencia médica","proy":"B2B","ini":"2027-07-06","fin":"2027-07-30","semanas":4},{"nombre":"B2B · Pagos y crédito de agencia","proy":"B2B","ini":"2027-08-02","fin":"2027-08-27","semanas":4},{"nombre":"B2B · Cotizaciones, vouchers y operación","proy":"B2B","ini":"2027-08-30","fin":"2027-09-24","semanas":4},{"nombre":"B2B · Pruebas y salida a producción","proy":"B2B","ini":"2027-09-27","fin":"2027-10-22","semanas":4},{"nombre":"White label · El B2C con los proveedores del B2B","proy":"WL","ini":"2027-10-25","fin":"2027-11-12","semanas":3}],"hitos":[{"txt":"Salida a producción del sitio B2C (requiere la aprobación de LiteAPI en producción).","fecha":"2027-03-19"},{"txt":"Salida a producción de Travel Booking & Distribution con las primeras agencias.","fecha":"2027-10-22"},{"txt":"Pruebas y salida: el B2C vende con LiteAPI y con los proveedores del B2B.","fecha":"2027-11-12"}]}</script>
+<script id="plan-datos" type="application/json">{"inicio":"2026-11-16","fin":"2027-11-12","semanas":52,"items":[{"t":"fase","nombre":"B2C · Cotizaciones, hoteles, vuelos y actividades con LiteAPI","proy":"B2C"},{"t":"avm","id":"avm01","txt":"Opcional: AVM empieza a construir la base de datos de agencias (nombre comercial, NIT, correo y teléfono) para la conciliación contable.","fecha":"2026-11-16","modo":"antes","opc":true},{"t":"sem","n":1,"ini":"2026-11-17","fin":"2026-11-20","hito":false,"tareas":[{"proy":"B2C","fase":"B2C · Cotizaciones, hoteles, vuelos y actividades con LiteAPI","txt":"PDF de la cotización y del voucher de viaje, con el diseño moderno de la marca.","parte":0}]},{"t":"sem","n":2,"ini":"2026-11-23","fin":"2026-11-27","hito":false,"tareas":[{"proy":"B2C","fase":"B2C · Cotizaciones, hoteles, vuelos y actividades con LiteAPI","txt":"Reserva de hoteles con LiteAPI: verificación de precio, reserva y confirmación.","parte":0}]},{"t":"avm","id":"avm02","txt":"AVM solicita a LiteAPI, con mi acompañamiento, la aprobación de pagos en producción y el acceso a Flights y Experiences.","fecha":"2026-11-30","modo":"durante","opc":false},{"t":"sem","n":3,"ini":"2026-11-30","fin":"2026-12-04","hito":false,"tareas":[{"proy":"B2C","fase":"B2C · Cotizaciones, hoteles, vuelos y actividades con LiteAPI","txt":"Vuelos con LiteAPI: búsqueda, precios y resultados.","parte":0}]},{"t":"sem","n":4,"ini":"2026-12-07","fin":"2026-12-11","hito":false,"tareas":[{"proy":"B2C","fase":"B2C · Cotizaciones, hoteles, vuelos y actividades con LiteAPI","txt":"Vuelos con LiteAPI: datos de pasajeros, reserva y emisión.","parte":0}]},{"t":"sem","n":5,"ini":"2026-12-14","fin":"2026-12-18","hito":false,"tareas":[{"proy":"B2C","fase":"B2C · Cotizaciones, hoteles, vuelos y actividades con LiteAPI","txt":"Actividades con LiteAPI: búsqueda, precio y reserva.","parte":0}]},{"t":"fase","nombre":"B2C · Pagos en línea","proy":"B2C"},{"t":"avm","id":"avm03","txt":"Pasarela de pagos aprobada y lista para integrar (Wompi, PayU, ePayco u otra), a nombre de AVM.","fecha":"2026-12-21","modo":"antes","opc":false},{"t":"sem","n":6,"ini":"2026-12-21","fin":"2026-12-25","hito":false,"tareas":[{"proy":"B2C","fase":"B2C · Pagos en línea","txt":"Pasarela de pagos: tarjeta crédito y débito, PSE y Nequi, con confirmación automática.","parte":0}]},{"t":"sem","n":7,"ini":"2026-12-28","fin":"2027-01-01","hito":false,"tareas":[{"proy":"B2C","fase":"B2C · Pagos en línea","txt":"Pasarela de pagos: semana de pruebas con pagos reales, reembolsos y conciliación.","parte":0}]},{"t":"fase","nombre":"B2C · SEO, analítica y automatizaciones","proy":"B2C"},{"t":"fase","nombre":"B2B · Travel Booking & Distribution: base del portal","proy":"B2B"},{"t":"sem","n":8,"ini":"2027-01-04","fin":"2027-01-08","hito":false,"tareas":[{"proy":"B2C","fase":"B2C · SEO, analítica y automatizaciones","txt":"SEO técnico por destino (una sola configuración para todo el sitio), Google Analytics 4 y conversiones de Google Ads.","parte":1},{"proy":"B2B","fase":"B2B · Travel Booking & Distribution: base del portal","txt":"Plataforma B2B con su propia marca y su propio backoffice; usuarios del equipo de AVM.","parte":1}]},{"t":"sem","n":9,"ini":"2027-01-12","fin":"2027-01-15","hito":false,"tareas":[{"proy":"B2C","fase":"B2C · SEO, analítica y automatizaciones","txt":"SEO técnico por destino (una sola configuración para todo el sitio), Google Analytics 4 y conversiones de Google Ads.","parte":2},{"proy":"B2B","fase":"B2B · Travel Booking & Distribution: base del portal","txt":"Plataforma B2B con su propia marca y su propio backoffice; usuarios del equipo de AVM.","parte":2}]},{"t":"sem","n":10,"ini":"2027-01-18","fin":"2027-01-22","hito":false,"tareas":[{"proy":"B2C","fase":"B2C · SEO, analítica y automatizaciones","txt":"Automatizaciones: ajustes finales a la recaptura de búsquedas y cotizaciones sin compra, y a las campañas promocionales.","parte":1},{"proy":"B2B","fase":"B2B · Travel Booking & Distribution: base del portal","txt":"Registro de agencias: solicitud con RNT y NIT, revisión y aprobación de AVM.","parte":1}]},{"t":"sem","n":11,"ini":"2027-01-25","fin":"2027-01-29","hito":false,"tareas":[{"proy":"B2C","fase":"B2C · SEO, analítica y automatizaciones","txt":"Automatizaciones: ajustes finales a la recaptura de búsquedas y cotizaciones sin compra, y a las campañas promocionales.","parte":2},{"proy":"B2B","fase":"B2B · Travel Booking & Distribution: base del portal","txt":"Registro de agencias: solicitud con RNT y NIT, revisión y aprobación de AVM.","parte":2}]},{"t":"fase","nombre":"B2C · Identidad visual, pruebas y salida","proy":"B2C"},{"t":"avm","id":"avm04","txt":"AVM entrega la identidad visual de la marca B2C: logo, colores y tipografía.","fecha":"2027-02-01","modo":"antes","opc":false},{"t":"sem","n":12,"ini":"2027-02-01","fin":"2027-02-05","hito":false,"tareas":[{"proy":"B2C","fase":"B2C · Identidad visual, pruebas y salida","txt":"Identidad visual de la marca B2C aplicada a todo el sitio.","parte":1},{"proy":"B2B","fase":"B2B · Travel Booking & Distribution: base del portal","txt":"Usuarios por agencia con roles y carga de la base de datos de agencias de AVM.","parte":1}]},{"t":"sem","n":13,"ini":"2027-02-08","fin":"2027-02-12","hito":false,"tareas":[{"proy":"B2C","fase":"B2C · Identidad visual, pruebas y salida","txt":"Identidad visual de la marca B2C aplicada a todo el sitio.","parte":2},{"proy":"B2B","fase":"B2B · Travel Booking & Distribution: base del portal","txt":"Usuarios por agencia con roles y carga de la base de datos de agencias de AVM.","parte":2}]},{"t":"sem","n":14,"ini":"2027-02-15","fin":"2027-02-19","hito":false,"tareas":[{"proy":"B2C","fase":"B2C · Identidad visual, pruebas y salida","txt":"Pruebas de punta a punta con el equipo de AVM y correcciones.","parte":1},{"proy":"B2B","fase":"B2B · Travel Booking & Distribution: base del portal","txt":"Precios por agencia, grupo, producto y proveedor: reglas de markup y comisión.","parte":1}]},{"t":"sem","n":15,"ini":"2027-02-22","fin":"2027-02-26","hito":false,"tareas":[{"proy":"B2C","fase":"B2C · Identidad visual, pruebas y salida","txt":"Pruebas de punta a punta con el equipo de AVM y correcciones.","parte":2},{"proy":"B2B","fase":"B2B · Travel Booking & Distribution: base del portal","txt":"Precios por agencia, grupo, producto y proveedor: reglas de markup y comisión.","parte":2}]},{"t":"sem","n":16,"ini":"2027-03-01","fin":"2027-03-05","hito":false,"tareas":[{"proy":"B2C","fase":"B2C · Identidad visual, pruebas y salida","txt":"Pruebas finales, correcciones y revisión de seguridad.","parte":1},{"proy":"B2B","fase":"B2B · Travel Booking & Distribution: base del portal","txt":"Precios: prioridad de reglas y simulador del precio final.","parte":1}]},{"t":"sem","n":17,"ini":"2027-03-08","fin":"2027-03-12","hito":false,"tareas":[{"proy":"B2C","fase":"B2C · Identidad visual, pruebas y salida","txt":"Pruebas finales, correcciones y revisión de seguridad.","parte":2},{"proy":"B2B","fase":"B2B · Travel Booking & Distribution: base del portal","txt":"Precios: prioridad de reglas y simulador del precio final.","parte":2}]},{"t":"sem","n":18,"ini":"2027-03-15","fin":"2027-03-19","hito":true,"tareas":[{"proy":"B2C","fase":"B2C · Identidad visual, pruebas y salida","txt":"Salida a producción del sitio B2C (requiere la aprobación de LiteAPI en producción).","parte":0}]},{"t":"fase","nombre":"B2B · Integración TBO (hoteles)","proy":"B2B"},{"t":"avm","id":"avm05","txt":"Contrato de uso de API con TBO firmado y credenciales de prueba entregadas.","fecha":"2027-03-22","modo":"antes","opc":false},{"t":"sem","n":19,"ini":"2027-03-23","fin":"2027-03-26","hito":false,"tareas":[{"proy":"B2B","fase":"B2B · Integración TBO (hoteles)","txt":"TBO: conexión, autenticación, catálogo, disponibilidad y tarifas.","parte":0}]},{"t":"sem","n":20,"ini":"2027-03-29","fin":"2027-04-02","hito":false,"tareas":[{"proy":"B2B","fase":"B2B · Integración TBO (hoteles)","txt":"TBO: flujo de reserva (verificación de precio, datos de pasajeros y reserva).","parte":0}]},{"t":"sem","n":21,"ini":"2027-04-05","fin":"2027-04-09","hito":false,"tareas":[{"proy":"B2B","fase":"B2B · Integración TBO (hoteles)","txt":"TBO: cancelación, voucher del proveedor y registro en el expediente.","parte":0}]},{"t":"sem","n":22,"ini":"2027-04-12","fin":"2027-04-16","hito":false,"tareas":[{"proy":"B2B","fase":"B2B · Integración TBO (hoteles)","txt":"TBO: pruebas, correcciones y envío a certificación.","parte":0}]},{"t":"cert","id":"cert-TBO","prov":"TBO","txt":"Certificación de TBO: revisión del proveedor, en paralelo con lo siguiente. Estimado: 3 semanas.","ini":"2027-04-19","fin":"2027-05-07"},{"t":"fase","nombre":"B2B · Mapping: un solo catálogo","proy":"B2B"},{"t":"sem","n":23,"ini":"2027-04-19","fin":"2027-04-23","hito":false,"tareas":[{"proy":"B2B","fase":"B2B · Mapping: un solo catálogo","txt":"Mapping: catálogo maestro de destinos y hoteles con LiteAPI y TBO.","parte":0}]},{"t":"sem","n":24,"ini":"2027-04-26","fin":"2027-04-30","hito":false,"tareas":[{"proy":"B2B","fase":"B2B · Mapping: un solo catálogo","txt":"Mapping: habitaciones y regímenes, mejor precio y revisión manual de dudosos en el backoffice.","parte":0}]},{"t":"fase","nombre":"B2B · Integración Omnibees (hoteles)","proy":"B2B"},{"t":"avm","id":"avm06","txt":"Contrato de uso de API con Omnibees firmado y credenciales de prueba entregadas.","fecha":"2027-05-03","modo":"antes","opc":false},{"t":"sem","n":25,"ini":"2027-05-03","fin":"2027-05-07","hito":false,"tareas":[{"proy":"B2B","fase":"B2B · Integración Omnibees (hoteles)","txt":"Omnibees: conexión, autenticación, catálogo, disponibilidad y tarifas.","parte":0}]},{"t":"sem","n":26,"ini":"2027-05-11","fin":"2027-05-14","hito":false,"tareas":[{"proy":"B2B","fase":"B2B · Integración Omnibees (hoteles)","txt":"Omnibees: flujo de reserva (verificación de precio, datos de pasajeros y reserva).","parte":0}]},{"t":"sem","n":27,"ini":"2027-05-17","fin":"2027-05-21","hito":false,"tareas":[{"proy":"B2B","fase":"B2B · Integración Omnibees (hoteles)","txt":"Omnibees: cancelación, voucher del proveedor y registro en el expediente.","parte":0}]},{"t":"sem","n":28,"ini":"2027-05-24","fin":"2027-05-28","hito":false,"tareas":[{"proy":"B2B","fase":"B2B · Integración Omnibees (hoteles)","txt":"Omnibees: pruebas, correcciones y envío a certificación.","parte":0}]},{"t":"cert","id":"cert-Omnibees","prov":"Omnibees","txt":"Certificación de Omnibees: revisión del proveedor, en paralelo con lo siguiente. Estimado: 3 semanas.","ini":"2027-05-31","fin":"2027-06-18"},{"t":"fase","nombre":"B2B · Integración del tercer proveedor de hoteles","proy":"B2B"},{"t":"avm","id":"avm07","txt":"Tercer proveedor de hoteles elegido, con contrato de uso de API firmado y credenciales de prueba entregadas.","fecha":"2027-05-31","modo":"antes","opc":false},{"t":"sem","n":29,"ini":"2027-06-01","fin":"2027-06-04","hito":false,"tareas":[{"proy":"B2B","fase":"B2B · Integración del tercer proveedor de hoteles","txt":"Tercer proveedor de hoteles: conexión, autenticación, catálogo, disponibilidad y tarifas.","parte":0}]},{"t":"sem","n":30,"ini":"2027-06-08","fin":"2027-06-11","hito":false,"tareas":[{"proy":"B2B","fase":"B2B · Integración del tercer proveedor de hoteles","txt":"Tercer proveedor de hoteles: flujo de reserva y mapping al catálogo maestro.","parte":0}]},{"t":"sem","n":31,"ini":"2027-06-14","fin":"2027-06-18","hito":false,"tareas":[{"proy":"B2B","fase":"B2B · Integración del tercer proveedor de hoteles","txt":"Tercer proveedor de hoteles: cancelación, voucher del proveedor y registro en el expediente.","parte":0}]},{"t":"sem","n":32,"ini":"2027-06-21","fin":"2027-06-25","hito":false,"tareas":[{"proy":"B2B","fase":"B2B · Integración del tercer proveedor de hoteles","txt":"Tercer proveedor de hoteles: pruebas, correcciones y envío a certificación.","parte":0}]},{"t":"cert","id":"cert-Hoteles 3","prov":"Hoteles 3","txt":"Certificación de Hoteles 3: revisión del proveedor, en paralelo con lo siguiente. Estimado: 3 semanas.","ini":"2027-06-28","fin":"2027-07-16"},{"t":"fase","nombre":"B2B · Producto propio","proy":"B2B"},{"t":"avm","id":"avm08","txt":"AVM tiene listo el catálogo completo de producto propio que va a cargar: hoteles, traslados, actividades y circuitos, con tarifas y temporadas.","fecha":"2027-06-28","modo":"antes","opc":false},{"t":"sem","n":33,"ini":"2027-06-28","fin":"2027-07-02","hito":false,"tareas":[{"proy":"B2B","fase":"B2B · Producto propio","txt":"Producto propio en el B2B: carga del catálogo de AVM, temporadas, cupos y precios por agencia.","parte":0}]},{"t":"fase","nombre":"B2B · Asistencia médica","proy":"B2B"},{"t":"avm","id":"avm09","txt":"Proveedor de asistencia médica elegido, con acuerdo firmado y credenciales de prueba.","fecha":"2027-07-05","modo":"antes","opc":false},{"t":"sem","n":34,"ini":"2027-07-06","fin":"2027-07-09","hito":false,"tareas":[{"proy":"B2B","fase":"B2B · Asistencia médica","txt":"Asistencia médica: conexión, autenticación, planes y tarifas.","parte":0}]},{"t":"sem","n":35,"ini":"2027-07-12","fin":"2027-07-16","hito":false,"tareas":[{"proy":"B2B","fase":"B2B · Asistencia médica","txt":"Asistencia médica: cotización por días, edades y destino.","parte":0}]},{"t":"sem","n":36,"ini":"2027-07-19","fin":"2027-07-23","hito":false,"tareas":[{"proy":"B2B","fase":"B2B · Asistencia médica","txt":"Asistencia médica: emisión, cancelación y voucher dentro del expediente.","parte":0}]},{"t":"sem","n":37,"ini":"2027-07-26","fin":"2027-07-30","hito":false,"tareas":[{"proy":"B2B","fase":"B2B · Asistencia médica","txt":"Asistencia médica: pruebas, correcciones y envío a certificación.","parte":0}]},{"t":"cert","id":"cert-Asistencia médica","prov":"Asistencia médica","txt":"Certificación de Asistencia médica: revisión del proveedor, en paralelo con lo siguiente. Estimado: 2 semanas.","ini":"2027-08-02","fin":"2027-08-13"},{"t":"fase","nombre":"B2B · Pagos y crédito de agencia","proy":"B2B"},{"t":"avm","id":"avm10","txt":"Pasarela de pagos del B2B aprobada y lista para integrar, a nombre de AVM.","fecha":"2027-08-02","modo":"antes","opc":false},{"t":"sem","n":38,"ini":"2027-08-02","fin":"2027-08-06","hito":false,"tareas":[{"proy":"B2B","fase":"B2B · Pagos y crédito de agencia","txt":"Pasarela de pagos B2B: tarjeta crédito y débito, billeteras virtuales y PSE.","parte":0}]},{"t":"sem","n":39,"ini":"2027-08-09","fin":"2027-08-13","hito":false,"tareas":[{"proy":"B2B","fase":"B2B · Pagos y crédito de agencia","txt":"Pasarela de pagos B2B: semana de pruebas con pagos reales, reembolsos y conciliación.","parte":0}]},{"t":"sem","n":40,"ini":"2027-08-17","fin":"2027-08-20","hito":false,"tareas":[{"proy":"B2B","fase":"B2B · Pagos y crédito de agencia","txt":"Crédito de agencia: cupo o saldo prepagado, reservas contra el cupo y movimientos.","parte":0}]},{"t":"sem","n":41,"ini":"2027-08-23","fin":"2027-08-27","hito":false,"tareas":[{"proy":"B2B","fase":"B2B · Pagos y crédito de agencia","txt":"Crédito de agencia: estado de cuenta, abonos, alertas y bloqueo por mora.","parte":0}]},{"t":"fase","nombre":"B2B · Cotizaciones, vouchers y operación","proy":"B2B"},{"t":"sem","n":42,"ini":"2027-08-30","fin":"2027-09-03","hito":false,"tareas":[{"proy":"B2B","fase":"B2B · Cotizaciones, vouchers y operación","txt":"Cotizaciones y vouchers modernos con la marca de cada agencia: enlace, PDF y WhatsApp; un voucher por viaje.","parte":0}]},{"t":"sem","n":43,"ini":"2027-09-06","fin":"2027-09-10","hito":false,"tareas":[{"proy":"B2B","fase":"B2B · Cotizaciones, vouchers y operación","txt":"Operación: reservas y cancelaciones por agencia en el backoffice.","parte":0}]},{"t":"sem","n":44,"ini":"2027-09-13","fin":"2027-09-17","hito":false,"tareas":[{"proy":"B2B","fase":"B2B · Cotizaciones, vouchers y operación","txt":"Operación: reportes de ventas por agencia, proveedor y producto.","parte":0}]},{"t":"sem","n":45,"ini":"2027-09-20","fin":"2027-09-24","hito":false,"tareas":[{"proy":"B2B","fase":"B2B · Cotizaciones, vouchers y operación","txt":"Operación: conciliación con proveedores y registro contable de ventas por agencia.","parte":0}]},{"t":"fase","nombre":"B2B · Pruebas y salida a producción","proy":"B2B"},{"t":"avm","id":"avm11","txt":"AVM elige 2 o 3 agencias piloto.","fecha":"2027-09-27","modo":"antes","opc":false},{"t":"sem","n":46,"ini":"2027-09-27","fin":"2027-10-01","hito":false,"tareas":[{"proy":"B2B","fase":"B2B · Pruebas y salida a producción","txt":"Pruebas con agencias piloto y correcciones.","parte":0}]},{"t":"sem","n":47,"ini":"2027-10-04","fin":"2027-10-08","hito":false,"tareas":[{"proy":"B2B","fase":"B2B · Pruebas y salida a producción","txt":"Pruebas finales con agencias piloto, correcciones y revisión de seguridad.","parte":0}]},{"t":"sem","n":48,"ini":"2027-10-11","fin":"2027-10-15","hito":false,"tareas":[{"proy":"B2B","fase":"B2B · Pruebas y salida a producción","txt":"Capacitación del equipo de AVM y manual de uso.","parte":0}]},{"t":"sem","n":49,"ini":"2027-10-19","fin":"2027-10-22","hito":true,"tareas":[{"proy":"B2B","fase":"B2B · Pruebas y salida a producción","txt":"Salida a producción de Travel Booking & Distribution con las primeras agencias.","parte":0}]},{"t":"fase","nombre":"White label · El B2C con los proveedores del B2B","proy":"WL"},{"t":"sem","n":50,"ini":"2027-10-25","fin":"2027-10-29","hito":false,"tareas":[{"proy":"WL","fase":"White label · El B2C con los proveedores del B2B","txt":"El sitio B2C consulta los proveedores del B2B a través del catálogo común.","parte":0}]},{"t":"sem","n":51,"ini":"2027-11-02","fin":"2027-11-05","hito":false,"tareas":[{"proy":"WL","fase":"White label · El B2C con los proveedores del B2B","txt":"Precios del B2C sobre el neto de cada proveedor, con el markup de la marca B2C.","parte":0}]},{"t":"sem","n":52,"ini":"2027-11-08","fin":"2027-11-12","hito":true,"tareas":[{"proy":"WL","fase":"White label · El B2C con los proveedores del B2B","txt":"Pruebas y salida: el B2C vende con LiteAPI y con los proveedores del B2B.","parte":0}]}],"fases":[{"nombre":"B2C · Cotizaciones, hoteles, vuelos y actividades con LiteAPI","proy":"B2C","ini":"2026-11-17","fin":"2026-12-18","semanas":5},{"nombre":"B2C · Pagos en línea","proy":"B2C","ini":"2026-12-21","fin":"2027-01-01","semanas":2},{"nombre":"B2C · SEO, analítica y automatizaciones","proy":"B2C","ini":"2027-01-04","fin":"2027-01-29","semanas":4},{"nombre":"B2B · Travel Booking & Distribution: base del portal","proy":"B2B","ini":"2027-01-04","fin":"2027-03-12","semanas":10},{"nombre":"B2C · Identidad visual, pruebas y salida","proy":"B2C","ini":"2027-02-01","fin":"2027-03-19","semanas":7},{"nombre":"B2B · Integración TBO (hoteles)","proy":"B2B","ini":"2027-03-23","fin":"2027-04-16","semanas":4},{"nombre":"B2B · Mapping: un solo catálogo","proy":"B2B","ini":"2027-04-19","fin":"2027-04-30","semanas":2},{"nombre":"B2B · Integración Omnibees (hoteles)","proy":"B2B","ini":"2027-05-03","fin":"2027-05-28","semanas":4},{"nombre":"B2B · Integración del tercer proveedor de hoteles","proy":"B2B","ini":"2027-06-01","fin":"2027-06-25","semanas":4},{"nombre":"B2B · Producto propio","proy":"B2B","ini":"2027-06-28","fin":"2027-07-02","semanas":1},{"nombre":"B2B · Asistencia médica","proy":"B2B","ini":"2027-07-06","fin":"2027-07-30","semanas":4},{"nombre":"B2B · Pagos y crédito de agencia","proy":"B2B","ini":"2027-08-02","fin":"2027-08-27","semanas":4},{"nombre":"B2B · Cotizaciones, vouchers y operación","proy":"B2B","ini":"2027-08-30","fin":"2027-09-24","semanas":4},{"nombre":"B2B · Pruebas y salida a producción","proy":"B2B","ini":"2027-09-27","fin":"2027-10-22","semanas":4},{"nombre":"White label · El B2C con los proveedores del B2B","proy":"WL","ini":"2027-10-25","fin":"2027-11-12","semanas":3}],"hitos":[{"txt":"Salida a producción del sitio B2C (requiere la aprobación de LiteAPI en producción).","fecha":"2027-03-19"},{"txt":"Salida a producción de Travel Booking & Distribution con las primeras agencias.","fecha":"2027-10-22"},{"txt":"Pruebas y salida: el B2C vende con LiteAPI y con los proveedores del B2B.","fecha":"2027-11-12"}]}</script>
 <script>
 "use strict";
-const PLAN = JSON.parse(document.getElementById("plan").textContent);
+const PLAN = JSON.parse(document.getElementById("plan-datos").textContent);
 const MES = ["ene","feb","mar","abr","may","jun","jul","ago","sep","oct","nov","dic"];
-const MESL = ["enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre"];
-const DIA = ["Domingo","Lunes","Martes","Miércoles","Jueves","Viernes","Sábado"];
 const $ = s => document.querySelector(s);
 const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 const D = s => { const [y, m, d] = s.split("-").map(Number); return new Date(y, m - 1, d); };
 const f = d => d.getDate() + " " + MES[d.getMonth()];
 const fy = d => f(d) + " " + d.getFullYear();
 const dias = (a, b) => Math.round((b - a) / 864e5);
-const plural = (n, a, b) => n + " " + (n === 1 ? a : b);
-const CHECK = '<svg viewBox="0 0 16 16" fill="none" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8.5 6.5 12 13 4.5"/></svg>';
-const PROY = { B2C: "B2C", B2B: "B2B", WL: "White label" };
-const COL = { B2C: "var(--b2c)", B2B: "var(--b2b)", WL: "var(--wl)" };
-const nomProv = p => p === "Hoteles 3" ? "Tercer proveedor de hoteles" : p;
+const pl = (n, a, b) => n + " " + (n === 1 ? a : b);
+const Q = new URLSearchParams(location.search), qh = Q.get("hoy");
+const HOY = qh && /^\d{4}-\d{2}-\d{2}$/.test(qh) ? D(qh) : (() => { const n = new Date(); return new Date(n.getFullYear(), n.getMonth(), n.getDate()); })();
+const PRE = { B2C: "B2C", B2B: "B2B", WL: "White label" };
+function emoji(n) {
+  const r = [[/Cotizaciones, hoteles/, "🧾"], [/Pagos en línea/, "💳"], [/SEO/, "📈"], [/base del portal/, "🏗️"], [/Identidad/, "🎨"], [/TBO|Omnibees|tercer proveedor/i, "🏨"],
+             [/Mapping/, "🗺️"], [/Producto propio/, "📦"], [/Asistencia/, "🩺"], [/crédito/, "💰"], [/vouchers y operación/, "📋"], [/Pruebas y salida/, "🚀"], [/White label/, "🔗"]];
+  return (r.find(([re]) => re.test(n)) || [0, "📌"])[1];
+}
 
-// Hoy (se puede simular con ?hoy=2027-03-01)
-const qHoy = new URLSearchParams(location.search).get("hoy");
-const HOY = qHoy && /^\d{4}-\d{2}-\d{2}$/.test(qHoy) ? D(qHoy) : (() => { const n = new Date(); return new Date(n.getFullYear(), n.getMonth(), n.getDate()); })();
-
-// ---------- Datos del plan ----------
-const etapas = [], porFase = {}, tareas = [], avm = [], certs = [], semanas = [];
-let actual = null;
+// ---------- Plan ----------
+const etapas = [], porFase = {}, tareas = [], avm = [], semanas = [], certs = [];
+let act = null;
 for (const it of PLAN.items) {
-  if (it.t === "fase") { const e = { nombre: it.nombre, corto: it.nombre.split(" · ").slice(1).join(" · "), proy: it.proy, filas: [] }; etapas.push(e); porFase[it.nombre] = e; actual = e; }
-  else if (it.t === "avm") { const a = { ...it, tipo: "avm", etapa: actual, fechaD: D(it.fecha) }; avm.push(a); actual.filas.push(a); }
-  else if (it.t === "cert") { const c = { ...it, tipo: "cert", iniD: D(it.ini), finD: D(it.fin), etapa: actual }; certs.push(c); actual.filas.push(c); }
+  if (it.t === "fase") { act = { nombre: it.nombre, corto: it.nombre.split(" · ").slice(1).join(" · "), proy: it.proy, filas: [] }; etapas.push(act); porFase[it.nombre] = act; }
+  else if (it.t === "avm") avm.push({ ...it, fechaD: D(it.fecha) });
+  else if (it.t === "cert") certs.push({ prov: it.prov, fin: D(it.fin) });
   else if (it.t === "sem") {
-    const s = { n: it.n, ini: D(it.ini), fin: D(it.fin), hito: it.hito, tareas: [] }; semanas.push(s);
-    it.tareas.forEach((x, i) => {
-      const t = { id: `S${String(it.n).padStart(2, "0")}-${i}`, tipo: "tarea", sem: s, txt: x.txt, proy: x.proy, fase: porFase[x.fase], parte: x.parte, hito: it.hito && x.parte !== 1 };
-      tareas.push(t); s.tareas.push(t); porFase[x.fase].filas.push(t);
-    });
+    const s = { n: it.n, ini: D(it.ini), fin: D(it.fin), tareas: [] }; semanas.push(s);
+    it.tareas.forEach((x, i) => { const t = { id: `S${String(it.n).padStart(2, "0")}-${i}`, sem: s, txt: x.txt, proy: x.proy, parte: x.parte }; tareas.push(t); s.tareas.push(t); porFase[x.fase].filas.push(t); });
   }
 }
-for (const e of etapas) { e.tareas = e.filas.filter(r => r.tipo === "tarea"); e.ini = e.tareas[0]?.sem.ini; e.fin = e.tareas[e.tareas.length - 1]?.sem.fin; }
 const INI = semanas[0].ini, FIN = D(PLAN.fin);
+const SEM = semanas.find(s => HOY >= s.ini && HOY <= new Date(s.fin.getTime() + 2 * 864e5)) || null;
 
 // ---------- Estado ----------
 let estado = { tareas: {}, avm: {}, notas: {}, actualizado: null };
-let editar = false, clave = "", servidor = location.protocol === "http:" || location.protocol === "https:", tGuardar = null, pendiente = null;
+let editar = false, pin = "", tG = null;
+const servidor = location.protocol.startsWith("http");
 const LS = "avm-seguimiento-estado";
-const leerLocal = () => { try { return JSON.parse(localStorage.getItem(LS) || "null"); } catch (e) { return null; } };
-const guardarLocal = () => { try { localStorage.setItem(LS, JSON.stringify(estado)); } catch (e) {} };
 async function cargar() {
   let ok = false;
   try { const r = await fetch("estado.json?" + Date.now(), { cache: "no-store" }); if (r.ok) { const j = await r.json(); if (j && typeof j === "object") { estado = { ...estado, ...j }; ok = true; } } } catch (e) {}
-  if (!ok) { const l = leerLocal(); if (l) estado = { ...estado, ...l }; }
+  if (!ok) { try { const l = JSON.parse(localStorage.getItem(LS) || "null"); if (l) estado = { ...estado, ...l }; } catch (e) {} }
   for (const k of ["tareas", "avm", "notas"]) if (!estado[k] || Array.isArray(estado[k])) estado[k] = {};
+  if (Q.has("demo")) tareas.forEach(t => { if (t.sem.fin < HOY) estado.tareas[t.id] = t.sem.n % 7 ? "hecho" : "curso"; else if (t.sem === SEM) estado.tareas[t.id] = "curso"; });  // solo vista previa
   pintar();
 }
 function cambio() {
-  estado.actualizado = new Date().toISOString(); guardarLocal(); avisar("Guardando…");
-  clearTimeout(tGuardar); tGuardar = setTimeout(subir, 600); pintar();
+  estado.actualizado = new Date().toISOString();
+  try { localStorage.setItem(LS, JSON.stringify(estado)); } catch (e) {}
+  avisar("guardando…"); clearTimeout(tG); tG = setTimeout(subir, 600); pintar();
 }
 async function subir() {
-  if (!servidor) { avisar("Guardado en este navegador", "ok"); $("#bDescargar").hidden = false; return; }
+  if (!servidor) { avisar("guardado en este navegador", "ok"); return; }
   try {
-    const r = await fetch("guardar.php", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ clave, estado }) });
+    const r = await fetch("guardar.php", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ clave: pin, estado }) });
     const j = await r.json().catch(() => ({}));
-    if (r.ok && j.ok) avisar("✓ Guardado", "ok");
-    else if (r.status === 403) { avisar("Clave incorrecta: no se guardó", "err"); salirEdicion(); }
-    else { avisar("No se pudo guardar (" + (j.error || r.status) + ")", "err"); $("#bDescargar").hidden = false; }
-  } catch (e) { avisar("Sin conexión: quedó en este navegador", "err"); $("#bDescargar").hidden = false; }
+    if (r.ok && j.ok) avisar("✓ guardado", "ok");
+    else if (r.status === 403 || r.status === 429) { avisar(j.error || "PIN incorrecto", "err"); modo(false); }
+    else avisar("no se pudo guardar", "err");
+  } catch (e) { avisar("sin conexión", "err"); }
 }
-function avisar(t, cls) { const s = $("#save"); s.textContent = t; s.className = "save " + (cls || ""); }
+function avisar(t, c) { const s = $("#save"); s.textContent = t; s.className = "save " + (c || ""); }
 
 // ---------- Cálculos ----------
-const est = id => estado.tareas[id] || "";
-const hecha = t => est(t.id) === "hecho";
-const avmListo = a => estado.avm[a.id] === "listo";
-const semanaDe = d => semanas.find(s => d >= s.ini && d <= new Date(s.fin.getTime() + 2 * 864e5)) || null;
-const SEM = semanaDe(HOY);
-function estadoSemana(s) {
-  const h = s.tareas.filter(hecha).length, c = s.tareas.filter(t => est(t.id) === "curso").length;
-  if (h === s.tareas.length) return "hecho";
-  if (s.fin < HOY && s !== SEM) return "atrasada";
-  if (h || c) return "parcial";
-  return "";
-}
-function tareaTarde(t) { return !hecha(t) && t.sem.fin < HOY && t.sem !== SEM; }
+const est = t => estado.tareas[t.id] || "";
+const tarde = t => est(t) !== "hecho" && t.sem.fin < HOY && t.sem !== SEM;
+const estT = t => est(t) === "hecho" ? "hecho" : est(t) === "curso" ? "curso" : tarde(t) ? "late" : "pend";
+const listo = a => estado.avm[a.id] === "listo";
 
 // ---------- Pintar ----------
+let filtro = "todos";
+const abiertos = new Set();
 function pintar() {
-  const total = tareas.length, hechas = tareas.filter(hecha).length, curso = tareas.filter(t => est(t.id) === "curso").length;
-  const esperadas = tareas.filter(t => t.sem.fin < HOY).length;
-  const primeraPend = tareas.find(t => !hecha(t));
+  const total = tareas.length, hechas = tareas.filter(t => est(t) === "hecho").length, curso = tareas.filter(t => est(t) === "curso").length;
+  const pct = Math.round(hechas / total * 100), esperadas = tareas.filter(t => t.sem.fin < HOY).length;
+  $("#stats").innerHTML = [[pct + "%", "Progreso", "c-nar"], [hechas, "Completadas", "c-ver"], [curso, "En progreso", "c-ama"], [total - hechas - curso, "Pendientes", "c-gri"]]
+    .map(([v, l, c]) => `<div class="stat"><b class="${c}">${v}</b><span>${l}</span></div>`).join("");
+  $("#barra i").style.width = pct + "%"; $("#barra u").style.left = `calc(${esperadas / total * 100}% - 1px)`;
 
-  // Estado de hoy
-  $("#hoyFecha").textContent = `${DIA[HOY.getDay()]} ${HOY.getDate()} de ${MESL[HOY.getMonth()]} de ${HOY.getFullYear()}`;
-  let st, titulo, det;
-  if (HOY < INI) {
-    const fd = dias(HOY, INI); st = "var(--b2c)";
-    titulo = `El desarrollo empieza en ${plural(fd, "día", "días")}`;
-    det = `La semana 1 va del ${f(INI)} al ${fy(semanas[0].fin)}. Primera entrega: ${semanas[0].tareas.map(t => t.txt).join(" · ")}`;
-  } else if (!primeraPend) { st = "var(--ok)"; titulo = "Proyecto entregado completo"; det = "Todas las entregas del plan están marcadas como hechas."; }
+  // Mensaje de estado
+  const pend = tareas.find(t => est(t) !== "hecho"), msg = $("#msg");
+  let txt, st;
+  if (HOY < INI) { st = "var(--naranja)"; txt = `🗓️ <b>Empezamos en ${pl(dias(HOY, INI), "día", "días")}.</b> La semana 1 va del ${f(INI)} al ${fy(semanas[0].fin)}: ${esc(semanas[0].tareas[0].txt)}`; }
+  else if (!pend) { st = "var(--verde)"; txt = `🏁 <b>Proyecto entregado.</b> Todas las tareas del plan están completadas.`; }
   else {
-    const atraso = Math.max(0, (SEM ? SEM.n : semanas.length + 1) - primeraPend.sem.n);
-    if (tareaTarde(primeraPend)) { st = atraso > 2 ? "var(--late)" : "var(--curso)"; titulo = `Vamos ${plural(atraso, "semana", "semanas")} detrás del plan`; }
-    else { st = "var(--ok)"; titulo = hechas > esperadas ? "Vamos adelantados al plan" : "Vamos al día con el plan"; }
-    det = `Lo siguiente por entregar (semana ${primeraPend.sem.n}): ${primeraPend.txt}`;
+    const atraso = Math.max(0, (SEM ? SEM.n : semanas.length + 1) - pend.sem.n), mov = curso;
+    if (tarde(pend)) { st = atraso > 2 ? "var(--rojo)" : "var(--amarillo)"; txt = `⚠️ <b>${pl(atraso, "semana", "semanas")} de atraso.</b> `; }
+    else { st = "var(--verde)"; txt = `🚀 <b>Vamos al día.</b> `; }
+    txt += SEM ? `Semana ${SEM.n} de ${semanas.length} (${f(SEM.ini)} – ${f(SEM.fin)}).` : "";
+    if (mov) txt += ` <em>(${pl(mov, "tarea", "tareas")} en movimiento)</em>`;
   }
-  $("#hero").style.setProperty("--st", st);
-  $("#hoyEstado").textContent = titulo; $("#hoyDetalle").textContent = det;
-  $("#semBig").innerHTML = SEM ? `<span>Semana</span><b>${SEM.n}</b><span>de ${semanas.length}</span>` : HOY < INI ? `<span>Faltan</span><b>${dias(HOY, INI)}</b><span>días</span>` : `<span>Plan</span><b>✓</b><span>cerrado</span>`;
+  msg.style.setProperty("--st", st); msg.innerHTML = txt;
 
-  // Tira de semanas
-  $("#nSem").textContent = semanas.length;
-  const strip = $("#strip"); strip.style.setProperty("--n", semanas.length); $("#meses").style.setProperty("--n", semanas.length);
-  strip.innerHTML = semanas.map(s => {
-    const e = estadoSemana(s), tit = `Semana ${s.n} · ${f(s.ini)} – ${f(s.fin)}\n` + s.tareas.map(t => (hecha(t) ? "✓ " : est(t.id) === "curso" ? "◐ " : "○ ") + `[${PROY[t.proy]}] ${t.txt}`).join("\n");
-    return `<button class="wk ${e} ${s === SEM ? "actual" : ""} ${s.hito ? "hito" : ""}" data-sem="${s.n}" title="${esc(tit)}" aria-label="${esc(tit)}"><i>${s.n}</i></button>`;
-  }).join("");
-  let mes = -1;
-  $("#meses").innerHTML = semanas.map(s => { const m = s.ini.getMonth(); const r = m !== mes ? MES[m] + (m === 0 || mes === -1 ? " " + String(s.ini.getFullYear()).slice(2) : "") : ""; mes = m; return `<span>${r}</span>`; }).join("");
+  // Filtros
+  const F = [["todos", "Todos"], ["pend", "Pendiente"], ["curso", "En progreso"], ["hecho", "Completado"]];
+  $("#chips").innerHTML = F.map(([k, l]) => `<button class="chip" data-f="${k}" aria-pressed="${filtro === k}">${l}</button>`).join("");
 
-  // KPI
-  const pct = total ? Math.round(hechas / total * 100) : 0, pEsp = total ? esperadas / total * 100 : 0;
-  const kp = p => { const ts = tareas.filter(t => t.proy === p); const h = ts.filter(hecha).length; return { h, n: ts.length, p: ts.length ? Math.round(h / ts.length * 100) : 0 }; };
-  const k = { B2C: kp("B2C"), B2B: kp("B2B") };
-  const prox = PLAN.hitos.map(h => ({ txt: h.txt, d: D(h.fecha) })).find(h => h.d >= HOY);
-  $("#kpis").innerHTML = `
-    <div class="card kpi"><span class="lab">Avance general</span><span class="val">${pct}%</span><div class="pbar" title="La línea negra marca dónde deberíamos ir"><i style="width:${pct}%"></i><u style="left:calc(${pEsp}% - 1px)"></u></div><span class="sub">${hechas} de ${total} entregas · según el plan, ${esperadas}${curso ? ` · ${curso} en curso` : ""}</span></div>
-    ${["B2C", "B2B"].map(p => `<div class="card kpi"><span class="lab"><i class="dot" style="--c:${COL[p]}"></i>${p === "B2C" ? "Sitio B2C" : "B2B · Travel Booking"}</span><span class="val">${k[p].p}%</span><div class="pbar" style="--c:${COL[p]}"><i style="width:${k[p].p}%"></i></div><span class="sub">${k[p].h} de ${k[p].n} entregas</span></div>`).join("")}
-    <div class="card kpi"><span class="lab">Próximo hito</span>${prox ? `<span class="val">${dias(HOY, prox.d)} <span style="font-size:15px;font-weight:700">días</span></span><span class="sub"><b style="color:var(--ink)">${fy(prox.d)}</b> · ${esc(prox.txt)}</span>` : `<span class="sub">No quedan hitos.</span>`}</div>`;
-
-  // Esta semana
-  const ref = SEM || (HOY < INI ? semanas[0] : null);
-  $("#tSemana").innerHTML = ref ? `${SEM ? "Esta semana" : "Primera semana"} <span class="muted" style="font-weight:600;font-size:13px">S${ref.n} · ${f(ref.ini)} – ${f(ref.fin)}</span>` : "Esta semana";
-  const atras = tareas.filter(tareaTarde);
-  let h = (ref ? ref.tareas.map(t => filaTarea(t, false)).join("") : "");
-  if (atras.length) h += `<p class="muted" style="font-size:12.5px;font-weight:700;margin-top:6px">ATRASADO DE SEMANAS ANTERIORES</p>` + atras.slice(0, 4).map(t => filaTarea(t, true)).join("") + (atras.length > 4 ? `<p class="muted">y ${atras.length - 4} más en el plan.</p>` : "");
-  const enCert = certs.filter(c => HOY >= c.iniD && HOY <= c.finD);
-  h += enCert.map(c => `<div class="tarea"><span></span><div class="body"><span class="tt">${esc(nomProv(c.prov))} en certificación</span><span class="meta"><span class="tag cert">Revisión del proveedor</span>hasta ~${f(c.finD)}</span></div></div>`).join("");
-  $("#estaSemana").innerHTML = h || `<p class="vacio">No hay entregas programadas esta semana.</p>`;
-
-  // AVM próximo
-  const avmPend = avm.filter(a => !avmListo(a) && !a.opc);
-  const avmCerca = avmPend.filter(a => dias(HOY, a.fechaD) <= 21);
-  $("#avmCount").textContent = avmPend.filter(a => a.fechaD < HOY).length ? plural(avmPend.filter(a => a.fechaD < HOY).length, "vencido", "vencidos") : plural(avmCerca.length, "próximo", "próximos");
-  $("#avmProx").innerHTML = (avmCerca.length ? avmCerca : avmPend.slice(0, 2)).map(filaAvm).join("") || `<p class="vacio">AVM no tiene compromisos pendientes por ahora.</p>`;
-
-  pintarPlan(); pintarAvm(); pintarGantt(); pintarHitos();
-  $("#actualizado").textContent = estado.actualizado ? "Última actualización: " + new Date(estado.actualizado).toLocaleString("es-CO", { dateStyle: "medium", timeStyle: "short" }) : "Aún no hay avances marcados";
-  $("#rango").textContent = `Plan: ${fy(INI)} – ${fy(FIN)} · ${semanas.length} semanas`;
-  document.querySelector('.tab[data-v="avm"]').innerHTML = `Compromisos de AVM${avmPend.filter(a => a.fechaD < HOY).length ? ` <span class="count" style="background:var(--late-soft);color:var(--late)">${avmPend.filter(a => a.fechaD < HOY).length}</span>` : ""}`;
-}
-
-function filaTarea(t, conSemana) {
-  const v = est(t.id), tarde = tareaTarde(t);
-  const nota = estado.notas[t.id] || "";
-  const estadoTag = v === "hecho" ? `<span class="tag hecho">Entregado</span>` : v === "curso" ? `<span class="tag curso">En curso</span>` : tarde ? `<span class="tag late">Atrasado</span>` : "";
-  return `<div class="tarea ${v} ${tarde ? "late" : ""}">
-    <button class="check ${v === "hecho" ? "on" : ""}" data-t="${t.id}" aria-pressed="${v === "hecho"}" aria-label="${v === "hecho" ? "Entregado: clic para desmarcar" : "Marcar como entregado"}" title="${v === "hecho" ? "Entregado" : "Marcar como entregado"}">${CHECK}</button>
-    <div class="body"><span class="tt">${t.hito ? "◆ " : ""}${esc(t.txt)}</span>
-      <span class="meta"><span class="tag ${t.proy}">${PROY[t.proy]}</span>${conSemana !== false ? `<span class="w">S${String(t.sem.n).padStart(2, "0")}</span>${f(t.sem.ini)} – ${f(t.sem.fin)}` : ""}${t.parte ? ` · ${t.parte === 1 ? "1.ª" : "2.ª"} parte, en paralelo con ${t.proy === "B2C" ? "el B2B" : "el B2C"}` : ""}</span>
-      ${editar ? `<textarea class="nota-ed" data-nota="${t.id}" rows="1" placeholder="Agregar una nota (opcional)">${esc(nota)}</textarea>` : nota ? `<span class="nota">${esc(nota)}</span>` : ""}</div>
-    <div class="side">${estadoTag}${v !== "hecho" ? `<button class="mini-btn ${v === "curso" ? "on" : ""}" data-c="${t.id}" aria-pressed="${v === "curso"}">En curso</button>` : ""}</div></div>`;
-}
-function avmTag(a) {
-  if (avmListo(a)) return `<span class="tag hecho">Listo</span>`;
-  if (a.opc) return `<span class="tag pend">Opcional</span>`;
-  const d = dias(HOY, a.fechaD);
-  if (d < 0) return `<span class="tag late">Vencido hace ${plural(-d, "día", "días")}</span>`;
-  if (d <= 21) return `<span class="tag curso">En ${plural(d, "día", "días")}</span>`;
-  return `<span class="tag pend">Pendiente</span>`;
-}
-function filaAvm(a) {
-  const l = avmListo(a);
-  return `<div class="tarea avm ${l ? "hecho" : ""}">
-    <button class="check avm ${l ? "on" : ""}" data-a="${a.id}" aria-pressed="${l}" aria-label="${l ? "Listo: clic para desmarcar" : "Marcar como listo"}" title="${l ? "Listo" : "Marcar como listo"}">${CHECK}</button>
-    <div class="body"><span class="tt">${esc(a.txt)}</span><span class="meta"><span class="tag AVM">AVM</span>${a.modo === "durante" ? "Semana del" : "Antes del"} ${fy(a.fechaD)} · ${esc(a.etapa.corto)}</span></div>
-    <div class="side">${avmTag(a)}</div></div>`;
-}
-
-let fEstado = "todos", fProy = "todos";
-const abiertas = new Set();
-function pasa(t) {
-  const e = est(t.id) || (tareaTarde(t) ? "late" : "pend");
-  const okE = fEstado === "todos" || fEstado === e || (fEstado === "pend" && e === "late");
-  return okE && (fProy === "todos" || fProy === t.proy);
-}
-function pintarPlan() {
-  const E = [["todos", "Todas"], ["pend", "Pendientes"], ["late", "Atrasadas"], ["curso", "En curso"], ["hecho", "Entregadas"]];
-  const P = [["todos", "Todos los proyectos"], ["B2C", "B2C"], ["B2B", "B2B"], ["WL", "White label"]];
-  $("#fEstado").innerHTML = E.map(([k, l]) => `<button data-fe="${k}" aria-pressed="${fEstado === k}">${l}</button>`).join("");
-  $("#fProy").innerHTML = P.map(([k, l]) => `<button data-fp="${k}" aria-pressed="${fProy === k}">${k !== "todos" ? `<i class="dot" style="--c:${COL[k]};margin-right:6px"></i>` : ""}${l}</button>`).join("");
-  const out = [];
+  // Grupo AVM
+  const pasaF = e => filtro === "todos" || filtro === e || (filtro === "pend" && e === "late");
+  let html = "";
+  const avmVis = avm.filter(a => pasaF(listo(a) ? "hecho" : "pend"));
+  if (avmVis.length) {
+    const lst = avm.filter(listo).length, venc = avm.filter(a => !listo(a) && !a.opc && a.fechaD < HOY).length;
+    html += grupo("avm", "📌", `AVM debe entregar ${venc ? `<span class="tag late">${pl(venc, "vencido", "vencidos")}</span>` : ""}`, `${lst}/${avm.length} listos · compromisos de AVM`, lst, avm.length, "avm",
+      avmVis.map(a => {
+        const l = listo(a), d = dias(HOY, a.fechaD), late = !l && !a.opc && d < 0;
+        const control = editar ? `<select class="est ${l ? "hecho" : ""}" data-a="${a.id}"><option value="">Pendiente</option><option value="listo" ${l ? "selected" : ""}>Listo</option></select>`
+          : `<span class="est ${l ? "hecho" : late ? "late" : ""}">${l ? "Listo" : late ? "Vencido" : a.opc ? "Opcional" : "Pendiente"}</span>`;
+        return `<div class="t ${l ? "hecho" : ""}"><i class="dot avm ${l ? "hecho" : ""}"></i><div class="tx"><span>${esc(a.txt.replace(/^Opcional: /, ""))}</span><small class="${late ? "late" : ""}">${a.modo === "durante" ? "Semana del" : "Antes del"} ${fy(a.fechaD)} · ${esc(etapaDe(a))}</small></div>${control}</div>`;
+      }).join(""));
+  }
+  // Etapas
   for (const e of etapas) {
-    if (!e.tareas.length) continue;
-    const filas = e.filas.map(r => r.tipo === "tarea" ? (pasa(r) ? filaTarea(r) : "") :
-      (fEstado !== "todos" || (fProy !== "todos" && fProy !== e.proy)) ? "" :
-      r.tipo === "avm" ? filaAvm(r) :
-      `<div class="tarea"><span></span><div class="body"><span class="tt">${esc(r.txt)}</span><span class="meta"><span class="tag cert">Certificación</span>~${f(r.iniD)} – ${f(r.finD)}</span></div></div>`).join("");
-    if (!filas.trim()) continue;
-    const h = e.tareas.filter(hecha).length, p = Math.round(h / e.tareas.length * 100);
-    const enCurso = SEM && e.ini <= SEM.fin && e.fin >= SEM.ini, tarde = e.tareas.some(tareaTarde);
-    const badge = p === 100 ? `<span class="tag hecho">Completada</span>` : tarde ? `<span class="tag late">Atrasada</span>` : enCurso ? `<span class="tag curso">En curso</span>` : e.ini > HOY ? `<span class="tag pend">Próxima</span>` : "";
-    const abierta = abiertas.has(e.nombre) || (abiertas.size === 0 && (enCurso || (HOY < INI && e === etapas[0]))) || fEstado !== "todos";
-    out.push(`<details class="etapa" style="--c:${COL[e.proy]}" data-e="${esc(e.nombre)}" ${abierta ? "open" : ""}>
-      <summary><span class="tit"><b><span class="tag ${e.proy}">${PROY[e.proy]}</span>${esc(e.corto)} ${badge}</b><small>${fy(e.ini)} – ${fy(e.fin)} · ${plural(e.tareas.length, "entrega", "entregas")}</small></span>
-      <span class="prog"><span>${h} de ${e.tareas.length} · ${p}%</span><span class="pbar" style="--c:${p === 100 ? "var(--ok)" : COL[e.proy]}"><i style="width:${p}%"></i></span></span><i class="chev"></i></summary>
-      <div class="lista">${filas}</div></details>`);
+    if (!e.filas.length) continue;
+    const vis = e.filas.filter(t => pasaF(estT(t))); if (!vis.length) continue;
+    const h = e.filas.filter(t => est(t) === "hecho").length, n = e.filas.length;
+    const ini = e.filas[0].sem.ini, fin = e.filas[n - 1].sem.fin, enCurso = SEM && ini <= SEM.fin && fin >= SEM.ini, late = e.filas.some(tarde);
+    const tags = `<span class="tag ${e.proy.toLowerCase()}">${PRE[e.proy]}</span>${enCurso ? '<span class="tag now">Semana actual</span>' : ""}${late ? '<span class="tag late">Atrasada</span>' : ""}`;
+    html += grupo(e.nombre, emoji(e.nombre), `${esc(e.corto)} ${tags}`, `${h}/${n} completadas · ${f(ini)} – ${f(fin)}`, h, n, enCurso ? "actual" : "",
+      vis.map(t => {
+        const s = estT(t);
+        const control = editar ? `<select class="est ${s}" data-t="${t.id}"><option value="">Pendiente</option><option value="curso" ${s === "curso" ? "selected" : ""}>En progreso</option><option value="hecho" ${s === "hecho" ? "selected" : ""}>Completado</option></select>`
+          : `<span class="est ${s}">${{ hecho: "Completado", curso: "En progreso", late: "Atrasado", pend: "Pendiente" }[s]}</span>`;
+        return `<div class="t ${s}"><i class="dot ${s}"></i><div class="tx"><span>${esc(t.txt)}</span><small class="${s === "late" ? "late" : ""}">S${String(t.sem.n).padStart(2, "0")} · ${f(t.sem.ini)} – ${f(t.sem.fin)}${t.parte ? ` · ${t.parte === 1 ? "1.ª" : "2.ª"} parte, en paralelo con ${t.proy === "B2C" ? "el B2B" : "el B2C"}` : ""}</small></div>${control}</div>`;
+      }).join(""), enCurso);
   }
-  $("#etapas").innerHTML = out.join("") || `<p class="vacio">No hay entregas con este filtro.</p>`;
+  // Fechas clave
+  if (filtro === "todos") {
+    const hs = PLAN.hitos.map(x => ({ txt: x.txt.replace(/ \(.*\)\.?$/, "").replace(/\.$/, ""), d: D(x.fecha) }))
+      .concat(certs.map(c => ({ txt: (c.prov === "Hoteles 3" ? "Tercer proveedor de hoteles" : c.prov) + " en producción (estimado)", d: c.fin }))).sort((a, b) => a.d - b.d);
+    const pas = hs.filter(x => x.d < HOY).length, prox = hs.find(x => x.d >= HOY);
+    html += grupo("hitos", "🏁", "Fechas clave", `${pas}/${hs.length} cumplidas${prox ? ` · próxima: ${fy(prox.d)}` : ""}`, pas, hs.length, "",
+      hs.map(x => `<div class="hito ${x.d < HOY ? "pasado" : ""}"><time>${fy(x.d)}</time><span>${x.d < HOY ? "✓ " : ""}${esc(x.txt)}</span></div>`).join(""));
+  }
+  $("#grupos").innerHTML = html || `<p class="vacio">No hay tareas con este filtro.</p>`;
+  $("#pie").textContent = (estado.actualizado ? "Última edición: " + new Date(estado.actualizado).toLocaleString("es-CO", { dateStyle: "medium", timeStyle: "short" }) : "Sin ediciones todavía") + ` · Plan del ${fy(INI)} al ${fy(FIN)} · AVM Operadores Mayoristas`;
 }
-function pintarAvm() {
-  const g = [["Vencidos", a => !avmListo(a) && !a.opc && a.fechaD < HOY], ["Próximos", a => !avmListo(a) && !a.opc && a.fechaD >= HOY], ["Opcional", a => !avmListo(a) && a.opc], ["Listos", avmListo]];
-  let h = "";
-  for (const [t, fn] of g) { const l = avm.filter(fn); if (l.length) h += `<p class="muted" style="font-size:12.5px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;margin-top:12px">${t}</p>` + l.map(filaAvm).join(""); }
-  h += `<p class="muted" style="font-size:12.5px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;margin-top:12px">Aprobaciones de los proveedores</p>` +
-    certs.map(c => `<div class="tarea"><span></span><div class="body"><span class="tt">Certificación de ${esc(nomProv(c.prov))}</span><span class="meta">Estimada entre el ${fy(c.iniD)} y el ${fy(c.finD)}. La revisa el proveedor.</span></div><div class="side">${HOY > c.finD ? '<span class="tag pend">Fecha pasada</span>' : HOY >= c.iniD ? '<span class="tag curso">En revisión</span>' : '<span class="tag pend">Estimada</span>'}</div></div>`).join("");
-  $("#avmLista").innerHTML = h;
-}
-function pintarGantt() {
-  const G0 = INI, G1 = new Date(semanas[semanas.length - 1].ini.getTime() + 7 * 864e5), tot = dias(G0, G1);
-  const pct = d => Math.max(0, Math.min(100, dias(G0, d) / tot * 100));
-  const lunes = d => new Date(d.getFullYear(), d.getMonth(), d.getDate() - ((d.getDay() + 6) % 7));
-  const bar = (a, b, c, cls, inner, title) => { const x = pct(lunes(a)), w = pct(new Date(lunes(b).getTime() + 7 * 864e5)) - x; return `<span class="gb ${cls}" style="left:${x}%;width:${w}%;--c:${c}" title="${esc(title)}">${inner}</span>`; };
-  let bandas = "", cab = "", m = new Date(G0.getFullYear(), G0.getMonth(), 1), k = 0;
-  while (m < G1) { const s = new Date(m.getFullYear(), m.getMonth() + 1, 1), a = m < G0 ? G0 : m, b = s > G1 ? G1 : s;
-    if (k % 2 === 0) bandas += `<u style="left:${pct(a)}%;width:${pct(b) - pct(a)}%"></u>`;
-    cab += `<span style="left:${pct(a)}%;width:${pct(b) - pct(a)}%">${MES[m.getMonth()]}${m.getMonth() === 0 ? " " + m.getFullYear() : ""}</span>`; m = s; k++; }
-  const hoy = (lbl) => HOY >= G0 && HOY <= G1 ? `<span class="hoyl" style="left:${pct(HOY)}%">${lbl ? "<b>hoy</b>" : ""}</span>` : "";
-  let rows = `<div class="gr"><span class="gl"></span><span class="gt gm">${bandas}${cab}</span></div>`;
-  etapas.forEach((e, i) => {
-    if (!e.tareas.length) return;
-    const p = Math.round(e.tareas.filter(hecha).length / e.tareas.length * 100);
-    const cs = certs.filter(c => c.etapa === e).map(c => bar(c.iniD, new Date(c.finD.getTime() - 864e5), "var(--avm)", "cert", "", "Certificación " + nomProv(c.prov))).join("");
-    rows += `<div class="gr"><span class="gl"><span class="tag ${e.proy}">${PROY[e.proy]}</span>${esc(e.corto)}</span><span class="gt">${bandas}${bar(e.ini, e.fin, COL[e.proy], "", `<i style="width:${p}%"></i>`, `${e.corto}: ${p}% entregado`)}${cs}${hoy(i === 0)}</span></div>`;
-  });
-  $("#gantt").innerHTML = rows;
-}
-function pintarHitos() {
-  const items = PLAN.hitos.map(h => ({ txt: h.txt, d: D(h.fecha), est: false }))
-    .concat(certs.map(c => ({ txt: nomProv(c.prov) + " conectado (fecha estimada)", d: c.finD, est: true }))).sort((a, b) => a.d - b.d);
-  const prox = items.find(h => h.d >= HOY);
-  $("#hitos").innerHTML = items.map(h => `<li class="${h.d < HOY ? "ok" : h === prox ? "prox" : ""}"><time>${h.est ? "~ " : ""}${fy(h.d)}${h === prox ? ` · faltan ${plural(dias(HOY, h.d), "día", "días")}` : ""}</time><b>${esc(h.txt)}</b></li>`).join("");
+function etapaDe(a) { const e = etapas.find(x => x.filas.length && x.filas[0].sem.ini >= a.fechaD); return e ? e.corto : ""; }
+function grupo(id, emo, titulo, sub, h, n, cls, cuerpo, abrirAuto) {
+  const p = n ? Math.round(h / n * 100) : 0;
+  const abierto = abiertos.has(id) || filtro !== "todos";
+  return `<details class="grupo ${cls}" data-g="${esc(id)}" ${abierto ? "open" : ""}><summary><span class="emo" aria-hidden="true">${emo}</span>
+    <span class="tt"><b>${titulo}</b><small>${sub}</small></span>
+    <span class="mbar"><i class="${p === 100 ? "full" : ""}" style="width:${p}%"></i></span><span class="pct">${p}%</span><span class="chev" aria-hidden="true">▼</span></summary>
+    <div class="tareas">${cuerpo}</div></details>`;
 }
 
-// ---------- Edición ----------
-function entrarEdicion(despues) {
-  if (editar) { despues && despues(); return; }
-  if (!servidor) { activar(); despues && despues(); return; }
-  pendiente = despues || null;
-  $("#dlgErr").hidden = true; $("#dlgClave").value = "";
-  $("#dlg").showModal(); $("#dlgClave").focus();
+// Fecha y hora
+function reloj() { const n = new Date(); $("#fechahora").textContent = `📅 ${n.toLocaleDateString("es-CO", { day: "numeric", month: "short", year: "numeric" })}   ⏰ ${n.toLocaleTimeString("es-CO", { hour: "2-digit", minute: "2-digit" })}`; }
+reloj(); setInterval(reloj, 30000);
+
+// ---------- Modo edición con PIN ----------
+function modo(on) {
+  editar = on; if (!on) pin = "";
+  const b = $("#bModo"); b.textContent = on ? "✏️ Edición" : "🔒 Lectura"; b.classList.toggle("on", on); pintar();
 }
-function activar() {
-  editar = true; $("#banner").hidden = false;
-  const b = $("#bEditar"); b.classList.remove("primary"); b.classList.add("dark"); b.querySelector("span").textContent = "Terminar edición";
-  pintar();
+const cajas = [...document.querySelectorAll("#cajas input")];
+function abrirPin() {
+  if (!servidor && !Q.has("verpin")) { modo(true); return; }
+  cajas.forEach(c => c.value = ""); $("#pinErr").hidden = true; $("#dlg").showModal(); cajas[0].focus();
 }
-function salirEdicion() {
-  editar = false; clave = ""; $("#banner").hidden = true;
-  const b = $("#bEditar"); b.classList.add("primary"); b.classList.remove("dark"); b.querySelector("span").textContent = "Editar avance";
-  pintar();
-}
-$("#dlgForm").addEventListener("submit", async ev => {
+cajas.forEach((c, i) => {
+  c.addEventListener("input", () => { c.value = c.value.replace(/\D/g, "").slice(-1); if (c.value && i < 5) cajas[i + 1].focus(); if (cajas.every(x => x.value)) $("#pinForm").requestSubmit(); });
+  c.addEventListener("keydown", ev => { if (ev.key === "Backspace" && !c.value && i > 0) cajas[i - 1].focus(); });
+  c.addEventListener("paste", ev => { const d = (ev.clipboardData.getData("text") || "").replace(/\D/g, "").slice(0, 6); if (d.length) { ev.preventDefault(); d.split("").forEach((x, k) => cajas[k] && (cajas[k].value = x)); (cajas[d.length] || cajas[5]).focus(); if (d.length === 6) $("#pinForm").requestSubmit(); } });
+});
+$("#pinForm").addEventListener("submit", async ev => {
   ev.preventDefault();
-  const k = $("#dlgClave").value; if (!k) return;
-  $("#dlgSi").disabled = true;
+  const k = cajas.map(c => c.value).join(""); if (k.length !== 6) { $("#pinErr").textContent = "El PIN tiene 6 dígitos."; $("#pinErr").hidden = false; return; }
+  $("#pinGo").disabled = true;
   try {
     const r = await fetch("guardar.php", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ clave: k, verificar: true }) });
     const j = await r.json().catch(() => ({}));
-    if (r.ok && j.ok) { clave = k; $("#dlg").close(); activar(); if (j.nueva) avisar("Clave creada: guarda el primer avance para fijarla", "ok"); const p = pendiente; pendiente = null; p && p(); }
-    else { $("#dlgErr").textContent = r.status === 403 ? "Clave incorrecta." : (j.error || "No se pudo verificar la clave (" + r.status + ")."); $("#dlgErr").hidden = false; }
-  } catch (e) { $("#dlgErr").textContent = "No hay conexión con el servidor."; $("#dlgErr").hidden = false; }
-  $("#dlgSi").disabled = false;
+    if (r.ok && j.ok) { pin = k; $("#dlg").close(); modo(true); if (j.nueva) avisar("PIN nuevo: queda fijado al guardar el primer cambio", "ok"); }
+    else { $("#pinErr").textContent = j.error || "PIN incorrecto."; $("#pinErr").hidden = false; cajas.forEach(c => c.value = ""); cajas[0].focus(); }
+  } catch (e) { $("#pinErr").textContent = "Sin conexión con el servidor."; $("#pinErr").hidden = false; }
+  $("#pinGo").disabled = false;
 });
-$("#dlgNo").addEventListener("click", () => { pendiente = null; $("#dlg").close(); });
-
-document.addEventListener("click", ev => {
-  const tab = ev.target.closest(".tab");
-  if (tab) { document.querySelectorAll(".tab").forEach(t => t.setAttribute("aria-selected", t === tab)); document.querySelectorAll(".vista").forEach(v => v.classList.toggle("on", v.id === "v-" + tab.dataset.v)); try { localStorage.setItem("avm-seg-tab", tab.dataset.v); } catch (e) {} return; }
-  const fe = ev.target.closest("[data-fe]"); if (fe) { fEstado = fe.dataset.fe; pintar(); return; }
-  const fp = ev.target.closest("[data-fp]"); if (fp) { fProy = fp.dataset.fp; pintar(); return; }
-  const wk = ev.target.closest(".wk"); if (wk) {
-    const s = semanas.find(x => x.n === +wk.dataset.sem); fEstado = "todos"; fProy = "todos";
-    s.tareas.forEach(t => abiertas.add(t.fase.nombre)); document.querySelector('.tab[data-v="plan"]').click(); pintar();
-    const el = document.querySelector(`[data-t="${s.tareas[0].id}"]`); el && el.closest(".tarea").scrollIntoView({ behavior: "smooth", block: "center" }); return;
-  }
-  const t = ev.target.closest("[data-t]"); if (t) { const id = t.dataset.t; entrarEdicion(() => { if (est(id) === "hecho") delete estado.tareas[id]; else estado.tareas[id] = "hecho"; cambio(); }); return; }
-  const c = ev.target.closest("[data-c]"); if (c) { const id = c.dataset.c; entrarEdicion(() => { if (est(id) === "curso") delete estado.tareas[id]; else estado.tareas[id] = "curso"; cambio(); }); return; }
-  const a = ev.target.closest("[data-a]"); if (a) { const id = a.dataset.a; entrarEdicion(() => { if (estado.avm[id] === "listo") delete estado.avm[id]; else estado.avm[id] = "listo"; cambio(); }); return; }
+$("#pinNo").addEventListener("click", () => $("#dlg").close());
+$("#bModo").addEventListener("click", () => editar ? modo(false) : abrirPin());
+$("#bRefrescar").addEventListener("click", () => location.reload());
+document.addEventListener("click", ev => { const c = ev.target.closest("[data-f]"); if (c) { filtro = c.dataset.f; pintar(); } });
+document.addEventListener("change", ev => {
+  const s = ev.target.closest("select[data-t]"); if (s) { if (s.value) estado.tareas[s.dataset.t] = s.value; else delete estado.tareas[s.dataset.t]; cambio(); return; }
+  const a = ev.target.closest("select[data-a]"); if (a) { if (a.value) estado.avm[a.dataset.a] = "listo"; else delete estado.avm[a.dataset.a]; cambio(); }
 });
-document.addEventListener("toggle", ev => { const d = ev.target; if (d.classList && d.classList.contains("etapa")) { if (d.open) abiertas.add(d.dataset.e); else abiertas.delete(d.dataset.e); } }, true);
-document.addEventListener("change", ev => { const n = ev.target.closest("[data-nota]"); if (!n) return; const v = n.value.trim(); if (v) estado.notas[n.dataset.nota] = v; else delete estado.notas[n.dataset.nota]; cambio(); });
-$("#bEditar").addEventListener("click", () => editar ? salirEdicion() : entrarEdicion());
-$("#bDescargar").addEventListener("click", () => {
-  const a = document.createElement("a"); a.href = URL.createObjectURL(new Blob([JSON.stringify(estado, null, 1)], { type: "application/json" }));
-  a.download = "estado.json"; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 1000);
-});
-try { const t = localStorage.getItem("avm-seg-tab"); if (t) document.querySelector(`.tab[data-v="${t}"]`)?.click(); } catch (e) {}
+document.addEventListener("toggle", ev => { const d = ev.target; if (d.dataset && d.dataset.g && filtro === "todos") d.open ? abiertos.add(d.dataset.g) : abiertos.delete(d.dataset.g); }, true);
+// Al entrar, queda abierta la etapa de la semana actual (o la primera, si aún no empieza)
+{ const ref = SEM || (HOY < INI ? semanas[0] : null); if (ref) ref.tareas.forEach(t => { const e = etapas.find(x => x.filas.includes(t)); e && abiertos.add(e.nombre); }); }
 cargar();
+if (Q.has("verpin")) abrirPin();   // solo para la vista previa de la ventana del PIN
 </script>
 </body>
 </html>
