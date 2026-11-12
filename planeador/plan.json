@@ -1,7 +1,7 @@
 {
  "inicio": "2026-11-16",
- "fin": "2027-11-12",
- "semanas": 52,
+ "fin": "2027-09-24",
+ "semanas": 45,
  "items": [
   {
    "t": "fase",
@@ -163,13 +163,13 @@
      "proy": "B2C",
      "fase": "B2C · SEO, analítica y automatizaciones",
      "txt": "SEO técnico por destino (una sola configuración para todo el sitio), Google Analytics 4 y conversiones de Google Ads.",
-     "parte": 1
+     "parte": 0
     },
     {
      "proy": "B2B",
      "fase": "B2B · Travel Booking & Distribution: base del portal",
      "txt": "Plataforma B2B con su propia marca y su propio backoffice; usuarios del equipo de AVM.",
-     "parte": 1
+     "parte": 0
     }
    ]
   },
@@ -183,56 +183,14 @@
     {
      "proy": "B2C",
      "fase": "B2C · SEO, analítica y automatizaciones",
-     "txt": "SEO técnico por destino (una sola configuración para todo el sitio), Google Analytics 4 y conversiones de Google Ads.",
-     "parte": 2
-    },
-    {
-     "proy": "B2B",
-     "fase": "B2B · Travel Booking & Distribution: base del portal",
-     "txt": "Plataforma B2B con su propia marca y su propio backoffice; usuarios del equipo de AVM.",
-     "parte": 2
-    }
-   ]
-  },
-  {
-   "t": "sem",
-   "n": 10,
-   "ini": "2027-01-18",
-   "fin": "2027-01-22",
-   "hito": false,
-   "tareas": [
-    {
-     "proy": "B2C",
-     "fase": "B2C · SEO, analítica y automatizaciones",
      "txt": "Automatizaciones: ajustes finales a la recaptura de búsquedas y cotizaciones sin compra, y a las campañas promocionales.",
-     "parte": 1
+     "parte": 0
     },
     {
      "proy": "B2B",
      "fase": "B2B · Travel Booking & Distribution: base del portal",
      "txt": "Registro de agencias: solicitud con RNT y NIT, revisión y aprobación de AVM.",
-     "parte": 1
-    }
-   ]
-  },
-  {
-   "t": "sem",
-   "n": 11,
-   "ini": "2027-01-25",
-   "fin": "2027-01-29",
-   "hito": false,
-   "tareas": [
-    {
-     "proy": "B2C",
-     "fase": "B2C · SEO, analítica y automatizaciones",
-     "txt": "Automatizaciones: ajustes finales a la recaptura de búsquedas y cotizaciones sin compra, y a las campañas promocionales.",
-     "parte": 2
-    },
-    {
-     "proy": "B2B",
-     "fase": "B2B · Travel Booking & Distribution: base del portal",
-     "txt": "Registro de agencias: solicitud con RNT y NIT, revisión y aprobación de AVM.",
-     "parte": 2
+     "parte": 0
     }
    ]
   },
@@ -245,9 +203,51 @@
    "t": "avm",
    "id": "avm04",
    "txt": "AVM entrega la identidad visual de la marca B2C: logo, colores y tipografía.",
-   "fecha": "2027-02-01",
+   "fecha": "2027-01-18",
    "modo": "antes",
    "opc": false
+  },
+  {
+   "t": "sem",
+   "n": 10,
+   "ini": "2027-01-18",
+   "fin": "2027-01-22",
+   "hito": false,
+   "tareas": [
+    {
+     "proy": "B2C",
+     "fase": "B2C · Identidad visual, pruebas y salida",
+     "txt": "Identidad visual de la marca B2C aplicada a todo el sitio.",
+     "parte": 0
+    },
+    {
+     "proy": "B2B",
+     "fase": "B2B · Travel Booking & Distribution: base del portal",
+     "txt": "Usuarios por agencia con roles y carga de la base de datos de agencias de AVM.",
+     "parte": 0
+    }
+   ]
+  },
+  {
+   "t": "sem",
+   "n": 11,
+   "ini": "2027-01-25",
+   "fin": "2027-01-29",
+   "hito": false,
+   "tareas": [
+    {
+     "proy": "B2C",
+     "fase": "B2C · Identidad visual, pruebas y salida",
+     "txt": "Pruebas de punta a punta con el equipo de AVM y correcciones.",
+     "parte": 0
+    },
+    {
+     "proy": "B2B",
+     "fase": "B2B · Travel Booking & Distribution: base del portal",
+     "txt": "Precios por agencia, grupo, producto y proveedor: reglas de markup y comisión.",
+     "parte": 0
+    }
+   ]
   },
   {
    "t": "sem",
@@ -259,14 +259,14 @@
     {
      "proy": "B2C",
      "fase": "B2C · Identidad visual, pruebas y salida",
-     "txt": "Identidad visual de la marca B2C aplicada a todo el sitio.",
-     "parte": 1
+     "txt": "Pruebas finales, correcciones y revisión de seguridad.",
+     "parte": 0
     },
     {
      "proy": "B2B",
      "fase": "B2B · Travel Booking & Distribution: base del portal",
-     "txt": "Usuarios por agencia con roles y carga de la base de datos de agencias de AVM.",
-     "parte": 1
+     "txt": "Precios: prioridad de reglas y simulador del precio final.",
+     "parte": 0
     }
    ]
   },
@@ -275,111 +275,6 @@
    "n": 13,
    "ini": "2027-02-08",
    "fin": "2027-02-12",
-   "hito": false,
-   "tareas": [
-    {
-     "proy": "B2C",
-     "fase": "B2C · Identidad visual, pruebas y salida",
-     "txt": "Identidad visual de la marca B2C aplicada a todo el sitio.",
-     "parte": 2
-    },
-    {
-     "proy": "B2B",
-     "fase": "B2B · Travel Booking & Distribution: base del portal",
-     "txt": "Usuarios por agencia con roles y carga de la base de datos de agencias de AVM.",
-     "parte": 2
-    }
-   ]
-  },
-  {
-   "t": "sem",
-   "n": 14,
-   "ini": "2027-02-15",
-   "fin": "2027-02-19",
-   "hito": false,
-   "tareas": [
-    {
-     "proy": "B2C",
-     "fase": "B2C · Identidad visual, pruebas y salida",
-     "txt": "Pruebas de punta a punta con el equipo de AVM y correcciones.",
-     "parte": 1
-    },
-    {
-     "proy": "B2B",
-     "fase": "B2B · Travel Booking & Distribution: base del portal",
-     "txt": "Precios por agencia, grupo, producto y proveedor: reglas de markup y comisión.",
-     "parte": 1
-    }
-   ]
-  },
-  {
-   "t": "sem",
-   "n": 15,
-   "ini": "2027-02-22",
-   "fin": "2027-02-26",
-   "hito": false,
-   "tareas": [
-    {
-     "proy": "B2C",
-     "fase": "B2C · Identidad visual, pruebas y salida",
-     "txt": "Pruebas de punta a punta con el equipo de AVM y correcciones.",
-     "parte": 2
-    },
-    {
-     "proy": "B2B",
-     "fase": "B2B · Travel Booking & Distribution: base del portal",
-     "txt": "Precios por agencia, grupo, producto y proveedor: reglas de markup y comisión.",
-     "parte": 2
-    }
-   ]
-  },
-  {
-   "t": "sem",
-   "n": 16,
-   "ini": "2027-03-01",
-   "fin": "2027-03-05",
-   "hito": false,
-   "tareas": [
-    {
-     "proy": "B2C",
-     "fase": "B2C · Identidad visual, pruebas y salida",
-     "txt": "Pruebas finales, correcciones y revisión de seguridad.",
-     "parte": 1
-    },
-    {
-     "proy": "B2B",
-     "fase": "B2B · Travel Booking & Distribution: base del portal",
-     "txt": "Precios: prioridad de reglas y simulador del precio final.",
-     "parte": 1
-    }
-   ]
-  },
-  {
-   "t": "sem",
-   "n": 17,
-   "ini": "2027-03-08",
-   "fin": "2027-03-12",
-   "hito": false,
-   "tareas": [
-    {
-     "proy": "B2C",
-     "fase": "B2C · Identidad visual, pruebas y salida",
-     "txt": "Pruebas finales, correcciones y revisión de seguridad.",
-     "parte": 2
-    },
-    {
-     "proy": "B2B",
-     "fase": "B2B · Travel Booking & Distribution: base del portal",
-     "txt": "Precios: prioridad de reglas y simulador del precio final.",
-     "parte": 2
-    }
-   ]
-  },
-  {
-   "t": "sem",
-   "n": 18,
-   "ini": "2027-03-15",
-   "fin": "2027-03-19",
    "hito": true,
    "tareas": [
     {
@@ -399,15 +294,15 @@
    "t": "avm",
    "id": "avm05",
    "txt": "Contrato de uso de API con TBO firmado y credenciales de prueba entregadas.",
-   "fecha": "2027-03-22",
+   "fecha": "2027-02-15",
    "modo": "antes",
    "opc": false
   },
   {
    "t": "sem",
-   "n": 19,
-   "ini": "2027-03-23",
-   "fin": "2027-03-26",
+   "n": 14,
+   "ini": "2027-02-15",
+   "fin": "2027-02-19",
    "hito": false,
    "tareas": [
     {
@@ -420,9 +315,9 @@
   },
   {
    "t": "sem",
-   "n": 20,
-   "ini": "2027-03-29",
-   "fin": "2027-04-02",
+   "n": 15,
+   "ini": "2027-02-22",
+   "fin": "2027-02-26",
    "hito": false,
    "tareas": [
     {
@@ -435,9 +330,9 @@
   },
   {
    "t": "sem",
-   "n": 21,
-   "ini": "2027-04-05",
-   "fin": "2027-04-09",
+   "n": 16,
+   "ini": "2027-03-01",
+   "fin": "2027-03-05",
    "hito": false,
    "tareas": [
     {
@@ -450,9 +345,9 @@
   },
   {
    "t": "sem",
-   "n": 22,
-   "ini": "2027-04-12",
-   "fin": "2027-04-16",
+   "n": 17,
+   "ini": "2027-03-08",
+   "fin": "2027-03-12",
    "hito": false,
    "tareas": [
     {
@@ -468,8 +363,8 @@
    "id": "cert-TBO",
    "prov": "TBO",
    "txt": "Certificación de TBO: revisión del proveedor, en paralelo con lo siguiente. Estimado: 3 semanas.",
-   "ini": "2027-04-19",
-   "fin": "2027-05-07"
+   "ini": "2027-03-15",
+   "fin": "2027-04-02"
   },
   {
    "t": "fase",
@@ -478,9 +373,9 @@
   },
   {
    "t": "sem",
-   "n": 23,
-   "ini": "2027-04-19",
-   "fin": "2027-04-23",
+   "n": 18,
+   "ini": "2027-03-15",
+   "fin": "2027-03-19",
    "hito": false,
    "tareas": [
     {
@@ -493,9 +388,9 @@
   },
   {
    "t": "sem",
-   "n": 24,
-   "ini": "2027-04-26",
-   "fin": "2027-04-30",
+   "n": 19,
+   "ini": "2027-03-23",
+   "fin": "2027-03-26",
    "hito": false,
    "tareas": [
     {
@@ -515,15 +410,15 @@
    "t": "avm",
    "id": "avm06",
    "txt": "Contrato de uso de API con Omnibees firmado y credenciales de prueba entregadas.",
-   "fecha": "2027-05-03",
+   "fecha": "2027-03-29",
    "modo": "antes",
    "opc": false
   },
   {
    "t": "sem",
-   "n": 25,
-   "ini": "2027-05-03",
-   "fin": "2027-05-07",
+   "n": 20,
+   "ini": "2027-03-29",
+   "fin": "2027-04-02",
    "hito": false,
    "tareas": [
     {
@@ -536,9 +431,9 @@
   },
   {
    "t": "sem",
-   "n": 26,
-   "ini": "2027-05-11",
-   "fin": "2027-05-14",
+   "n": 21,
+   "ini": "2027-04-05",
+   "fin": "2027-04-09",
    "hito": false,
    "tareas": [
     {
@@ -551,9 +446,9 @@
   },
   {
    "t": "sem",
-   "n": 27,
-   "ini": "2027-05-17",
-   "fin": "2027-05-21",
+   "n": 22,
+   "ini": "2027-04-12",
+   "fin": "2027-04-16",
    "hito": false,
    "tareas": [
     {
@@ -566,9 +461,9 @@
   },
   {
    "t": "sem",
-   "n": 28,
-   "ini": "2027-05-24",
-   "fin": "2027-05-28",
+   "n": 23,
+   "ini": "2027-04-19",
+   "fin": "2027-04-23",
    "hito": false,
    "tareas": [
     {
@@ -584,8 +479,8 @@
    "id": "cert-Omnibees",
    "prov": "Omnibees",
    "txt": "Certificación de Omnibees: revisión del proveedor, en paralelo con lo siguiente. Estimado: 3 semanas.",
-   "ini": "2027-05-31",
-   "fin": "2027-06-18"
+   "ini": "2027-04-26",
+   "fin": "2027-05-14"
   },
   {
    "t": "fase",
@@ -596,15 +491,15 @@
    "t": "avm",
    "id": "avm07",
    "txt": "Tercer proveedor de hoteles elegido, con contrato de uso de API firmado y credenciales de prueba entregadas.",
-   "fecha": "2027-05-31",
+   "fecha": "2027-04-26",
    "modo": "antes",
    "opc": false
   },
   {
    "t": "sem",
-   "n": 29,
-   "ini": "2027-06-01",
-   "fin": "2027-06-04",
+   "n": 24,
+   "ini": "2027-04-26",
+   "fin": "2027-04-30",
    "hito": false,
    "tareas": [
     {
@@ -617,9 +512,9 @@
   },
   {
    "t": "sem",
-   "n": 30,
-   "ini": "2027-06-08",
-   "fin": "2027-06-11",
+   "n": 25,
+   "ini": "2027-05-03",
+   "fin": "2027-05-07",
    "hito": false,
    "tareas": [
     {
@@ -632,9 +527,9 @@
   },
   {
    "t": "sem",
-   "n": 31,
-   "ini": "2027-06-14",
-   "fin": "2027-06-18",
+   "n": 26,
+   "ini": "2027-05-11",
+   "fin": "2027-05-14",
    "hito": false,
    "tareas": [
     {
@@ -647,9 +542,9 @@
   },
   {
    "t": "sem",
-   "n": 32,
-   "ini": "2027-06-21",
-   "fin": "2027-06-25",
+   "n": 27,
+   "ini": "2027-05-17",
+   "fin": "2027-05-21",
    "hito": false,
    "tareas": [
     {
@@ -665,8 +560,8 @@
    "id": "cert-Hoteles 3",
    "prov": "Hoteles 3",
    "txt": "Certificación de Hoteles 3: revisión del proveedor, en paralelo con lo siguiente. Estimado: 3 semanas.",
-   "ini": "2027-06-28",
-   "fin": "2027-07-16"
+   "ini": "2027-05-24",
+   "fin": "2027-06-11"
   },
   {
    "t": "fase",
@@ -677,15 +572,15 @@
    "t": "avm",
    "id": "avm08",
    "txt": "AVM tiene listo el catálogo completo de producto propio que va a cargar: hoteles, traslados, actividades y circuitos, con tarifas y temporadas.",
-   "fecha": "2027-06-28",
+   "fecha": "2027-05-24",
    "modo": "antes",
    "opc": false
   },
   {
    "t": "sem",
-   "n": 33,
-   "ini": "2027-06-28",
-   "fin": "2027-07-02",
+   "n": 28,
+   "ini": "2027-05-24",
+   "fin": "2027-05-28",
    "hito": false,
    "tareas": [
     {
@@ -705,66 +600,36 @@
    "t": "avm",
    "id": "avm09",
    "txt": "Proveedor de asistencia médica elegido, con acuerdo firmado y credenciales de prueba.",
-   "fecha": "2027-07-05",
+   "fecha": "2027-05-31",
    "modo": "antes",
    "opc": false
   },
   {
    "t": "sem",
-   "n": 34,
-   "ini": "2027-07-06",
-   "fin": "2027-07-09",
+   "n": 29,
+   "ini": "2027-06-01",
+   "fin": "2027-06-04",
    "hito": false,
    "tareas": [
     {
      "proy": "B2B",
      "fase": "B2B · Asistencia médica",
-     "txt": "Asistencia médica: conexión, autenticación, planes y tarifas.",
+     "txt": "Asistencia médica: conexión, planes, tarifas y cotización por días, edades y destino.",
      "parte": 0
     }
    ]
   },
   {
    "t": "sem",
-   "n": 35,
-   "ini": "2027-07-12",
-   "fin": "2027-07-16",
+   "n": 30,
+   "ini": "2027-06-08",
+   "fin": "2027-06-11",
    "hito": false,
    "tareas": [
     {
      "proy": "B2B",
      "fase": "B2B · Asistencia médica",
-     "txt": "Asistencia médica: cotización por días, edades y destino.",
-     "parte": 0
-    }
-   ]
-  },
-  {
-   "t": "sem",
-   "n": 36,
-   "ini": "2027-07-19",
-   "fin": "2027-07-23",
-   "hito": false,
-   "tareas": [
-    {
-     "proy": "B2B",
-     "fase": "B2B · Asistencia médica",
-     "txt": "Asistencia médica: emisión, cancelación y voucher dentro del expediente.",
-     "parte": 0
-    }
-   ]
-  },
-  {
-   "t": "sem",
-   "n": 37,
-   "ini": "2027-07-26",
-   "fin": "2027-07-30",
-   "hito": false,
-   "tareas": [
-    {
-     "proy": "B2B",
-     "fase": "B2B · Asistencia médica",
-     "txt": "Asistencia médica: pruebas, correcciones y envío a certificación.",
+     "txt": "Asistencia médica: emisión, cancelación, voucher en el expediente, pruebas y envío a certificación.",
      "parte": 0
     }
    ]
@@ -774,8 +639,8 @@
    "id": "cert-Asistencia médica",
    "prov": "Asistencia médica",
    "txt": "Certificación de Asistencia médica: revisión del proveedor, en paralelo con lo siguiente. Estimado: 2 semanas.",
-   "ini": "2027-08-02",
-   "fin": "2027-08-13"
+   "ini": "2027-06-14",
+   "fin": "2027-06-25"
   },
   {
    "t": "fase",
@@ -786,15 +651,15 @@
    "t": "avm",
    "id": "avm10",
    "txt": "Pasarela de pagos del B2B aprobada y lista para integrar, a nombre de AVM.",
-   "fecha": "2027-08-02",
+   "fecha": "2027-06-14",
    "modo": "antes",
    "opc": false
   },
   {
    "t": "sem",
-   "n": 38,
-   "ini": "2027-08-02",
-   "fin": "2027-08-06",
+   "n": 31,
+   "ini": "2027-06-14",
+   "fin": "2027-06-18",
    "hito": false,
    "tareas": [
     {
@@ -807,9 +672,9 @@
   },
   {
    "t": "sem",
-   "n": 39,
-   "ini": "2027-08-09",
-   "fin": "2027-08-13",
+   "n": 32,
+   "ini": "2027-06-21",
+   "fin": "2027-06-25",
    "hito": false,
    "tareas": [
     {
@@ -822,9 +687,9 @@
   },
   {
    "t": "sem",
-   "n": 40,
-   "ini": "2027-08-17",
-   "fin": "2027-08-20",
+   "n": 33,
+   "ini": "2027-06-28",
+   "fin": "2027-07-02",
    "hito": false,
    "tareas": [
     {
@@ -837,9 +702,9 @@
   },
   {
    "t": "sem",
-   "n": 41,
-   "ini": "2027-08-23",
-   "fin": "2027-08-27",
+   "n": 34,
+   "ini": "2027-07-06",
+   "fin": "2027-07-09",
    "hito": false,
    "tareas": [
     {
@@ -857,9 +722,9 @@
   },
   {
    "t": "sem",
-   "n": 42,
-   "ini": "2027-08-30",
-   "fin": "2027-09-03",
+   "n": 35,
+   "ini": "2027-07-12",
+   "fin": "2027-07-16",
    "hito": false,
    "tareas": [
     {
@@ -872,9 +737,9 @@
   },
   {
    "t": "sem",
-   "n": 43,
-   "ini": "2027-09-06",
-   "fin": "2027-09-10",
+   "n": 36,
+   "ini": "2027-07-19",
+   "fin": "2027-07-23",
    "hito": false,
    "tareas": [
     {
@@ -887,9 +752,9 @@
   },
   {
    "t": "sem",
-   "n": 44,
-   "ini": "2027-09-13",
-   "fin": "2027-09-17",
+   "n": 37,
+   "ini": "2027-07-26",
+   "fin": "2027-07-30",
    "hito": false,
    "tareas": [
     {
@@ -902,9 +767,9 @@
   },
   {
    "t": "sem",
-   "n": 45,
-   "ini": "2027-09-20",
-   "fin": "2027-09-24",
+   "n": 38,
+   "ini": "2027-08-02",
+   "fin": "2027-08-06",
    "hito": false,
    "tareas": [
     {
@@ -924,15 +789,15 @@
    "t": "avm",
    "id": "avm11",
    "txt": "AVM elige 2 o 3 agencias piloto.",
-   "fecha": "2027-09-27",
+   "fecha": "2027-08-09",
    "modo": "antes",
    "opc": false
   },
   {
    "t": "sem",
-   "n": 46,
-   "ini": "2027-09-27",
-   "fin": "2027-10-01",
+   "n": 39,
+   "ini": "2027-08-09",
+   "fin": "2027-08-13",
    "hito": false,
    "tareas": [
     {
@@ -945,9 +810,9 @@
   },
   {
    "t": "sem",
-   "n": 47,
-   "ini": "2027-10-04",
-   "fin": "2027-10-08",
+   "n": 40,
+   "ini": "2027-08-17",
+   "fin": "2027-08-20",
    "hito": false,
    "tareas": [
     {
@@ -960,9 +825,9 @@
   },
   {
    "t": "sem",
-   "n": 48,
-   "ini": "2027-10-11",
-   "fin": "2027-10-15",
+   "n": 41,
+   "ini": "2027-08-23",
+   "fin": "2027-08-27",
    "hito": false,
    "tareas": [
     {
@@ -975,9 +840,9 @@
   },
   {
    "t": "sem",
-   "n": 49,
-   "ini": "2027-10-19",
-   "fin": "2027-10-22",
+   "n": 42,
+   "ini": "2027-08-30",
+   "fin": "2027-09-03",
    "hito": true,
    "tareas": [
     {
@@ -995,9 +860,9 @@
   },
   {
    "t": "sem",
-   "n": 50,
-   "ini": "2027-10-25",
-   "fin": "2027-10-29",
+   "n": 43,
+   "ini": "2027-09-06",
+   "fin": "2027-09-10",
    "hito": false,
    "tareas": [
     {
@@ -1010,9 +875,9 @@
   },
   {
    "t": "sem",
-   "n": 51,
-   "ini": "2027-11-02",
-   "fin": "2027-11-05",
+   "n": 44,
+   "ini": "2027-09-13",
+   "fin": "2027-09-17",
    "hito": false,
    "tareas": [
     {
@@ -1025,9 +890,9 @@
   },
   {
    "t": "sem",
-   "n": 52,
-   "ini": "2027-11-08",
-   "fin": "2027-11-12",
+   "n": 45,
+   "ini": "2027-09-20",
+   "fin": "2027-09-24",
    "hito": true,
    "tareas": [
     {
@@ -1058,106 +923,106 @@
    "nombre": "B2C · SEO, analítica y automatizaciones",
    "proy": "B2C",
    "ini": "2027-01-04",
-   "fin": "2027-01-29",
-   "semanas": 4
+   "fin": "2027-01-15",
+   "semanas": 2
   },
   {
    "nombre": "B2B · Travel Booking & Distribution: base del portal",
    "proy": "B2B",
    "ini": "2027-01-04",
-   "fin": "2027-03-12",
-   "semanas": 10
+   "fin": "2027-02-05",
+   "semanas": 5
   },
   {
    "nombre": "B2C · Identidad visual, pruebas y salida",
    "proy": "B2C",
-   "ini": "2027-02-01",
-   "fin": "2027-03-19",
-   "semanas": 7
+   "ini": "2027-01-18",
+   "fin": "2027-02-12",
+   "semanas": 4
   },
   {
    "nombre": "B2B · Integración TBO (hoteles)",
    "proy": "B2B",
-   "ini": "2027-03-23",
-   "fin": "2027-04-16",
+   "ini": "2027-02-15",
+   "fin": "2027-03-12",
    "semanas": 4
   },
   {
    "nombre": "B2B · Mapping: un solo catálogo",
    "proy": "B2B",
-   "ini": "2027-04-19",
-   "fin": "2027-04-30",
+   "ini": "2027-03-15",
+   "fin": "2027-03-26",
    "semanas": 2
   },
   {
    "nombre": "B2B · Integración Omnibees (hoteles)",
    "proy": "B2B",
-   "ini": "2027-05-03",
-   "fin": "2027-05-28",
+   "ini": "2027-03-29",
+   "fin": "2027-04-23",
    "semanas": 4
   },
   {
    "nombre": "B2B · Integración del tercer proveedor de hoteles",
    "proy": "B2B",
-   "ini": "2027-06-01",
-   "fin": "2027-06-25",
+   "ini": "2027-04-26",
+   "fin": "2027-05-21",
    "semanas": 4
   },
   {
    "nombre": "B2B · Producto propio",
    "proy": "B2B",
-   "ini": "2027-06-28",
-   "fin": "2027-07-02",
+   "ini": "2027-05-24",
+   "fin": "2027-05-28",
    "semanas": 1
   },
   {
    "nombre": "B2B · Asistencia médica",
    "proy": "B2B",
-   "ini": "2027-07-06",
-   "fin": "2027-07-30",
-   "semanas": 4
+   "ini": "2027-06-01",
+   "fin": "2027-06-11",
+   "semanas": 2
   },
   {
    "nombre": "B2B · Pagos y crédito de agencia",
    "proy": "B2B",
-   "ini": "2027-08-02",
-   "fin": "2027-08-27",
+   "ini": "2027-06-14",
+   "fin": "2027-07-09",
    "semanas": 4
   },
   {
    "nombre": "B2B · Cotizaciones, vouchers y operación",
    "proy": "B2B",
-   "ini": "2027-08-30",
-   "fin": "2027-09-24",
+   "ini": "2027-07-12",
+   "fin": "2027-08-06",
    "semanas": 4
   },
   {
    "nombre": "B2B · Pruebas y salida a producción",
    "proy": "B2B",
-   "ini": "2027-09-27",
-   "fin": "2027-10-22",
+   "ini": "2027-08-09",
+   "fin": "2027-09-03",
    "semanas": 4
   },
   {
    "nombre": "White label · El B2C con los proveedores del B2B",
    "proy": "WL",
-   "ini": "2027-10-25",
-   "fin": "2027-11-12",
+   "ini": "2027-09-06",
+   "fin": "2027-09-24",
    "semanas": 3
   }
  ],
  "hitos": [
   {
    "txt": "Salida a producción del sitio B2C (requiere la aprobación de LiteAPI en producción).",
-   "fecha": "2027-03-19"
+   "fecha": "2027-02-12"
   },
   {
    "txt": "Salida a producción de Travel Booking & Distribution con las primeras agencias.",
-   "fecha": "2027-10-22"
+   "fecha": "2027-09-03"
   },
   {
    "txt": "Pruebas y salida: el B2C vende con LiteAPI y con los proveedores del B2B.",
-   "fecha": "2027-11-12"
+   "fecha": "2027-09-24"
   }
  ]
 }

@@ -199,10 +199,8 @@ plan = [
 
  ("fase", "B2B · Asistencia médica", "B2B"),
  ("avm", "Proveedor de asistencia médica elegido, con acuerdo firmado y credenciales de prueba."),
- *integracion("Asistencia médica", 2, ["Asistencia médica: conexión, autenticación, planes y tarifas.",
-                                      "Asistencia médica: cotización por días, edades y destino.",
-                                      "Asistencia médica: emisión, cancelación y voucher dentro del expediente.",
-                                      "Asistencia médica: pruebas, correcciones y envío a certificación."]),
+ *integracion("Asistencia médica", 2, ["Asistencia médica: conexión, planes, tarifas y cotización por días, edades y destino.",
+                                      "Asistencia médica: emisión, cancelación, voucher en el expediente, pruebas y envío a certificación."]),
 
  ("fase", "B2B · Pagos y crédito de agencia", "B2B"),
  ("avm", "Pasarela de pagos del B2B aprobada y lista para integrar, a nombre de AVM."),
@@ -269,8 +267,7 @@ def mitades(pista):
             pre.append(it)
             if it[0] == "fase": fz, proy = it[1], it[2]
         else:
-            for parte in (1, 2):
-                out.append(dict(pre=pre if parte == 1 else [], txt=it[1], hito=it[0] == "hito", fase=fz, proy=proy, parte=parte))
+            out.append(dict(pre=pre, txt=it[1], hito=it[0] == "hito", fase=fz, proy=proy, parte=0))
             pre = []
     return out
 
@@ -289,7 +286,7 @@ def paralelo(c, b):
             for p in h["pre"]: marca(p)
         ini, vie = semana()
         if len(lote) == 2:
-            txt = "".join(f'<span class="par"><em class="pt {h["proy"].lower()}">{h["proy"]}</em>{h["txt"]} <i>({"1.ª" if h["parte"] == 1 else "2.ª"} parte)</i></span>' for h in lote)
+            txt = "".join(f'<span class="par"><em class="pt {h["proy"].lower()}">{h["proy"]}</em>{h["txt"]}</span>' for h in lote)
         else:
             h = lote[0]; txt = h["txt"] + ("" if h["parte"] == 0 else f' <i>({"1.ª" if h["parte"] == 1 else "2.ª"} parte)</i>')
         es_hito = any(h["hito"] and h["parte"] in (0, 2) for h in lote)
@@ -519,7 +516,7 @@ body = f"""</style>
       <li class="wait"><time>~3 semanas</time><b>Certificación</b><span>La revisa el proveedor. Mientras tanto se avanza con lo siguiente.</span></li>
       <li><time>Al aprobar</time><b>Producción</b><span>El proveedor queda activo para las agencias.</span></li>
     </ul>
-    <p class="note">Las 4 semanas empiezan cuando AVM entrega el contrato de uso de la API firmado y las credenciales de prueba. La certificación depende de cada proveedor y de sus tiempos de aprobación; aquí se estima en 3 semanas. <b>Cada proveedor nuevo que AVM quiera sumar toma 1 mes adicional</b> desde la entrega de sus credenciales de prueba.</p>
+    <p class="note"><b>Asistencia médica toma 2 semanas</b> (conexión y cotización; emisión, cancelación y pruebas). Las semanas de cada integración empiezan cuando AVM entrega el contrato de uso de la API firmado y las credenciales de prueba. La certificación depende de cada proveedor y de sus tiempos de aprobación; aquí se estima en 3 semanas. <b>Cada proveedor nuevo que AVM quiera sumar toma 1 mes adicional</b> desde la entrega de sus credenciales de prueba.</p>
   </section>
 
   <section id="mapping">
