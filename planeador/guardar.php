@@ -8,16 +8,23 @@ function salir($code, $datos) { http_response_code($code); echo json_encode($dat
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') salir(405, ['ok' => false, 'error' => 'Método no permitido']);
 
-$archivoClave = __DIR__ . '/clave.php';
-if (!is_file($archivoClave)) salir(500, ['ok' => false, 'error' => 'Falta clave.php en el servidor']);
-$hash = require $archivoClave;
-if (!is_string($hash) || $hash === '') salir(500, ['ok' => false, 'error' => 'clave.php no es válido']);
-
 $crudo = file_get_contents('php://input', false, null, 0, 300000);
 $entrada = json_decode($crudo, true);
 if (!is_array($entrada)) salir(400, ['ok' => false, 'error' => 'Datos inválidos']);
-
 $clave = isset($entrada['clave']) ? (string) $entrada['clave'] : '';
+
+$archivoClave = __DIR__ . '/clave.php';
+if (!is_file($archivoClave)) {
+    // Primer uso: la primera clave que se guarda queda como clave de edición.
+    // Solo se permite mientras no exista estado.json (justo después de subir la carpeta).
+    if (is_file(__DIR__ . '/estado.json')) salir(500, ['ok' => false, 'error' => 'Falta clave.php en el servidor']);
+    if (mb_strlen($clave) < 8) salir(400, ['ok' => false, 'error' => 'La clave debe tener al menos 8 caracteres']);
+    $nuevo = "<?php return " . var_export(password_hash($clave, PASSWORD_DEFAULT), true) . ";\n";
+    if (file_put_contents($archivoClave, $nuevo, LOCK_EX) === false) salir(500, ['ok' => false, 'error' => 'No se pudo crear clave.php: revisa los permisos de la carpeta']);
+}
+$hash = require $archivoClave;
+if (!is_string($hash) || $hash === '') salir(500, ['ok' => false, 'error' => 'clave.php no es válido']);
+
 if ($clave === '' || !password_verify($clave, $hash)) { sleep(2); salir(403, ['ok' => false, 'error' => 'Clave incorrecta']); }
 
 $e = isset($entrada['estado']) && is_array($entrada['estado']) ? $entrada['estado'] : null;
