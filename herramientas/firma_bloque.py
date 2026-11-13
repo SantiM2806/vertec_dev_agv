@@ -3,7 +3,7 @@ Lo importa herramientas/propuesta-avm.py. Necesita firmar.php junto a la propues
 
 FIRMA_CSS = """
 /* Firma electrónica */
-.fbox [hidden] { display: none !important }
+.fbox [hidden], .fb-descarga[hidden] { display: none !important }
 .firmas { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin-top: 28px }
 .fbox { border: 1px solid var(--line); background: var(--card); border-radius: 16px; padding: 18px; display: grid; gap: 12px; align-content: start; min-width: 0 }
 .fbox.firmado { border-color: var(--signal) }
