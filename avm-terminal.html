@@ -983,7 +983,7 @@ label.btn{cursor:pointer}
 .fsoc a:hover{background:var(--ink);color:var(--paper)}
 .fsoc svg{width:19px;height:19px}
 /* ---------- Estilos del buscador ---------- */
-.pasos-head,.pasos-nav,.voz{display:none}
+.pasos-head,.pasos-nav{display:none}
 /* Iconos y cajas */
 #buscar[data-estilo="iconos"] .ptabs{justify-content:center;gap:clamp(4px,1.6vw,18px);padding:0 4px 14px}
 #buscar[data-estilo="iconos"] .ptab{background:transparent;border-radius:0;min-width:72px;padding:0 4px 6px;gap:8px;color:var(--ink);border-bottom:2px solid transparent}
@@ -1011,33 +1011,31 @@ label.btn{cursor:pointer}
 #buscar[data-estilo="tablero"] :is(.perf,.stub-code){display:none}
 #buscar[data-estilo="tablero"] .stub{grid-template-columns:minmax(0,1fr) auto;background:color-mix(in srgb,var(--soft) 55%,var(--card))}
 #buscar[data-estilo="tablero"] .go{border-radius:10px;padding:16px 30px}
-/* Frase */
+/* Frase: un cuadro para escribir o dictar el viaje */
+.frase-box{display:none}
 #buscar[data-estilo="frase"] .ptabs{gap:6px;padding:0 0 12px}
 #buscar[data-estilo="frase"] .ptab{flex-direction:row;gap:7px;border-radius:999px;padding:9px 15px;min-width:0;background:var(--card);box-shadow:0 0 0 1px var(--line)}
 #buscar[data-estilo="frase"] .ptab svg,#buscar[data-estilo="frase"] .ptab[aria-selected="true"] svg{width:16px;height:16px;padding:0;margin:0;background:none;color:inherit}
 #buscar[data-estilo="frase"] .ptab[aria-selected="true"]{background:var(--ink);color:var(--paper)}
-#buscar[data-estilo="frase"] .pass-main{display:flex;flex-wrap:wrap;align-items:baseline;column-gap:.32em;row-gap:2px;padding:24px clamp(18px,3vw,36px) 18px;font:300 clamp(21px,2.5vw,31px)/1.75 var(--f-display);letter-spacing:-.01em;color:var(--ink)}
-#buscar[data-estilo="frase"] :is(.opts,.fields){display:contents}
-#buscar[data-estilo="frase"] .fields .box,#buscar[data-estilo="frase"] .opt{display:inline-flex;flex-direction:row;align-items:baseline;gap:.32em;border:0;padding:0;background:none;border-radius:0;min-width:0;position:relative}
-#buscar[data-estilo="frase"] [data-pre]::before{content:attr(data-pre);color:var(--muted);white-space:nowrap}
-#buscar[data-estilo="frase"] .fields .box :is(label,small),#buscar[data-estilo="frase"] .opt::after,#buscar[data-estilo="frase"] .dr :is(small,i,.dcount){display:none}
-#buscar[data-estilo="frase"] .fields .box input,#buscar[data-estilo="frase"] .fields .box select,#buscar[data-estilo="frase"] .opt select{font:700 1em/1.3 var(--f-display);letter-spacing:-.015em;color:var(--ink);border:0;border-bottom:2px solid var(--signal);border-radius:0;background:transparent;padding:0 2px;min-height:0;width:auto;field-sizing:content;min-width:5ch;max-width:15ch}
-#buscar[data-estilo="frase"] .fields .box input::placeholder{color:var(--muted);font-weight:500}
-#buscar[data-estilo="frase"] .dr .drb{display:inline-flex;flex-wrap:nowrap;gap:.32em;min-height:0;padding:0;width:auto;font:inherit;color:inherit;align-items:baseline}
-#buscar[data-estilo="frase"] .dr .dslot{display:inline}
-#buscar[data-estilo="frase"] .dr .dslot b{font:700 1em/1.3 var(--f-display);border-bottom:2px solid var(--signal);padding:0 2px}
-#buscar[data-estilo="frase"] .dr .darr{font-size:0}
-#buscar[data-estilo="frase"] .dr .darr::after{content:"al";font-size:clamp(21px,2.5vw,31px);color:var(--muted)}
-#buscar[data-estilo="frase"] .combo-list{font-size:15px;line-height:1.4;letter-spacing:0;min-width:300px}
-#buscar[data-estilo="frase"] .voz{display:flex;order:99;flex-basis:100%;align-items:center;gap:12px;margin-top:14px;font:400 14px/1.4 var(--f-body);letter-spacing:0;color:var(--muted)}
-.voz .mic{flex:none;width:46px;height:46px;border-radius:50%;border:0;background:var(--ink);color:var(--paper);display:grid;place-items:center;cursor:pointer}
-.voz .mic svg{width:20px;height:20px}
-.voz .mic[aria-pressed="true"]{background:var(--danger);animation:mic 1.2s ease-in-out infinite}
+#buscar[data-estilo="frase"] .frase-box{display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:10px;align-items:center;padding:20px clamp(16px,2.4vw,28px) 8px}
+.frase-box textarea{resize:none;width:100%;border:1.5px solid var(--line);border-radius:18px;padding:15px 18px;font:500 clamp(17px,1.7vw,20px)/1.4 var(--f-display);color:var(--ink);background:var(--card);min-height:60px;field-sizing:content;max-height:160px}
+.frase-box textarea:focus{outline:none;border-color:var(--ink)}
+.frase-box textarea::placeholder{color:var(--muted);font-weight:400}
+.frase-box .mic{flex:none;width:52px;height:52px;border-radius:50%;border:1.5px solid var(--line);background:var(--card);color:var(--ink);display:grid;place-items:center;cursor:pointer}
+.frase-box .mic:hover{border-color:var(--ink)}
+.frase-box .mic svg{width:22px;height:22px}
+.frase-box .mic[aria-pressed="true"]{background:var(--danger);border-color:var(--danger);color:#FFFFFF;animation:mic 1.2s ease-in-out infinite}
 @keyframes mic{50%{box-shadow:0 0 0 10px color-mix(in srgb,var(--danger) 18%,transparent)}}
-.voz q{color:var(--ink);font-style:italic}
+.frase-box .go{border-radius:999px;padding:17px 24px}
+.frase-msg{grid-column:1/-1;margin:2px 6px 0;font-size:13.5px;line-height:1.45;color:var(--muted)}
+.frase-msg q{color:var(--ink);font-style:italic}
+.frase-msg b{color:var(--ink);font-weight:600}
+.frase-msg .linkbtn{font-size:13.5px}
+#buscar[data-estilo="frase"]:not([data-frase="abierto"]) :is(#passMain,.who,.who-err,.who-ok,.perf,.stub,.pass-note){display:none}
+#buscar[data-estilo="frase"] #passMain{padding-top:8px}
 #buscar[data-estilo="frase"] :is(.perf,.stub-code){display:none}
 #buscar[data-estilo="frase"] .stub{grid-template-columns:minmax(0,1fr) auto}
-#buscar[data-estilo="frase"] .go{border-radius:999px;padding:15px 26px}
+#buscar[data-estilo="frase"] .stub .go{border-radius:999px;padding:15px 26px}
 /* Paso a paso */
 #buscar[data-estilo="pasos"] .ptabs{gap:6px;padding:0 0 12px}
 #buscar[data-estilo="pasos"] .ptab{flex-direction:row;gap:7px;border-radius:999px;padding:9px 15px;min-width:0;background:var(--card);box-shadow:0 0 0 1px var(--line)}
@@ -1066,8 +1064,6 @@ label.btn{cursor:pointer}
   #buscar[data-estilo="tablero"] .fields .box:last-child{border-bottom:0}
   #buscar[data-estilo="iconos"] .ptabs{justify-content:flex-start}
   #buscar[data-estilo="iconos"] .ptab svg{width:42px;height:42px;padding:11px}
-  #buscar[data-estilo="frase"] .pass-main{font-size:20px}
-  #buscar[data-estilo="frase"] .dr .darr::after{font-size:20px}
 }
 /* ---------- Diseño del inicio: modelos de banner, módulos y testimonios ---------- */
 .mod-off{display:none!important}
@@ -1166,6 +1162,7 @@ label.btn{cursor:pointer}
     <div class="ptabs" role="tablist" aria-label="Producto" id="ptabs"></div>
     <form class="pass" id="searchForm" novalidate>
       <div class="pasos-head" id="pasosHead" aria-live="polite"></div>
+      <div class="frase-box" id="fraseBox"><label class="sr" for="fraseTxt">Cuéntanos tu viaje</label><textarea id="fraseTxt" rows="1" placeholder="¿A dónde quieres viajar? Ej.: hotel en Cartagena del 12 al 16 de diciembre, somos 2 adultos y 1 niño"></textarea><button type="button" class="mic" id="micBtn" aria-pressed="false" aria-label="Dictar el viaje" hidden></button><button type="button" class="go" id="fraseGo">Cotizar <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8h10M9 4l4 4-4 4"/></svg></button><p class="frase-msg" id="vozMsg" aria-live="polite"></p></div>
       <div class="pass-main" id="passMain"></div>
       <div class="pasos-nav" id="pasosNav"><button type="button" class="ghost" id="pasoAtras">← Atrás</button><button type="button" class="go" id="pasoSig">Siguiente <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8h10M9 4l4 4-4 4"/></svg></button></div>
       <div class="who" id="who">
@@ -2926,38 +2923,45 @@ function drawTests() {
 /* ---------- Estilos del buscador: frase (con voz), paso a paso y los que son solo de forma ---------- */
 const BUSCADORES = [
   ["iconos", "Iconos y cajas", "Productos con íconos redondos y campos en cajas.", '<i style="left:20%;top:12%;width:12px;height:12px;border-radius:50%;background:var(--signal)"></i><i style="left:38%;top:12%;width:12px;height:12px;border-radius:50%;background:var(--line)"></i><i style="left:56%;top:12%;width:12px;height:12px;border-radius:50%;background:var(--line)"></i><i style="left:74%;top:12%;width:12px;height:12px;border-radius:50%;background:var(--line)"></i><i class="bx" style="left:6%;width:34%;top:48%;height:26%"></i><i class="bx" style="left:43%;width:22%;top:48%;height:26%"></i><i style="left:68%;right:6%;top:48%;height:26%;border-radius:9px;background:var(--signal)"></i>'],
-  ["frase", "Frase con voz", "Se completa como una oración, o se dicta con el micrófono.", '<i class="ln" style="left:8%;top:22%;width:22%"></i><i style="left:33%;top:20%;width:24%;height:3px;background:var(--signal);top:28%"></i><i class="ln" style="left:60%;top:22%;width:12%"></i><i style="left:8%;top:52%;width:18%;height:3px;background:var(--signal)"></i><i class="ln" style="left:29%;top:46%;width:10%"></i><i style="left:42%;top:52%;width:18%;height:3px;background:var(--signal)"></i><i style="right:8%;top:58%;width:16px;height:16px;border-radius:50%;background:var(--ink)"></i>'],
+  ["frase", "Escribe o dicta", "Un cuadro donde el viajero escribe o dicta su viaje y se llenan los datos solos.", '<i class="ln" style="left:8%;top:22%;width:22%"></i><i style="left:33%;top:20%;width:24%;height:3px;background:var(--signal);top:28%"></i><i class="ln" style="left:60%;top:22%;width:12%"></i><i style="left:8%;top:52%;width:18%;height:3px;background:var(--signal)"></i><i class="ln" style="left:29%;top:46%;width:10%"></i><i style="left:42%;top:52%;width:18%;height:3px;background:var(--signal)"></i><i style="right:8%;top:58%;width:16px;height:16px;border-radius:50%;background:var(--ink)"></i>'],
   ["pasos", "Paso a paso", "Una pregunta a la vez. Muy cómodo en celular.", '<i style="left:8%;top:14%;width:26%;height:4px;background:var(--signal)"></i><i style="left:37%;top:14%;width:26%;height:4px;background:var(--line)"></i><i style="left:66%;top:14%;width:26%;height:4px;background:var(--line)"></i><i class="ln" style="left:8%;top:34%;width:44%;height:5px;opacity:.8"></i><i class="bx" style="left:8%;right:26%;top:56%;height:26%"></i><i style="right:8%;top:56%;width:18px;height:18px;border-radius:50%;background:var(--ink)"></i>'],
   ["tablero", "Tablero", "Datos grandes, como la pantalla de un aeropuerto.", '<i class="bx" style="left:6%;right:6%;top:14%;height:46%"></i><i style="left:12%;top:28%;width:18%;height:9px;background:var(--ink);opacity:.8"></i><i style="left:40%;top:28%;width:18%;height:9px;background:var(--ink);opacity:.8"></i><i style="left:68%;top:28%;width:12%;height:9px;background:var(--ink);opacity:.8"></i><i style="left:6%;right:6%;top:68%;height:18%;border-radius:4px;background:var(--ink)"></i>'],
   ["pase", "Pase de abordar", "El actual: el formulario arma un pase con su talón.", '<i class="bx" style="left:6%;right:6%;top:12%;height:76%"></i><i class="bx" style="left:12%;width:36%;top:22%;height:24%"></i><i class="bx" style="left:52%;right:12%;top:22%;height:24%"></i><i style="left:6%;right:6%;top:58%;height:0;border-top:1.5px dashed var(--muted)"></i><i class="ln" style="left:12%;top:70%;width:18%"></i><i style="right:12%;top:66%;width:22%;height:12px;background:var(--ink)"></i>']
 ];
-const FRASE = {
-  hoteles: { to: "Quiero alojarme en", d1: "del", rooms: "en", adults: "para", kids: "y" },
-  vuelos: { trip: "Busco un vuelo", from: "desde", to: "hacia", d1: "el", adults: "para", kids: "y", cabin: "en clase" },
-  actividades: { to: "Quiero explorar", d1: "del", people: "para" },
-  traslados: { trip: "Necesito un traslado", to: "desde el aeropuerto de", hotel: "hasta el hotel", d1: "llegando el", t1: "a las", pax: "para" },
-  asistencia: { region: "Necesito asistencia médica en", d1: "del", travelers: "para" }
-};
 const PASOS_T = { 1: { vuelos: "¿Desde dónde y hacia dónde vuelas?", traslados: "¿A qué aeropuerto llegas y a qué hotel vas?", asistencia: "¿A qué región viajas?", _: "¿A dónde quieres ir?" },
   2: { _: "¿Cuándo viajas y quiénes van?" }, 3: { _: "¿A dónde te enviamos las opciones?" } };
 const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
 const MIC = '<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><rect x="7" y="2.5" width="6" height="10" rx="3"/><path d="M4.5 9.5a5.5 5.5 0 0 0 11 0M10 15v2.5"/></svg>';
 let paso = 1, vozRec = null;
 function decorarBuscador() {
-  const sec = $("#buscar"), est = sec.dataset.estilo || "pase", main = $("#passMain");
-  if (!main.firstChild) return;
-  if (est === "frase") {
-    const T = FRASE[prod] || {}, keys = Object.keys(T);
-    $$(".fields .box, .opts .opt", main).forEach(el => {
-      const id = el.classList.contains("dr") ? "d1" : (el.querySelector("[id^='f-'],[id^='o-']")?.id || "").slice(2);
-      const k = keys.indexOf(id); el.style.order = k < 0 ? 50 : k; if (T[id]) el.dataset.pre = T[id]; else delete el.dataset.pre;
-    });
-    if (!$(".voz", main)) main.insertAdjacentHTML("beforeend", SR
-      ? `<div class="voz"><button type="button" class="mic" id="micBtn" aria-pressed="false" aria-label="Dictar la búsqueda">${MIC}</button><span id="vozMsg">O díctalo: <q>Quiero ir a Cartagena del 12 al 16 de diciembre, somos 2 adultos</q></span></div>`
-      : `<div class="voz"><span>Toca cada palabra subrayada para cambiarla.</span></div>`);
-    $("#micBtn")?.addEventListener("click", escuchar);
-  } else { $$("[data-pre]", main).forEach(el => { delete el.dataset.pre; el.style.order = ""; }); $(".voz", main)?.remove(); }
+  const sec = $("#buscar"), est = sec.dataset.estilo || "pase";
+  if (est === "frase" && !$("#vozMsg").innerHTML) fraseAyuda();
   if (est === "pasos") pintarPaso(); else delete sec.dataset.paso;
+}
+const FRASE_EJ = "Hotel en Cartagena del 12 al 16 de diciembre, somos 2 adultos y 1 niño";
+function fraseAyuda() {
+  $("#vozMsg").innerHTML = `${SR ? "Escríbelo o toca el micrófono y díctalo" : "Escríbelo con tus palabras"}: destino, fechas y quiénes viajan. <button type="button" class="linkbtn" id="fraseCampos">Prefiero llenar los campos</button>`;
+  $("#fraseCampos").addEventListener("click", () => { $("#buscar").dataset.frase = "abierto"; $("#passMain input")?.focus(); });
+}
+if (SR) { $("#micBtn").hidden = false; $("#micBtn").innerHTML = MIC; }
+$("#micBtn").addEventListener("click", escuchar);
+$("#fraseGo").addEventListener("click", () => entenderFrase($("#fraseTxt").value));
+$("#fraseTxt").addEventListener("keydown", e => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); entenderFrase(e.target.value); } });
+async function entenderFrase(texto) {
+  texto = String(texto || "").trim();
+  const msg = $("#vozMsg");
+  if (texto.length < 3) { msg.innerHTML = `Cuéntanos a dónde vas, por ejemplo: <q>${FRASE_EJ}</q>.`; $("#fraseTxt").focus(); return; }
+  $("#buscar").dataset.frase = "abierto";
+  msg.textContent = "Leyendo tu viaje…";
+  const r = await aplicarVoz(texto), v = V[prod], p = P[prod];
+  const f2 = p.fields.find(f => f.after === "d1" && f.type === "date");
+  const per = p.opts.filter(o => ["adults", "kids", "rooms", "people", "pax", "travelers"].includes(o) && !(o === "kids" && v[o] === "0")).map(o => (OPTS[o].list.find(([a]) => a === v[o]) || [])[1]).filter(Boolean);
+  const partes = [p.label, v.to || v.region || "", v.d1 ? fmt(v.d1) + (f2 && v[f2.id] ? " al " + fmt(v[f2.id]) : "") : "", per.join(", ")].filter(Boolean);
+  const falta = !(v.to || v.region) ? "el destino" : !v.d1 ? "las fechas" : "";
+  msg.innerHTML = `Entendí: <b>${esc(partes.join(" · "))}</b>. ${falta ? `Falta ${falta}: complétalo abajo.` : "Revisa los datos, deja tu celular y correo y busca."}`;
+  (falta === "las fechas" ? $("#f-range") : falta ? $("#passMain input") : $("#wPhone"))?.focus({ preventScroll: true });
+  $("#passMain").scrollIntoView({ block: "nearest", behavior: reduce ? "auto" : "smooth" });
+  return r;
 }
 function pintarPaso() {
   const sec = $("#buscar"); sec.dataset.paso = paso;
@@ -3015,16 +3019,22 @@ async function aplicarVoz(texto) {
   renderPanel(); update();
   if (r.from && $("#f-from")?.dataset.remote) await elegirLugar($("#f-from"), r.from);
   if (r.to && $("#f-to")) { const el = $("#f-to"); if (el.dataset.remote) await elegirLugar(el, r.to); else if (el.dataset.place) { el.value = r.to; el.dispatchEvent(new Event("input", { bubbles: true })); el.focus(); } }
+  return r;
 }
 function escuchar() {
-  const b = $("#micBtn"), msg = $("#vozMsg");
+  const b = $("#micBtn"), msg = $("#vozMsg"), ta = $("#fraseTxt");
   if (vozRec) { vozRec.stop(); return; }
   const rec = new SR(); vozRec = rec; rec.lang = "es-CO"; rec.interimResults = true; rec.maxAlternatives = 1;
-  let final = "";
-  b.setAttribute("aria-pressed", "true"); msg.textContent = "Te escucho…";
-  rec.onresult = e => { let txt = ""; for (const x of e.results) txt += x[0].transcript; final = txt; msg.innerHTML = `Escuché: <q>${esc(txt)}</q>`; };
-  rec.onerror = e => { msg.textContent = e.error === "not-allowed" ? "Permite el micrófono en tu navegador para dictar la búsqueda." : "No te escuché bien. Toca el micrófono e inténtalo otra vez."; };
-  rec.onend = async () => { vozRec = null; const bb = $("#micBtn"); bb?.setAttribute("aria-pressed", "false"); if (final) { await aplicarVoz(final); const m = $("#vozMsg"); if (m) m.innerHTML = `Escuché: <q>${esc(final)}</q>. Revisa los datos y busca.`; } };
+  const antes = ta.value; let final = "";
+  b.setAttribute("aria-pressed", "true"); b.setAttribute("aria-label", "Detener el dictado"); msg.textContent = "Te escucho… cuéntanos a dónde vas, cuándo y quiénes viajan.";
+  rec.onresult = e => { let txt = ""; for (const x of e.results) txt += x[0].transcript; final = txt; ta.value = txt; };
+  rec.onerror = e => {
+    final = ""; ta.value = antes;
+    msg.innerHTML = e.error === "not-allowed" || e.error === "service-not-allowed"
+      ? "El navegador bloqueó el micrófono. Toca el candado junto a la dirección del sitio, activa <b>Micrófono</b> y vuelve a intentarlo. También puedes escribirlo."
+      : e.error === "no-speech" ? "No te escuché. Toca el micrófono y habla cerca del equipo, o escríbelo." : "No pudimos usar el micrófono. Escríbelo en el cuadro.";
+  };
+  rec.onend = () => { vozRec = null; b.setAttribute("aria-pressed", "false"); b.setAttribute("aria-label", "Dictar el viaje"); if (final.trim()) entenderFrase(final); };
   try { rec.start(); } catch { vozRec = null; b.setAttribute("aria-pressed", "false"); }
 }
 /* Nosotros: postales de los destinos visibles que rotan solas, y cinta con sus nombres */
