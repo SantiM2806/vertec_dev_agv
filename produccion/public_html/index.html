@@ -983,6 +983,66 @@ label.btn{cursor:pointer}
   .srow{grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);row-gap:6px}
   .ptab{min-width:78px;padding:10px 10px 9px}
 }
+/* ---------- Diseño del inicio: modelos de banner, módulos y testimonios ---------- */
+.mod-off{display:none!important}
+#home[data-banner="dividida"] .hero{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);min-height:clamp(340px,44vh,460px);background:var(--card);color:var(--ink);--hero-soft:var(--muted);box-shadow:0 0 0 1px var(--line)}
+#home[data-banner="dividida"] .scene{position:relative;inset:auto;z-index:0;order:2;min-height:240px}
+#home[data-banner="dividida"] .scene::after{display:none}
+#home[data-banner="dividida"] .hero-in{margin:0;align-self:center;padding:clamp(28px,5vw,64px)}
+#home[data-banner="minimal"] .hero{min-height:0;background:transparent;color:var(--ink);--hero-soft:var(--muted);text-align:center}
+#home[data-banner="minimal"] .scene{display:none}
+#home[data-banner="minimal"] .hero-in{padding:clamp(28px,5vw,60px) 0 8px}
+#home[data-banner="minimal"] .hero h1,#home[data-banner="minimal"] .hero p{margin-inline:auto}
+#home[data-banner="minimal"] .hero h1{max-width:20ch}
+#home[data-banner="dividida"] .hero h1,#home[data-banner="dividida"] .hero p,#home[data-banner="minimal"] .hero h1,#home[data-banner="minimal"] .hero p{text-shadow:none}
+#home[data-banner="dividida"] .search,#home[data-banner="minimal"] .search{margin-top:18px}
+.scene .sl{position:absolute;inset:0;opacity:0;transition:opacity .9s ease}
+.scene .sl.on{opacity:1}
+.hdots{position:absolute;z-index:2;right:clamp(20px,5vw,64px);bottom:136px;display:flex;gap:6px}
+.hdots button{width:8px;height:8px;border-radius:4px;border:0;padding:0;background:#FFFFFF80;cursor:pointer;transition:width .3s}
+.hdots button[aria-current="true"]{width:24px;background:#FFFFFF}
+.hero-cta{margin-top:20px;background:#FFFFFF;color:#12161B}
+.tests{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px}
+.test{margin:0;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:20px 22px;display:grid;gap:12px;align-content:start}
+.test .st{color:#E8A33B;letter-spacing:2px;font-size:15px}
+.test blockquote{margin:0;font-size:15.5px;line-height:1.55;color:var(--ink)}
+.test blockquote::before{content:"“"}.test blockquote::after{content:"”"}
+.test figcaption{display:flex;gap:10px;align-items:center}
+.test .av{width:38px;height:38px;flex:none;border-radius:50%;background:var(--soft);color:var(--ink);display:grid;place-items:center;font:700 13px/1 var(--f-body)}
+.test figcaption b{display:block;font-size:14px}.test figcaption small{color:var(--muted);font-size:12.5px}
+.choices{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px}
+.choice{display:grid;gap:6px;text-align:left;border:1.5px solid var(--line);border-radius:14px;padding:10px;background:var(--card);color:var(--ink);cursor:pointer;font:inherit}
+.choice:hover{border-color:var(--muted)}
+.choice[aria-pressed="true"]{border-color:var(--ink);box-shadow:0 0 0 3px color-mix(in srgb,var(--signal) 45%,transparent)}
+.choice b{font-size:14px}.choice small{font-size:12.5px;color:var(--muted);line-height:1.35}
+.mini{position:relative;display:block;height:70px;border-radius:9px;background:var(--paper);box-shadow:inset 0 0 0 1px var(--line);overflow:hidden}
+.mini i{position:absolute;display:block;border-radius:3px}
+.mini .ph{background:color-mix(in srgb,var(--signal) 70%,var(--card))}
+.mini .bx{background:var(--card);box-shadow:0 0 0 1px var(--line)}
+.mini .ln{height:4px;background:var(--muted);opacity:.55}
+.mods{display:grid;gap:8px}
+.modrow{display:flex;align-items:center;gap:10px;border:1px solid var(--line);border-radius:12px;padding:9px 12px;background:var(--card)}
+.modrow.off{opacity:.55}
+.modrow .mt{flex:1;min-width:0;display:grid;gap:2px}.modrow .mt b{font-size:14px}.modrow .mt small{color:var(--muted);font-size:12.5px}
+.modrow .ar{display:flex;gap:4px}.modrow .ar .btn{padding:6px 10px;min-width:0}
+.modrow .lnk{font-size:12.5px;white-space:nowrap}
+.switch{position:relative;width:38px;height:22px;flex:none}
+.switch input{position:absolute;inset:0;opacity:0;margin:0;cursor:pointer}
+.switch span{position:absolute;inset:0;border-radius:11px;background:var(--line);transition:background .2s;pointer-events:none}
+.switch span::after{content:"";position:absolute;top:3px;left:3px;width:16px;height:16px;border-radius:50%;background:#FFFFFF;transition:transform .2s;box-shadow:0 1px 2px #0003}
+.switch input:checked+span{background:var(--ink)}.switch input:checked+span::after{transform:translateX(16px)}
+.slides{display:grid;gap:12px}
+.slide-ed{border:1px solid var(--line);border-radius:14px;padding:12px;display:grid;gap:10px;background:var(--card)}
+.slide-ed header{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.sizes{display:grid;gap:0;font-size:13.5px}
+.sizes div{display:flex;justify-content:space-between;gap:12px;padding:7px 0;border-bottom:1px solid var(--line)}
+.sizes div:last-child{border-bottom:0}.sizes span:last-child{color:var(--muted);text-align:right}
+@media (max-width:760px){
+  #home[data-banner="dividida"] .hero{grid-template-columns:1fr}
+  #home[data-banner="dividida"] .scene{order:-1;min-height:190px}
+  .hdots{bottom:128px}
+  .modrow{flex-wrap:wrap}
+}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 
@@ -1009,7 +1069,9 @@ label.btn{cursor:pointer}
         <div class="eyebrow" id="heroEyebrow" style="color:var(--hero-soft);margin-bottom:16px"></div>
         <h1 id="heroTitle"></h1>
         <p id="heroSub"></p>
+        <a class="go hero-cta" id="heroCta" hidden></a>
       </div>
+      <div class="hdots" id="heroDots" hidden></div>
     </section>
   </div>
 
@@ -1096,6 +1158,12 @@ label.btn{cursor:pointer}
     </div>
   </section>
 
+  <!-- ============ TESTIMONIOS ============ -->
+  <section class="block wrap" id="testimonios" hidden>
+    <div class="sec-head"><div><h2 id="testTitle"></h2><p id="testSub"></p></div></div>
+    <div class="tests" id="testList"></div>
+  </section>
+
   <!-- ============ ALIADOS ============ -->
   <section class="block wrap" id="aliados" hidden>
     <div class="sec-head"><h2 id="partnersTitle"></h2></div>
@@ -1114,7 +1182,7 @@ label.btn{cursor:pointer}
   </section>
 
   <!-- ============ BOLETÍN ============ -->
-  <section class="block wrap">
+  <section class="block wrap" id="boletin">
     <div class="passport">
       <div>
         <h2 id="nlTitle"></h2>
@@ -1261,6 +1329,10 @@ const DEFAULT_TXT = {
   groupsSub: "Viajes con fecha fija y acompañamiento de {{marca}}.",
   partnersTitle: "Cadenas y *aliados*",
   partners: "",
+  testTitle: "Lo que dicen *nuestros viajeros*",
+  testSub: "Opiniones reales de quienes ya viajaron con nosotros.",
+  testimonios: "",
+  diseno: { banner: "portada", buscador: "pase", modulos: [], slides: [] },
   legalNote: "En cumplimiento del artículo 17 de la Ley 679 de 2001, {{marca}} advierte que la explotación y el abuso sexual de menores de edad en el país son sancionados penal y administrativamente.",
   privacy: "## Política de tratamiento de datos personales\n\n*Borrador para revisión jurídica.* {{legal}} (en adelante, {{marca}}), con correo {{correo}}, es responsable del tratamiento de los datos personales que recibe a través de este sitio, en cumplimiento de la Ley 1581 de 2012 y el Decreto 1074 de 2015.\n\n## Datos que recogemos\n\n- Nombre, celular, correo y ciudad de residencia.\n- Datos del viaje que solicitas: destino, fechas, número de viajeros y presupuesto.\n\n## Para qué los usamos\n\n- Responder tu solicitud de cotización y contactarte por el canal que elijas.\n- Gestionar reservas con hoteles, operadores de traslados, tours y asistencia en viaje.\n- Enviarte promociones, solo si lo autorizas.\n- Cumplir obligaciones legales, contables y del Registro Nacional de Turismo.\n\n## Con quién los compartimos\n\nSolo con los proveedores necesarios para prestar el servicio que solicitas (hoteles, operadores en destino y aseguradoras de asistencia), que pueden estar fuera de Colombia, y con las autoridades cuando la ley lo exija.\n\n## Tus derechos\n\n- Conocer, actualizar y rectificar tus datos.\n- Pedir prueba de la autorización que nos diste.\n- Saber cómo hemos usado tus datos.\n- Revocar la autorización o pedir que eliminemos tus datos cuando no exista un deber legal de conservarlos.\n- Presentar quejas ante la Superintendencia de Industria y Comercio.\n\n## Cómo ejercerlos\n\nEscribe a {{correo}} indicando tu nombre, documento y lo que solicitas. Respondemos las consultas en un máximo de 10 días hábiles y los reclamos en un máximo de 15 días hábiles, según los plazos de la ley.\n\n## Vigencia\n\nEsta política rige desde su publicación. Conservamos los datos mientras sean necesarios para las finalidades descritas y para cumplir obligaciones legales."
 };
@@ -2661,12 +2733,7 @@ function applyBrand(b = BRAND) {
 /* ---------- Portada, textos y pie ---------- */
 function renderTexts() {
   applyBrand();
-  $("#heroEyebrow").textContent = TXT.heroEyebrow;
-  $("#heroTitle").innerHTML = rich(TXT.heroTitle);
-  $("#heroSub").textContent = TXT.heroSub;
-  const hs = imgSrc(TXT.heroImg) || DEFAULT_TXT.heroImg, cur = $("#heroScene img");
-  if (!cur || cur.getAttribute("src") !== hs) $("#heroScene").innerHTML = `<img src="${esc(hs)}" alt="${esc(TXT.heroAlt)}" decoding="async" fetchpriority="high">`;
-  else cur.alt = TXT.heroAlt;
+  drawHero(); drawTests(); applyDesign();
   $("#destTitle").innerHTML = rich(TXT.destTitle);
   $("#destSub").textContent = TXT.destSub;
   $("#destNote").innerHTML = rich(TXT.destNote).replace(/<(\/?)strong>/g, "<$1b>");
@@ -2680,6 +2747,85 @@ function renderTexts() {
   $("#nlTitle").innerHTML = rich(TXT.nlTitle);
   $("#nlSub").textContent = TXT.nlSub;
   $("#fDest").innerHTML = DESTS.map(d => `<li><a href="destino/${d.slug}">${esc(d.name)}</a></li>`).join("");
+}
+/* ---------- Diseño del inicio: modelo de banner, buscador y orden de los módulos ---------- */
+const MODS = [
+  ["ofertas", "Ofertas", "Paquetes con descuento. Aparece solo si hay ofertas activas.", "destinos"],
+  ["populares", "Destinos más populares", "Destinos con hoteles en línea.", "portada"],
+  ["destinos", "Paquetes por destino", "Todos los paquetes con filtros por región.", "destinos"],
+  ["tours", "Tours y circuitos", "Aparece solo si hay tours cargados.", "tours"],
+  ["salidas", "Salidas grupales", "Viajes con fecha fija.", "grupos"],
+  ["nosotros", "Sobre la empresa", "Historia, cifras y por qué elegirlos.", "nosotros"],
+  ["testimonios", "Testimonios", "Opiniones de viajeros. Se editan aquí abajo.", ""],
+  ["aliados", "Cadenas y aliados", "Logos de aliados.", "aliados"],
+  ["contacto", "Contacto", "WhatsApp, teléfonos y sedes.", "contacto"],
+  ["boletin", "Boletín", "Suscripción a promociones por correo.", "portada"]
+];
+const BANNERS = [
+  ["portada", "Portada completa", "Foto grande con el buscador encima.", '<i class="ph" style="inset:0 0 34% 0;border-radius:0"></i><i class="ln" style="left:12%;top:22%;width:42%;background:#fff;opacity:.9"></i><i class="bx" style="left:10%;right:10%;bottom:14%;height:26%"></i>'],
+  ["dividida", "Dividida", "Texto a la izquierda y foto a la derecha.", '<i class="ln" style="left:9%;top:24%;width:34%"></i><i class="ln" style="left:9%;top:36%;width:26%"></i><i class="ph" style="left:54%;right:6%;top:10%;bottom:38%"></i><i class="bx" style="left:9%;right:6%;bottom:9%;height:20%"></i>'],
+  ["carrusel", "Carrusel", "Hasta 5 banners que rotan solos.", '<i class="ph" style="inset:0 0 34% 0;border-radius:0"></i><i class="ln" style="left:12%;top:24%;width:46%;background:#fff;opacity:.9"></i><i style="right:10%;top:52%;width:16px;height:4px;background:#fff"></i><i style="right:calc(10% + 20px);top:52%;width:4px;height:4px;background:#fff;opacity:.6"></i><i class="bx" style="left:10%;right:10%;bottom:12%;height:22%"></i>'],
+  ["minimal", "Minimalista", "Sin foto: título y buscador al centro.", '<i class="ln" style="left:30%;right:30%;top:22%"></i><i class="ln" style="left:38%;right:38%;top:34%;opacity:.35"></i><i class="bx" style="left:12%;right:12%;top:50%;height:24%"></i>']
+];
+const SIZES = [["Portada completa y dividida", "1920 × 860 px · máx. 300 KB"], ["Cada banner del carrusel", "1920 × 800 px · máx. 300 KB"], ["Fotos de destinos y ofertas", "1200 × 800 px · máx. 200 KB"],
+  ["Logos de aliados", "400 × 200 px · PNG o SVG · máx. 40 KB"], ["Logo de la agencia", "600 × 200 px · PNG o SVG · máx. 60 KB"]];
+function diseno() {
+  const d = TXT.diseno || {};
+  const modulos = (d.modulos || []).filter((m, i, a) => MODS.some(x => x[0] === m.k) && a.findIndex(y => y.k === m.k) === i).map(m => ({ k: m.k, on: m.on !== false }));
+  MODS.forEach(([k]) => { if (!modulos.some(m => m.k === k)) modulos.push({ k, on: true }); });
+  return { banner: BANNERS.some(b => b[0] === d.banner) ? d.banner : "portada", buscador: d.buscador || "pase", modulos, slides: Array.isArray(d.slides) ? d.slides.slice(0, 5) : [] };
+}
+function applyDesign() {
+  const d = diseno(), home = $("#home");
+  home.dataset.banner = d.banner;
+  $("#buscar").dataset.estilo = d.buscador;
+  d.modulos.forEach(m => { const el = $("#" + m.k); if (!el) return; home.append(el); el.classList.toggle("mod-off", !m.on); });
+}
+let HS = [], heroI = 0, heroHover = false;
+function drawHero() {
+  const d = diseno();
+  HS = d.banner === "carrusel" ? d.slides.filter(x => imgSrc(x.img)) : [];
+  if (!HS.length) {
+    $("#heroEyebrow").textContent = TXT.heroEyebrow;
+    $("#heroTitle").innerHTML = rich(TXT.heroTitle);
+    $("#heroSub").textContent = TXT.heroSub;
+    $("#heroCta").hidden = true; $("#heroDots").hidden = true;
+    const hs = imgSrc(TXT.heroImg) || DEFAULT_TXT.heroImg, cur = $("#heroScene > img");
+    if (!cur || cur.getAttribute("src") !== hs) $("#heroScene").innerHTML = `<img src="${esc(hs)}" alt="${esc(TXT.heroAlt)}" decoding="async" fetchpriority="high">`;
+    else cur.alt = TXT.heroAlt;
+    return;
+  }
+  if (heroI >= HS.length) heroI = 0;
+  $("#heroScene").innerHTML = HS.map((x, i) => `<div class="sl${i === heroI ? " on" : ""}"><img src="${esc(imgSrc(x.img))}" alt="${esc(x.title ? mk(x.title).replace(/\*/g, "") : "")}" decoding="async"${i ? ' loading="lazy"' : ' fetchpriority="high"'}></div>`).join("");
+  $("#heroDots").hidden = HS.length < 2;
+  $("#heroDots").innerHTML = HS.map((x, i) => `<button type="button" aria-label="Banner ${i + 1} de ${HS.length}" aria-current="${i === heroI}" data-i="${i}"></button>`).join("");
+  showSlide(heroI);
+}
+function showSlide(i) {
+  if (!HS.length) return;
+  heroI = (i + HS.length) % HS.length;
+  const x = HS[heroI];
+  $$("#heroScene .sl").forEach((el, k) => el.classList.toggle("on", k === heroI));
+  $$("#heroDots button").forEach((b, k) => b.setAttribute("aria-current", String(k === heroI)));
+  $("#heroEyebrow").textContent = mk(x.eyebrow || "");
+  $("#heroTitle").innerHTML = rich(x.title || TXT.heroTitle);
+  $("#heroSub").textContent = mk(x.sub || "");
+  const cta = $("#heroCta"); cta.hidden = !x.link;
+  if (x.link) { cta.href = x.link; cta.textContent = x.btn || "Ver más"; }
+}
+$("#heroDots").addEventListener("click", e => { const b = e.target.closest("button"); if (b) showSlide(+b.dataset.i); });
+$(".hero").addEventListener("mouseenter", () => heroHover = true);
+$(".hero").addEventListener("mouseleave", () => heroHover = false);
+setInterval(() => { if (HS.length < 2 || reduce || heroHover || document.hidden || $("#home").hidden) return; showSlide(heroI + 1); }, 6500);
+function drawTests() {
+  const L = lines(TXT.testimonios || "").map(l => l.split("|").map(x => x.trim())).filter(p => p[0] && p[1]);
+  $("#testimonios").hidden = !L.length;
+  $("#testTitle").innerHTML = rich(TXT.testTitle || DEFAULT_TXT.testTitle);
+  $("#testSub").textContent = mk(TXT.testSub || "");
+  $("#testList").innerHTML = L.slice(0, 6).map(([n, t, dst, st]) => {
+    const k = Math.max(1, Math.min(5, Math.round(+st) || 5)), ini = n.split(/\s+/).map(w => w[0] || "").slice(0, 2).join("").toUpperCase();
+    return `<figure class="test"><div class="st" role="img" aria-label="${k} de 5 estrellas">${"★".repeat(k)}${"☆".repeat(5 - k)}</div><blockquote>${esc(t)}</blockquote><figcaption><span class="av" aria-hidden="true">${esc(ini)}</span><span><b>${esc(n)}</b>${dst ? `<small>${esc(dst)}</small>` : ""}</span></figcaption></figure>`;
+  }).join("");
 }
 /* Nosotros: postales de los destinos visibles que rotan solas, y cinta con sus nombres */
 const REASON_ICONS = [
@@ -3251,6 +3397,66 @@ function admPortada() {
       contactSub: val("aContactSub"), nlTitle: val("aNlTitle"), nlSub: val("aNlSub"), offersTitle: val("aOfT"), offersSub: val("aOfS"),
       toursTitle: val("aToT"), toursSub: val("aToS"), groupsTitle: val("aGrT"), groupsSub: val("aGrS"), trm: Math.max(0, Math.round((+String(val("aTrm")).replace(",", ".") || 0) * 100) / 100), trmDate: val("aTrmD"), trmSample: $("#aTrmS").checked, showPrices: $("#aShowP").checked, litePrices: $("#aLiteP").checked });
   }, e.currentTarget));
+}
+
+function admDiseno() {
+  const d = adm.draft?._dis ? adm.draft : (adm.draft = { _dis: true, ...clone(diseno()), testTitle: TXT.testTitle ?? DEFAULT_TXT.testTitle, testSub: TXT.testSub ?? "", testimonios: TXT.testimonios || "" });
+  d.slides.forEach(x => x.id ||= Math.random().toString(36).slice(2, 9));
+  const read = () => {
+    d.slides.forEach(x => { for (const [f, k] of [["t", "title"], ["s", "sub"], ["e", "eyebrow"], ["b", "btn"], ["l", "link"]]) { const el = $(`#sl${f}-${x.id}`); if (el) x[k] = el.value.trim(); } });
+    for (const [id, k] of [["dTT", "testTitle"], ["dTS", "testSub"]]) if ($("#" + id)) d[k] = val(id);
+    if ($("#dTL")) d.testimonios = $("#dTL").value;
+  };
+  const again = () => { read(); markDirty(); admDiseno(); };
+  const mname = k => MODS.find(m => m[0] === k);
+  $("#admBody").innerHTML = `<div class="panel"><h2>Banner inicial</h2><p class="help" style="margin:-4px 0 12px">Cómo se ve la parte de arriba del inicio. El título y la foto de la portada se editan en <a href="#" data-go="portada">Portada y textos</a>.</p>
+    <div class="choices">${BANNERS.map(([k, n, t, m]) => `<button type="button" class="choice" data-ban="${k}" aria-pressed="${d.banner === k}"><span class="mini">${m}</span><b>${n}</b><small>${t}</small></button>`).join("")}</div></div>
+  ${d.banner === "carrusel" ? `<div class="panel"><h2>Banners del carrusel</h2><p class="help" style="margin:-4px 0 12px">Hasta 5. Rotan cada 6 segundos y se detienen cuando el visitante pasa el mouse. Medida ideal: 1920 × 800 px, máximo 300 KB; si la foto pesa más, se recorta y se comprime sola al subirla.</p>
+    <div class="slides">${d.slides.map((x, i) => `<div class="slide-ed"><header><b>Banner ${i + 1}</b><span class="row" style="gap:6px">${i ? `<button class="btn" type="button" data-sup="${i}" aria-label="Subir">↑</button>` : ""}${i < d.slides.length - 1 ? `<button class="btn" type="button" data-sdown="${i}" aria-label="Bajar">↓</button>` : ""}<button class="btn" type="button" data-sdel="${i}">Quitar</button></span></header>
+      ${imgPicker("sl-" + x.id, x.img, "")}
+      <div class="fgrid2">${fld("sle-" + x.id, "Etiqueta superior (opcional)", x.eyebrow || "")}${fld("slt-" + x.id, "Título", x.title || "", { help: "Encierra entre *asteriscos* la parte en negrita." })}
+      ${fld("sls-" + x.id, "Texto de apoyo (opcional)", x.sub || "", { full: true })}${fld("slb-" + x.id, "Texto del botón (opcional)", x.btn || "", { ph: "Ver oferta" })}${fld("sll-" + x.id, "Enlace del botón (opcional)", x.link || "", { ph: "#destino-cartagena o https://…" })}</div></div>`).join("")}</div>
+    ${d.slides.length < 5 ? `<button class="btn" type="button" id="slAdd" style="margin-top:12px">+ Agregar banner</button>` : ""}</div>` : ""}
+  <div class="panel"><h2>Secciones del inicio</h2><p class="help" style="margin:-4px 0 12px">Actívalas o apágalas y ordénalas con las flechas. El banner y el buscador van siempre arriba, y el pie de página es igual en todos los modelos.</p>
+    <div class="mods">${d.modulos.map((m, i) => { const [k, n, t, tab] = mname(m.k); return `<div class="modrow${m.on ? "" : " off"}"><label class="switch"><input type="checkbox" data-mon="${i}"${m.on ? " checked" : ""} aria-label="Mostrar ${esc(n)}"><span></span></label>
+      <span class="mt"><b>${esc(n)}</b><small>${esc(t)}</small></span>${tab ? `<a href="#" class="lnk" data-go="${tab}">Editar contenido →</a>` : ""}
+      <span class="ar"><button class="btn" type="button" data-mup="${i}" aria-label="Subir ${esc(n)}"${i ? "" : " disabled"}>↑</button><button class="btn" type="button" data-mdown="${i}" aria-label="Bajar ${esc(n)}"${i < d.modulos.length - 1 ? "" : " disabled"}>↓</button></span></div>`; }).join("")}</div></div>
+  <div class="panel"><h2>Testimonios</h2><div class="fgrid2">
+    ${fld("dTT", "Título", d.testTitle, { help: "Encierra entre *asteriscos* la parte en negrita." })}${fld("dTS", "Texto de apoyo", d.testSub)}
+    ${fld("dTL", "Testimonios (uno por línea, máximo 6)", d.testimonios, { type: "textarea", rows: 6, full: true, help: "Formato: Nombre | Testimonio | Viaje o destino | Estrellas (1 a 5). Ej.: Laura Gómez | Todo salió perfecto, el hotel era tal cual. | Cartagena, 2026 | 5. Vacío = la sección no aparece." })}
+  </div></div>
+  <div class="panel"><h2>Medidas recomendadas de las imágenes</h2><p class="help" style="margin:-4px 0 10px">Fotos livianas hacen que el sitio cargue rápido, sobre todo en celular. Usa JPG o WebP para fotos y PNG o SVG para logos. Si subes una foto más grande, el sistema la recorta y la comprime solo.</p>
+    <div class="sizes">${SIZES.map(([a, b]) => `<div><span>${a}</span><span>${b}</span></div>`).join("")}</div></div>
+  ${actions("dSave")}`;
+  d.slides.forEach(x => wireImgPicker("sl-" + x.id, 1800, 750));
+  wireDiscard();
+  $$("[data-go]").forEach(a => a.addEventListener("click", e => { e.preventDefault(); guard("tab:" + a.dataset.go, () => { adm.tab = a.dataset.go; adm.draft = null; renderAdmin(); scrollTo(0, 0); }); }));
+  $$("[data-ban]").forEach(b => b.addEventListener("click", () => { d.banner = b.dataset.ban; if (d.banner === "carrusel" && !d.slides.length) d.slides.push({ id: Math.random().toString(36).slice(2, 9), title: TXT.heroTitle, sub: TXT.heroSub, eyebrow: TXT.heroEyebrow, img: TXT.heroImg }); again(); }));
+  $$("[data-mon]").forEach(c => c.addEventListener("change", () => { d.modulos[+c.dataset.mon].on = c.checked; again(); }));
+  const mv = (arr, i, j) => { if (j < 0 || j >= arr.length) return; [arr[i], arr[j]] = [arr[j], arr[i]]; again(); };
+  $$("[data-mup]").forEach(b => b.addEventListener("click", () => mv(d.modulos, +b.dataset.mup, +b.dataset.mup - 1)));
+  $$("[data-mdown]").forEach(b => b.addEventListener("click", () => mv(d.modulos, +b.dataset.mdown, +b.dataset.mdown + 1)));
+  $$("[data-sup]").forEach(b => b.addEventListener("click", () => mv(d.slides, +b.dataset.sup, +b.dataset.sup - 1)));
+  $$("[data-sdown]").forEach(b => b.addEventListener("click", () => mv(d.slides, +b.dataset.sdown, +b.dataset.sdown + 1)));
+  $$("[data-sdel]").forEach(b => b.addEventListener("click", () => { read(); const [x] = d.slides.splice(+b.dataset.sdel, 1); delete adm.pending["sl-" + x.id]; markDirty(); admDiseno(); }));
+  $("#slAdd")?.addEventListener("click", () => { read(); d.slides.push({ id: Math.random().toString(36).slice(2, 9) }); markDirty(); admDiseno(); });
+  $("#dSave").addEventListener("click", async e => {
+    const btn = e.currentTarget; read();
+    if (d.banner === "carrusel" && !d.slides.some(x => x.img || adm.pending["sl-" + x.id])) return toast("Sube la foto de al menos un banner del carrusel.", "err");
+    if (d.slides.some(x => (x.img || adm.pending["sl-" + x.id]) && !x.title)) return toast("Cada banner del carrusel necesita un título.", "err");
+    if (!db) return toast(errMsg({ code: "no_db" }), "err");
+    btn.disabled = true;
+    try { for (const x of d.slides) if (adm.pending["sl-" + x.id]) x.img = await commitImage("sl-" + x.id, x.img); }
+    catch (err) { btn.disabled = false; return toast(errMsg(err), "err"); }
+    btn.disabled = false;
+    const antes = (TXT.diseno?.slides || []).map(x => x.img);
+    await saveContent(x => {
+      x.txt.diseno = { banner: d.banner, buscador: d.buscador, modulos: d.modulos.map(m => ({ k: m.k, on: m.on })),
+        slides: d.slides.filter(s => s.img).map(({ id, img, title = "", sub = "", eyebrow = "", btn = "", link = "" }) => ({ id, img, title, sub, eyebrow, btn, link })) };
+      Object.assign(x.txt, { testTitle: d.testTitle, testSub: d.testSub, testimonios: d.testimonios });
+    }, btn);
+    if (!adm.dirty) { for (const r of antes) if (!d.slides.some(s => s.img === r)) await dropImageIfUnused(r, false); adm.draft = null; }
+  });
 }
 
 function admNosotros() {
@@ -4186,7 +4392,7 @@ function refreshCrm() { navBadges(); runEngine(); if (!$("#admin").hidden && CRM
 const NAV = [
   ["Gestión", [["resumen", "Resumen", "M3 13h4V7H3zm7 0h4V3h-4zm7 0h0"], ["solicitudes", "Solicitudes", "M4 4h12v9H8l-4 3z"], ["prospectos", "Prospectos", "M10 9a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm-6 8a6 6 0 0 1 12 0"],
     ["listas", "Listas de marketing", "M4 5h12M4 10h12M4 15h8"], ["automatizaciones", "Automatizaciones", "M11 2 4 11h5l-1 7 7-9h-5z"], ["correos", "Correos", "M3 5h14v10H3zm0 0 7 6 7-6"], ["campanas", "Campañas", "M3 8v4l9 4V4zM12 7h2a3 3 0 0 1 0 6h-2M5 12l1 5h2"]]],
-  ["Contenido del sitio", [["portada", "Portada y textos", "M3 4h14v12H3zM3 9h14"], ["destinos", "Destinos y ofertas", "M10 18s-6-5-6-10a6 6 0 0 1 12 0c0 5-6 10-6 10zm0-8a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"],
+  ["Contenido del sitio", [["diseno", "Diseño del inicio", "M3 3h6v6H3zM11 3h6v4h-6zM11 9h6v8h-6zM3 11h6v6H3z"], ["portada", "Portada y textos", "M3 4h14v12H3zM3 9h14"], ["destinos", "Destinos y ofertas", "M10 18s-6-5-6-10a6 6 0 0 1 12 0c0 5-6 10-6 10zm0-8a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"],
     ["tours", "Tours y circuitos", "M2 17 8 6l4 6 2-3 4 8z"], ["grupos", "Salidas grupales", "M7 9a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5zm6 0a2.5 2.5 0 1 0 0-5M2 16a5 5 0 0 1 10 0m1-5a5 5 0 0 1 5 5"],
     ["traslados", "Traslados", "M3 13V9l2-4h10l2 4v4H3zM5.5 15.5v-2M14.5 15.5v-2"], ["nosotros", "Nosotros y aliados", "M10 2 3 6v5c0 4 3 6 7 7 4-1 7-3 7-7V6z"]]],
   ["Tarifarios", [["t_alojamiento", "Alojamientos", "M3 17V8l7-5 7 5v9M7 17v-5h6v5"], ["t_actividad", "Actividades", "M10 2l2.4 5 5.6.8-4 3.9.9 5.5-4.9-2.6-4.9 2.6.9-5.5-4-3.9 5.6-.8z"],
@@ -4196,7 +4402,7 @@ const NAV = [
 const NAV_TITLES = Object.fromEntries(NAV.flatMap(([, items]) => items.map(([k, l]) => [k, l])));
 const NAV_SUBS = { resumen: "Así va el sitio hoy.", solicitudes: "Cada cotización que llega desde el sitio.", prospectos: "Personas que han dejado sus datos, sin duplicados.",
   listas: "Grupos de prospectos para campañas y seguimiento.", automatizaciones: "Lo que pasa solo cuando llega una solicitud.", correos: "Plantillas y bandeja de salida.", campanas: "Promociones a tus listas de marketing, con o sin un destino del sitio.",
-  portada: "Portada, textos de secciones y tasa de cambio.", destinos: "Paquetes, tarifas, ofertas e información práctica.", tours: "Tours y circuitos que se pueden cotizar.",
+  diseno: "Modelo del banner, buscador y orden de las secciones del inicio.", portada: "Portada, textos de secciones y tasa de cambio.", destinos: "Paquetes, tarifas, ofertas e información práctica.", tours: "Tours y circuitos que se pueden cotizar.",
   grupos: "Salidas con fecha fija.", traslados: "Tarifas de traslados por zona.", nosotros: "Historia, cifras y por qué elegirnos.", contacto: "Teléfonos, WhatsApp por zona, sedes y horario.", aliados: "Logos de cadenas hoteleras y aliados que se muestran en el inicio.", tarifas: "Productos del buscador y tu margen sobre los precios en línea.", legal: "Política de tratamiento de datos.", marca: "Nombre, logos, colores y tipografía de tu agencia.", integraciones: "Proveedores con precio en línea y tus tarifarios propios.",
   t_alojamiento: "Hoteles con tus tarifas netas por temporada. Salen en el buscador junto a LiteAPI.", t_actividad: "Tours y entradas con precio por persona por temporada.",
   t_transporte: "Traslados por trayecto, compartidos o privados.", t_circuito: "Circuitos con salidas y precio por persona." };
@@ -4231,7 +4437,7 @@ function renderAdmin() {
 }
 function renderAdminBody() {
   ({ resumen: admResumen, solicitudes: admSolicitudes, prospectos: admProspectos, listas: admListas, automatizaciones: admAutos, correos: admCorreos, campanas: admCampanas,
-    portada: admPortada, destinos: admDestinos, tours: () => admColl("tours"), grupos: () => admColl("groups"), traslados: admTraslados, nosotros: admNosotros, contacto: admContacto, aliados: admAliados, tarifas: admTarifas, integraciones: admIntegraciones, marca: admMarca, legal: admLegal, t_alojamiento: () => admTarifario("alojamiento"), t_actividad: () => admTarifario("actividad"), t_transporte: () => admTarifario("transporte"), t_circuito: () => admTarifario("circuito") })[adm.tab]();
+    diseno: admDiseno, portada: admPortada, destinos: admDestinos, tours: () => admColl("tours"), grupos: () => admColl("groups"), traslados: admTraslados, nosotros: admNosotros, contacto: admContacto, aliados: admAliados, tarifas: admTarifas, integraciones: admIntegraciones, marca: admMarca, legal: admLegal, t_alojamiento: () => admTarifario("alojamiento"), t_actividad: () => admTarifario("actividad"), t_transporte: () => admTarifario("transporte"), t_circuito: () => admTarifario("circuito") })[adm.tab]();
   if ($("#admBody").classList.contains("locked")) $$("#admBody input, #admBody textarea, #admBody select, #admBody button").forEach(x => x.disabled = true);
   if (adm.msg && Date.now() - adm.msg[2] < 6000) { const t = $("#admToast"); if (t) { t.textContent = adm.msg[0]; t.className = "toast " + adm.msg[1]; } }
 }
