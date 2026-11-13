@@ -983,6 +983,11 @@ label.btn{cursor:pointer}
   .srow{grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);row-gap:6px}
   .ptab{min-width:78px;padding:10px 10px 9px}
 }
+/* ---------- Canales en el pie de página ---------- */
+.fsoc{display:flex;flex-wrap:wrap;gap:8px}
+.fsoc a{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;background:var(--card);border:1px solid var(--line);color:var(--ink);transition:background .15s,color .15s}
+.fsoc a:hover{background:var(--ink);color:var(--paper)}
+.fsoc svg{width:19px;height:19px}
 /* ---------- Estilos del buscador ---------- */
 .pasos-head,.pasos-nav,.voz{display:none}
 /* Iconos y cajas */
@@ -1343,6 +1348,7 @@ label.btn{cursor:pointer}
       <div><a class="logo" href="#inicio" aria-label="Inicio"><span class="brandmark" style="--bh:52px"></span></a><p class="ftag" id="fTag"></p><ul><li><a href="#nosotros">Nosotros</a></li><li><a href="#destinos">Destinos</a></li><li><a href="#contacto">Contacto</a></li><li id="admLi" hidden><a href="#admin">Backoffice</a></li></ul></div>
       <div><h4>Destinos</h4><ul id="fDest"></ul></div>
       <div><h4>Legal</h4><ul><li><a href="#privacidad">Política de tratamiento de datos</a></li><li><a href="#traslados">Traslados</a></li></ul></div>
+      <div id="fCanales" hidden><h4>Escríbenos y síguenos</h4><div class="fsoc" id="fSoc"></div></div>
     </div>
     <div class="legal">
       <span>© <span id="year"></span> <span id="legalLine"></span></span>
@@ -1382,7 +1388,11 @@ const DEFAULT_CONTACT = {
   // WhatsApp flotante: zona | número con indicativo
   zones: [["Ventas", "573000000000"]],
   // Correos del equipo que reciben un aviso por cada solicitud nueva
-  notify: []
+  notify: [],
+  // Canales del pie de página: red | enlace, usuario o número
+  canales: [],
+  // Botón flotante de WhatsApp
+  waFloat: true
 };
 // Marca de la agencia (backoffice → Marca). index.php la deja en window.AVM_BRAND para pintar sin parpadeo.
 const DEFAULT_BRAND = { name: "Tu agencia", legal: "", rnt: "", tagline: "Agencia de viajes", accent: "#BBCF26", dark: "#12161B", paper: "#F3F4F1", fonts: "moderna", logo: "", logoDark: "", icon: "" };
@@ -2867,6 +2877,8 @@ function diseno() {
 }
 function applyDesign() {
   const d = diseno(), home = $("#home");
+  // Mientras llega el contenido se respeta el diseño que ya marcó el servidor (index.php), para que no parpadee
+  if (!contentLoaded && home.dataset.banner) { d.banner = home.dataset.banner; d.buscador = $("#buscar").dataset.estilo || d.buscador; }
   home.dataset.banner = d.banner;
   $("#buscar").dataset.estilo = d.buscador;
   decorarBuscador();
@@ -3071,6 +3083,26 @@ function openStatus() {
 const WA_ICON = '<svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 2a8 8 0 0 0-6.9 12.04L2 18l4.06-1.07A8 8 0 1 0 10 2zm4.2 11.1c-.18.5-1.04.96-1.44 1-.37.05-.83.07-1.34-.09-.31-.1-.7-.23-1.21-.45-2.13-.92-3.52-3.06-3.63-3.2-.1-.14-.86-1.15-.86-2.19s.55-1.55.74-1.76c.2-.21.42-.27.56-.27h.4c.13 0 .3-.05.47.36.18.42.6 1.45.65 1.56.05.1.09.23.02.37-.07.14-.1.23-.21.35l-.31.37c-.1.1-.21.22-.09.43.12.21.54.89 1.16 1.44.8.71 1.47.93 1.68 1.04.21.1.33.09.45-.05.12-.14.52-.6.66-.81.14-.21.28-.17.47-.1.19.07 1.21.57 1.42.67.21.1.35.16.4.24.05.09.05.5-.13 1z"/></svg>';
 const waHref = n => waLink("57" + n.replace(/\D/g, ""), `¡Hola! Quiero información sobre los paquetes de ${BN()}.`);
 const mapHref = (a, city) => "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(`${a}, ${city}, Colombia`);
+/* ---------- Canales del pie de página (iguales en todos los modelos del inicio) ---------- */
+const CANALES = {
+  whatsapp: ["WhatsApp", null],
+  instagram: ["Instagram", '<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="14" height="14" rx="4"/><circle cx="10" cy="10" r="3.2"/><circle cx="14.2" cy="5.8" r=".6" fill="currentColor"/></svg>'],
+  facebook: ["Facebook", '<svg viewBox="0 0 20 20" fill="currentColor"><path d="M11.2 18v-6.4h2.2l.3-2.6h-2.5V7.4c0-.7.2-1.3 1.3-1.3h1.3V3.8a18 18 0 0 0-2-.1c-2 0-3.3 1.2-3.3 3.4V9H6.3v2.6h2.2V18z"/></svg>'],
+  tiktok: ["TikTok", '<svg viewBox="0 0 20 20" fill="currentColor"><path d="M13.6 2h-2.7v10.9a2.3 2.3 0 1 1-1.6-2.2V8a5 5 0 1 0 4.3 4.9V7.4a6 6 0 0 0 3.4 1.1V5.8a3.4 3.4 0 0 1-3.4-3.4z"/></svg>'],
+  youtube: ["YouTube", '<svg viewBox="0 0 20 20" fill="currentColor"><path d="M18.2 6.2a2.2 2.2 0 0 0-1.5-1.5C15.3 4.3 10 4.3 10 4.3s-5.3 0-6.7.4a2.2 2.2 0 0 0-1.5 1.5C1.4 7.6 1.4 10 1.4 10s0 2.4.4 3.8c.2.7.8 1.3 1.5 1.5 1.4.4 6.7.4 6.7.4s5.3 0 6.7-.4c.7-.2 1.3-.8 1.5-1.5.4-1.4.4-3.8.4-3.8s0-2.4-.4-3.8zM8.3 12.5v-5l4.4 2.5z"/></svg>'],
+  linkedin: ["LinkedIn", '<svg viewBox="0 0 20 20" fill="currentColor"><path d="M4.4 6.6a1.6 1.6 0 1 0 0-3.2 1.6 1.6 0 0 0 0 3.2zM3 7.8h2.8V17H3zm4.6 0h2.7v1.3c.4-.7 1.3-1.5 2.8-1.5 2.9 0 3.4 1.9 3.4 4.4V17h-2.8v-4.5c0-1.1 0-2.4-1.5-2.4s-1.7 1.1-1.7 2.3V17H7.6z"/></svg>'],
+  x: ["X", '<svg viewBox="0 0 20 20" fill="currentColor"><path d="M14.6 3h2.6l-5.6 6.4L18 17h-5.1l-4-5.2L4.3 17H1.7l6-6.8L1.6 3h5.2l3.6 4.8zm-.9 12.6h1.4L6.1 4.3H4.6z"/></svg>'],
+  telegram: ["Telegram", '<svg viewBox="0 0 20 20" fill="currentColor"><path d="M17.6 3.3 2.3 9.2c-1 .4-1 1 0 1.3l3.9 1.2 1.5 4.6c.2.5.1.7.6.7.4 0 .6-.2.8-.4l1.9-1.8 3.9 2.9c.7.4 1.2.2 1.4-.7l2.6-12.2c.3-1.1-.4-1.6-1.3-1.5zM7 11.4l8.2-5.2c.4-.2.8-.1.5.2l-7 6.3-.3 2.9z"/></svg>'],
+  correo: ["Correo", '<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2.5" y="4.5" width="15" height="11" rx="2"/><path d="m3 5.5 7 5.5 7-5.5"/></svg>'],
+  telefono: ["Teléfono", '<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><path d="M5 3h3l1.5 4-2 1.5a9 9 0 0 0 4 4L13 10.5l4 1.5v3a2 2 0 0 1-2 2A13 13 0 0 1 3 5a2 2 0 0 1 2-2"/></svg>']
+};
+const canalLink = (k, v) => k === "whatsapp" ? waLink(v.replace(/\D/g, ""), `¡Hola! Quiero información sobre los viajes de ${BN()}.`) : k === "correo" ? "mailto:" + v : k === "telefono" ? "tel:" + v.replace(/[^\d+]/g, "")
+  : /^https?:\/\//i.test(v) ? v : "https://" + v.replace(/^\/+/, "");
+function drawCanales() {
+  const L = (CONTACT.canales || []).filter(([k, v]) => CANALES[k] && v);
+  $("#fCanales").hidden = !L.length;
+  $("#fSoc").innerHTML = L.map(([k, v]) => `<a href="${esc(canalLink(k, v))}" target="_blank" rel="noopener" aria-label="${esc(CANALES[k][0])}" title="${esc(CANALES[k][0])}">${CANALES[k][1] || WA_ICON}</a>`).join("");
+}
 function drawContact() {
   const st = openStatus();
   const rows = CONTACT.hours.map(([a, b]) => [esc(a), esc(b).replace(/ · /g, "<br>"), daysOf(a)]);
@@ -3311,7 +3343,7 @@ const waCtx = () => { const s = $("#destView").dataset.slug; const d = s && bySl
 function drawWaFloat() {
   const zs = (CONTACT.zones || []).filter(z => z[1]);
   $("#waZones").innerHTML = zs.map(([z, n]) => `<a href="${esc(waLink(n.replace(/\D/g, ""), waCtx()))}" target="_blank" rel="noopener"><span class="ic">${WA_ICON}</span><span><b>${esc(z)}</b><small>+${esc(n.replace(/\D/g, "").replace(/^(\d{2})(\d{3})(\d{3})(\d{4})$/, "$1 $2 $3 $4"))}</small></span></a>`).join("");
-  $("#waFloat").hidden = !zs.length;
+  $("#waFloat").hidden = !zs.length || CONTACT.waFloat === false;
 }
 $("#waBtn").innerHTML = WA_ICON;
 $("#waBtn").addEventListener("click", () => { const p = $("#waPanel"), open = p.hidden; if (open) drawWaFloat(); p.hidden = !open; $("#waBtn").setAttribute("aria-expanded", String(open)); });
@@ -3382,7 +3414,7 @@ function drawPopular() {
 function renderAll() {
   DESTS = ALL.filter(d => d.active).sort((a, b) => a.order - b.order);
   rebuildPlaces(); renderTexts(); { const was = prod; drawTabs(); if (was !== prod) { renderPanel(); update(); } } drawPopular(); drawRegionChips(); drawPacks(); drawContact();
-  drawTrm(); drawOffers(); drawTours(); drawGroups(); drawPartners(); drawWaFloat();
+  drawTrm(); drawOffers(); drawTours(); drawGroups(); drawPartners(); drawWaFloat(); drawCanales();
   const pv = $("#pageView"); if (!pv.hidden && pv.dataset.kind) renderPage(pv.dataset.kind);
   const v = $("#destView");
   if (!v.hidden && v.dataset.slug) { const d = bySlug(v.dataset.slug); if (d) renderDest(d); else location.hash = "#destinos"; }
@@ -3820,6 +3852,8 @@ function admContacto() {
     ${fld("cEmerg", "Líneas de emergencia (una por línea)", c.emergency.join("\n"), { type: "textarea", rows: 3 })}
     ${fld("cSedes", "Sedes (una por línea: ciudad | dirección)", c.sedes.map(s => s.join(" | ")).join("\n"), { type: "textarea", rows: 3, full: true })}
     ${fld("cHotelApi", "Servicio de hoteles (LiteAPI)", c.hotelApi || "", { full: true, ph: "/api/hoteles.php", help: "Dirección del archivo del servidor que consulta LiteAPI. Vacío = el buscador no muestra hoteles. La llave de LiteAPI nunca se escribe aquí." })}
+    ${fld("cCanales", "Canales del pie de página (uno por línea: red | enlace, usuario o número)", (c.canales || []).map(z => z.join(" | ")).join("\n"), { type: "textarea", rows: 4, full: true, help: "Redes: whatsapp, instagram, facebook, tiktok, youtube, linkedin, x, telegram, correo, telefono. Ej.: instagram | instagram.com/tuagencia · whatsapp | 573001234567. Se muestran igual en todos los modelos del inicio." })}
+    <label class="chk full"><input type="checkbox" id="cWaFloat"${c.waFloat !== false ? " checked" : ""}> Mostrar el botón flotante de WhatsApp (abajo a la derecha)</label>
     ${fld("cZones", "WhatsApp flotante por zona (una por línea: zona | número con indicativo)", (c.zones || []).map(z => z.join(" | ")).join("\n"), { type: "textarea", rows: 4, full: true, help: "Por ejemplo: Eje Cafetero | 573205081068" })}
     ${fld("cNotify", "Correos que reciben aviso de cada solicitud nueva (uno por línea)", (c.notify || []).join("\n"), { type: "textarea", rows: 3, full: true, help: "Cada vez que alguien cotiza, estos correos reciben el resumen con el celular, el correo y un enlace para escribirle por WhatsApp." })}
   </div></div>
@@ -3844,8 +3878,11 @@ function admContacto() {
     const notify = lines(val("cNotify")).map(m => m.toLowerCase());
     if (notify.some(m => !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(m))) return "Revisa los correos de aviso: escribe uno válido por línea.";
     if (zones.some(z => !z[0] || z[1].length < 10)) return "Cada zona necesita nombre y número con indicativo, separados por |.";
+    const canales = pairs(val("cCanales")).map(z => [norm(z[0]).replace(/[^a-z]/g, "").replace(/^(mail|email)$/, "correo").replace(/^(tel|celular|phone)$/, "telefono").replace(/^twitter$/, "x"), z.slice(1).join("|").trim()]);
+    const malo = canales.find(z => !CANALES[z[0]] || !z[1]);
+    if (malo) return `Revisa el canal "${malo[0] || "?"}": usa una de las redes de la lista y escribe su enlace o número después de |.`;
     x.contact = { waMain: wa, email: val("cEmail"), sales: lines(val("cSales")), emergency: lines(val("cEmerg")), sedes: sedes.map(s => [s[0], s.slice(1).join(" | ")]),
-      hours: hours.map(h => [h[0], h.slice(1).join(" | ")]), sched, hotelApi: val("cHotelApi"), zones, notify };
+      hours: hours.map(h => [h[0], h.slice(1).join(" | ")]), sched, hotelApi: val("cHotelApi"), zones, notify, canales, waFloat: $("#cWaFloat").checked };
   }, e.currentTarget));
 }
 

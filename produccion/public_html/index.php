@@ -129,5 +129,10 @@ $html = preg_replace('#(<style>)#', $extra . '$1', $html, 1);
 $cab = avm_marca_head($B);
 $html = preg_replace_callback('#</style>#', fn($m) => $m[0] . "\n" . $cab, $html, 1);
 // Texto para quien no ejecuta JavaScript
+// Diseño del inicio elegido en el backoffice: se marca desde el servidor para que no se vea primero el modelo por defecto
+$dis = (array) ($txt['diseno'] ?? []);
+$ban = in_array($dis['banner'] ?? '', ['portada', 'dividida', 'carrusel', 'minimal'], true) ? $dis['banner'] : 'portada';
+$bus = in_array($dis['buscador'] ?? '', ['pase', 'iconos', 'frase', 'pasos', 'tablero'], true) ? $dis['buscador'] : 'pase';
+$html = str_replace(['<main id="home">', '<section class="search wrap" id="buscar"'], ['<main id="home" data-banner="' . $ban . '">', '<section class="search wrap" id="buscar" data-estilo="' . $bus . '"'], $html);
 $html = preg_replace('#(<header class="top">)#', '<noscript><h1>' . $e($seo['h1']) . '</h1><p>' . $e($seo['desc']) . '</p></noscript>$1', $html, 1);
 echo $html;
