@@ -96,6 +96,17 @@ Igual que en Oracle (ver `despliegue/oracle/README.md`):
 cd /var/www/plataforma && bash despliegue/oracle/actualizar.sh
 ```
 
+### Actualización automática (cada minuto)
+
+Para que cada `git push` a la rama `marca-blanca` aparezca en el servidor en menos de un minuto, ejecuta una vez en la terminal SSH de la máquina:
+
+```bash
+(crontab -l 2>/dev/null | grep -v autoactualizar; echo "* * * * * cd /var/www/plataforma && git pull --ff-only -q >> \$HOME/autoactualizar.log 2>&1") | crontab -
+```
+
+- Revisar que funciona: `cat ~/autoactualizar.log` (vacío = sin errores) y `cd /var/www/plataforma && git log -1 --oneline`.
+- Desactivarla: `crontab -l | grep -v autoactualizar | crontab -`
+
 - Tareas programadas: `tail -f /var/log/plataforma-tareas.log`
 - Errores de PHP: `sudo tail -f /var/log/apache2/plataforma-error.log`
 - HTTPS: `sudo journalctl -u caddy -f`
