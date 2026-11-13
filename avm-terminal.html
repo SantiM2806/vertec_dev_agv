@@ -977,6 +977,93 @@ label.btn{cursor:pointer}
   .srow{grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);row-gap:6px}
   .ptab{min-width:78px;padding:10px 10px 9px}
 }
+/* ---------- Estilos del buscador ---------- */
+.pasos-head,.pasos-nav,.voz{display:none}
+/* Iconos y cajas */
+#buscar[data-estilo="iconos"] .ptabs{justify-content:center;gap:clamp(4px,1.6vw,18px);padding:0 4px 14px}
+#buscar[data-estilo="iconos"] .ptab{background:transparent;border-radius:0;min-width:72px;padding:0 4px 6px;gap:8px;color:var(--ink);border-bottom:2px solid transparent}
+#home:is([data-banner="portada"],[data-banner="carrusel"]) #buscar[data-estilo="iconos"] .ptab{color:#FFFFFF;text-shadow:0 1px 8px #0008}
+#buscar[data-estilo="iconos"] .ptab svg,#buscar[data-estilo="iconos"] .ptab[aria-selected="true"] svg{width:48px;height:48px;padding:13px;margin:0;border-radius:50%;background:var(--card);color:var(--ink);box-shadow:0 0 0 1px var(--line),0 6px 18px -8px #0005}
+#buscar[data-estilo="iconos"] .ptab[aria-selected="true"] svg{background:var(--signal);color:var(--signal-ink,#12161B)}
+#buscar[data-estilo="iconos"] .ptab[aria-selected="true"]{border-bottom-color:currentColor}
+#buscar[data-estilo="iconos"] .pass{border-radius:18px}
+#buscar[data-estilo="iconos"] .fields{gap:8px}
+#buscar[data-estilo="iconos"] .box{border-radius:12px;background:var(--card);box-shadow:0 1px 0 var(--line)}
+#buscar[data-estilo="iconos"] :is(.perf,.stub-code){display:none}
+#buscar[data-estilo="iconos"] .stub{grid-template-columns:minmax(0,1fr) auto;padding-top:4px}
+#buscar[data-estilo="iconos"] .go{border-radius:999px;background:var(--signal);color:var(--signal-ink,#12161B);padding:15px 28px}
+/* Tablero */
+#buscar[data-estilo="tablero"] .ptabs{gap:6px;padding:0 0 12px}
+#buscar[data-estilo="tablero"] .ptab{flex-direction:row;gap:7px;border-radius:999px;padding:9px 15px;min-width:0;background:var(--card);box-shadow:0 0 0 1px var(--line)}
+#buscar[data-estilo="tablero"] .ptab svg,#buscar[data-estilo="tablero"] .ptab[aria-selected="true"] svg{width:16px;height:16px;padding:0;margin:0;background:none;color:inherit}
+#buscar[data-estilo="tablero"] .ptab[aria-selected="true"]{background:var(--ink);color:var(--paper)}
+#buscar[data-estilo="tablero"] .pass{border-radius:16px;overflow:hidden}
+#buscar[data-estilo="tablero"] .fields{gap:0;border:1px solid var(--line);border-radius:14px;overflow:hidden}
+#buscar[data-estilo="tablero"] .fields .box{border:0;border-radius:0;border-right:1px solid var(--line);padding:16px 18px 14px}
+#buscar[data-estilo="tablero"] .fields .box:last-child{border-right:0}
+#buscar[data-estilo="tablero"] .fields .box input,#buscar[data-estilo="tablero"] .fields .box select,#buscar[data-estilo="tablero"] .dr .dslot b{font:800 clamp(22px,2.5vw,32px)/1.1 var(--f-display);letter-spacing:-.025em}
+#buscar[data-estilo="tablero"] .box label{font-size:10.5px;letter-spacing:.16em}
+#buscar[data-estilo="tablero"] :is(.perf,.stub-code){display:none}
+#buscar[data-estilo="tablero"] .stub{grid-template-columns:minmax(0,1fr) auto;background:color-mix(in srgb,var(--soft) 55%,var(--card))}
+#buscar[data-estilo="tablero"] .go{border-radius:10px;padding:16px 30px}
+/* Frase */
+#buscar[data-estilo="frase"] .ptabs{gap:6px;padding:0 0 12px}
+#buscar[data-estilo="frase"] .ptab{flex-direction:row;gap:7px;border-radius:999px;padding:9px 15px;min-width:0;background:var(--card);box-shadow:0 0 0 1px var(--line)}
+#buscar[data-estilo="frase"] .ptab svg,#buscar[data-estilo="frase"] .ptab[aria-selected="true"] svg{width:16px;height:16px;padding:0;margin:0;background:none;color:inherit}
+#buscar[data-estilo="frase"] .ptab[aria-selected="true"]{background:var(--ink);color:var(--paper)}
+#buscar[data-estilo="frase"] .pass-main{display:flex;flex-wrap:wrap;align-items:baseline;column-gap:.32em;row-gap:2px;padding:24px clamp(18px,3vw,36px) 18px;font:300 clamp(21px,2.5vw,31px)/1.75 var(--f-display);letter-spacing:-.01em;color:var(--ink)}
+#buscar[data-estilo="frase"] :is(.opts,.fields){display:contents}
+#buscar[data-estilo="frase"] .fields .box,#buscar[data-estilo="frase"] .opt{display:inline-flex;flex-direction:row;align-items:baseline;gap:.32em;border:0;padding:0;background:none;border-radius:0;min-width:0;position:relative}
+#buscar[data-estilo="frase"] [data-pre]::before{content:attr(data-pre);color:var(--muted);white-space:nowrap}
+#buscar[data-estilo="frase"] .fields .box :is(label,small),#buscar[data-estilo="frase"] .opt::after,#buscar[data-estilo="frase"] .dr :is(small,i,.dcount){display:none}
+#buscar[data-estilo="frase"] .fields .box input,#buscar[data-estilo="frase"] .fields .box select,#buscar[data-estilo="frase"] .opt select{font:700 1em/1.3 var(--f-display);letter-spacing:-.015em;color:var(--ink);border:0;border-bottom:2px solid var(--signal);border-radius:0;background:transparent;padding:0 2px;min-height:0;width:auto;field-sizing:content;min-width:5ch;max-width:15ch}
+#buscar[data-estilo="frase"] .fields .box input::placeholder{color:var(--muted);font-weight:500}
+#buscar[data-estilo="frase"] .dr .drb{display:inline-flex;flex-wrap:nowrap;gap:.32em;min-height:0;padding:0;width:auto;font:inherit;color:inherit;align-items:baseline}
+#buscar[data-estilo="frase"] .dr .dslot{display:inline}
+#buscar[data-estilo="frase"] .dr .dslot b{font:700 1em/1.3 var(--f-display);border-bottom:2px solid var(--signal);padding:0 2px}
+#buscar[data-estilo="frase"] .dr .darr{font-size:0}
+#buscar[data-estilo="frase"] .dr .darr::after{content:"al";font-size:clamp(21px,2.5vw,31px);color:var(--muted)}
+#buscar[data-estilo="frase"] .combo-list{font-size:15px;line-height:1.4;letter-spacing:0;min-width:300px}
+#buscar[data-estilo="frase"] .voz{display:flex;order:99;flex-basis:100%;align-items:center;gap:12px;margin-top:14px;font:400 14px/1.4 var(--f-body);letter-spacing:0;color:var(--muted)}
+.voz .mic{flex:none;width:46px;height:46px;border-radius:50%;border:0;background:var(--ink);color:var(--paper);display:grid;place-items:center;cursor:pointer}
+.voz .mic svg{width:20px;height:20px}
+.voz .mic[aria-pressed="true"]{background:var(--danger);animation:mic 1.2s ease-in-out infinite}
+@keyframes mic{50%{box-shadow:0 0 0 10px color-mix(in srgb,var(--danger) 18%,transparent)}}
+.voz q{color:var(--ink);font-style:italic}
+#buscar[data-estilo="frase"] :is(.perf,.stub-code){display:none}
+#buscar[data-estilo="frase"] .stub{grid-template-columns:minmax(0,1fr) auto}
+#buscar[data-estilo="frase"] .go{border-radius:999px;padding:15px 26px}
+/* Paso a paso */
+#buscar[data-estilo="pasos"] .ptabs{gap:6px;padding:0 0 12px}
+#buscar[data-estilo="pasos"] .ptab{flex-direction:row;gap:7px;border-radius:999px;padding:9px 15px;min-width:0;background:var(--card);box-shadow:0 0 0 1px var(--line)}
+#buscar[data-estilo="pasos"] .ptab svg,#buscar[data-estilo="pasos"] .ptab[aria-selected="true"] svg{width:16px;height:16px;padding:0;margin:0;background:none;color:inherit}
+#buscar[data-estilo="pasos"] .ptab[aria-selected="true"]{background:var(--ink);color:var(--paper)}
+#buscar[data-estilo="pasos"] .pasos-head{display:block;padding:20px clamp(16px,2.4vw,28px) 0}
+.pasos-bar{display:flex;gap:6px;margin-bottom:12px}.pasos-bar i{flex:1;height:5px;border-radius:3px;background:var(--line)}.pasos-bar i.on{background:var(--signal)}
+.pasos-head small{font:700 10.5px/1 var(--f-mono);letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.pasos-head h3{font:600 clamp(22px,2.6vw,30px)/1.15 var(--f-display);letter-spacing:-.02em;margin:6px 0 0}
+.pasos-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}.pasos-chips button{border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:999px;padding:6px 12px;font:500 13px/1 var(--f-body);cursor:pointer}
+.pasos-chips button:hover{border-color:var(--ink)}
+#buscar[data-estilo="pasos"] .pasos-nav{display:flex;justify-content:space-between;gap:10px;padding:0 clamp(16px,2.4vw,28px) 18px}
+.pasos-nav .go{border-radius:999px}.pasos-nav .ghost{border:0;background:none;color:var(--muted);font:600 14px/1 var(--f-body);cursor:pointer;padding:12px 4px}
+#buscar[data-estilo="pasos"] .fields{grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
+#buscar[data-estilo="pasos"] .fields .box{grid-column:auto;border-radius:14px;padding:14px 16px 12px}
+#buscar[data-estilo="pasos"] .fields .box input{font-size:clamp(20px,2.3vw,26px)}
+#buscar[data-estilo="pasos"] :is(.perf,.stub-code){display:none}
+#buscar[data-estilo="pasos"] .stub{grid-template-columns:minmax(0,1fr) auto}
+#buscar[data-estilo="pasos"] .go{border-radius:999px}
+#buscar[data-estilo="pasos"][data-paso="1"] :is(.opts,.fields .dr,.who,.who-err,.who-ok,.perf,.stub,.pass-note),
+#buscar[data-estilo="pasos"][data-paso="2"] :is(.fields .box:not(.dr),.who,.who-err,.who-ok,.perf,.stub,.pass-note),
+#buscar[data-estilo="pasos"][data-paso="3"] #passMain{display:none}
+#buscar[data-estilo="pasos"][data-paso="3"] .pasos-nav .go{display:none}
+@media (max-width:760px){
+  #buscar[data-estilo="tablero"] .fields .box{border-right:0;border-bottom:1px solid var(--line)}
+  #buscar[data-estilo="tablero"] .fields .box:last-child{border-bottom:0}
+  #buscar[data-estilo="iconos"] .ptabs{justify-content:flex-start}
+  #buscar[data-estilo="iconos"] .ptab svg{width:42px;height:42px;padding:11px}
+  #buscar[data-estilo="frase"] .pass-main{font-size:20px}
+  #buscar[data-estilo="frase"] .dr .darr::after{font-size:20px}
+}
 /* ---------- Diseño del inicio: modelos de banner, módulos y testimonios ---------- */
 .mod-off{display:none!important}
 #home[data-banner="dividida"] .hero{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);min-height:clamp(340px,44vh,460px);background:var(--card);color:var(--ink);--hero-soft:var(--muted);box-shadow:0 0 0 1px var(--line)}
@@ -1073,7 +1160,9 @@ label.btn{cursor:pointer}
   <section class="search wrap" id="buscar" aria-label="Buscador">
     <div class="ptabs" role="tablist" aria-label="Producto" id="ptabs"></div>
     <form class="pass" id="searchForm" novalidate>
+      <div class="pasos-head" id="pasosHead" aria-live="polite"></div>
       <div class="pass-main" id="passMain"></div>
+      <div class="pasos-nav" id="pasosNav"><button type="button" class="ghost" id="pasoAtras">← Atrás</button><button type="button" class="go" id="pasoSig">Siguiente <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8h10M9 4l4 4-4 4"/></svg></button></div>
       <div class="who" id="who">
         <span class="who-t">Tus datos</span>
         <div class="box"><label for="wPhone">Celular</label><input id="wPhone" type="tel" inputmode="tel" autocomplete="tel" placeholder="300 123 4567"></div>
@@ -1645,6 +1734,7 @@ function renderPanel() {
         setTimeout(() => next?.focus(), 30);
       } });
   });
+  decorarBuscador();
 }
 const form = $("#searchForm");
 form.addEventListener("submit", e => e.preventDefault());
@@ -2772,6 +2862,7 @@ function applyDesign() {
   const d = diseno(), home = $("#home");
   home.dataset.banner = d.banner;
   $("#buscar").dataset.estilo = d.buscador;
+  decorarBuscador();
   d.modulos.forEach(m => { const el = $("#" + m.k); if (!el) return; home.append(el); el.classList.toggle("mod-off", !m.on); });
 }
 let HS = [], heroI = 0, heroHover = false;
@@ -2819,6 +2910,110 @@ function drawTests() {
     const k = Math.max(1, Math.min(5, Math.round(+st) || 5)), ini = n.split(/\s+/).map(w => w[0] || "").slice(0, 2).join("").toUpperCase();
     return `<figure class="test"><div class="st" role="img" aria-label="${k} de 5 estrellas">${"★".repeat(k)}${"☆".repeat(5 - k)}</div><blockquote>${esc(t)}</blockquote><figcaption><span class="av" aria-hidden="true">${esc(ini)}</span><span><b>${esc(n)}</b>${dst ? `<small>${esc(dst)}</small>` : ""}</span></figcaption></figure>`;
   }).join("");
+}
+/* ---------- Estilos del buscador: frase (con voz), paso a paso y los que son solo de forma ---------- */
+const BUSCADORES = [
+  ["iconos", "Iconos y cajas", "Productos con íconos redondos y campos en cajas.", '<i style="left:20%;top:12%;width:12px;height:12px;border-radius:50%;background:var(--signal)"></i><i style="left:38%;top:12%;width:12px;height:12px;border-radius:50%;background:var(--line)"></i><i style="left:56%;top:12%;width:12px;height:12px;border-radius:50%;background:var(--line)"></i><i style="left:74%;top:12%;width:12px;height:12px;border-radius:50%;background:var(--line)"></i><i class="bx" style="left:6%;width:34%;top:48%;height:26%"></i><i class="bx" style="left:43%;width:22%;top:48%;height:26%"></i><i style="left:68%;right:6%;top:48%;height:26%;border-radius:9px;background:var(--signal)"></i>'],
+  ["frase", "Frase con voz", "Se completa como una oración, o se dicta con el micrófono.", '<i class="ln" style="left:8%;top:22%;width:22%"></i><i style="left:33%;top:20%;width:24%;height:3px;background:var(--signal);top:28%"></i><i class="ln" style="left:60%;top:22%;width:12%"></i><i style="left:8%;top:52%;width:18%;height:3px;background:var(--signal)"></i><i class="ln" style="left:29%;top:46%;width:10%"></i><i style="left:42%;top:52%;width:18%;height:3px;background:var(--signal)"></i><i style="right:8%;top:58%;width:16px;height:16px;border-radius:50%;background:var(--ink)"></i>'],
+  ["pasos", "Paso a paso", "Una pregunta a la vez. Muy cómodo en celular.", '<i style="left:8%;top:14%;width:26%;height:4px;background:var(--signal)"></i><i style="left:37%;top:14%;width:26%;height:4px;background:var(--line)"></i><i style="left:66%;top:14%;width:26%;height:4px;background:var(--line)"></i><i class="ln" style="left:8%;top:34%;width:44%;height:5px;opacity:.8"></i><i class="bx" style="left:8%;right:26%;top:56%;height:26%"></i><i style="right:8%;top:56%;width:18px;height:18px;border-radius:50%;background:var(--ink)"></i>'],
+  ["tablero", "Tablero", "Datos grandes, como la pantalla de un aeropuerto.", '<i class="bx" style="left:6%;right:6%;top:14%;height:46%"></i><i style="left:12%;top:28%;width:18%;height:9px;background:var(--ink);opacity:.8"></i><i style="left:40%;top:28%;width:18%;height:9px;background:var(--ink);opacity:.8"></i><i style="left:68%;top:28%;width:12%;height:9px;background:var(--ink);opacity:.8"></i><i style="left:6%;right:6%;top:68%;height:18%;border-radius:4px;background:var(--ink)"></i>'],
+  ["pase", "Pase de abordar", "El actual: el formulario arma un pase con su talón.", '<i class="bx" style="left:6%;right:6%;top:12%;height:76%"></i><i class="bx" style="left:12%;width:36%;top:22%;height:24%"></i><i class="bx" style="left:52%;right:12%;top:22%;height:24%"></i><i style="left:6%;right:6%;top:58%;height:0;border-top:1.5px dashed var(--muted)"></i><i class="ln" style="left:12%;top:70%;width:18%"></i><i style="right:12%;top:66%;width:22%;height:12px;background:var(--ink)"></i>']
+];
+const FRASE = {
+  hoteles: { to: "Quiero alojarme en", d1: "del", rooms: "en", adults: "para", kids: "y" },
+  vuelos: { trip: "Busco un vuelo", from: "desde", to: "hacia", d1: "el", adults: "para", kids: "y", cabin: "en clase" },
+  actividades: { to: "Quiero explorar", d1: "del", people: "para" },
+  traslados: { trip: "Necesito un traslado", to: "desde el aeropuerto de", hotel: "hasta el hotel", d1: "llegando el", t1: "a las", pax: "para" },
+  asistencia: { region: "Necesito asistencia médica en", d1: "del", travelers: "para" }
+};
+const PASOS_T = { 1: { vuelos: "¿Desde dónde y hacia dónde vuelas?", traslados: "¿A qué aeropuerto llegas y a qué hotel vas?", asistencia: "¿A qué región viajas?", _: "¿A dónde quieres ir?" },
+  2: { _: "¿Cuándo viajas y quiénes van?" }, 3: { _: "¿A dónde te enviamos las opciones?" } };
+const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+const MIC = '<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><rect x="7" y="2.5" width="6" height="10" rx="3"/><path d="M4.5 9.5a5.5 5.5 0 0 0 11 0M10 15v2.5"/></svg>';
+let paso = 1, vozRec = null;
+function decorarBuscador() {
+  const sec = $("#buscar"), est = sec.dataset.estilo || "pase", main = $("#passMain");
+  if (!main.firstChild) return;
+  if (est === "frase") {
+    const T = FRASE[prod] || {}, keys = Object.keys(T);
+    $$(".fields .box, .opts .opt", main).forEach(el => {
+      const id = el.classList.contains("dr") ? "d1" : (el.querySelector("[id^='f-'],[id^='o-']")?.id || "").slice(2);
+      const k = keys.indexOf(id); el.style.order = k < 0 ? 50 : k; if (T[id]) el.dataset.pre = T[id]; else delete el.dataset.pre;
+    });
+    if (!$(".voz", main)) main.insertAdjacentHTML("beforeend", SR
+      ? `<div class="voz"><button type="button" class="mic" id="micBtn" aria-pressed="false" aria-label="Dictar la búsqueda">${MIC}</button><span id="vozMsg">O díctalo: <q>Quiero ir a Cartagena del 12 al 16 de diciembre, somos 2 adultos</q></span></div>`
+      : `<div class="voz"><span>Toca cada palabra subrayada para cambiarla.</span></div>`);
+    $("#micBtn")?.addEventListener("click", escuchar);
+  } else { $$("[data-pre]", main).forEach(el => { delete el.dataset.pre; el.style.order = ""; }); $(".voz", main)?.remove(); }
+  if (est === "pasos") pintarPaso(); else delete sec.dataset.paso;
+}
+function pintarPaso() {
+  const sec = $("#buscar"); sec.dataset.paso = paso;
+  const t = PASOS_T[paso], tit = t[prod] || t._;
+  const chips = paso === 1 && $("#f-to")?.dataset.remote ? DESTS.slice(0, 5).map(d => `<button type="button" data-chip="${esc(d.name)}">${esc(d.name)}</button>`).join("") : "";
+  $("#pasosHead").innerHTML = `<div class="pasos-bar">${[1, 2, 3].map(n => `<i class="${n <= paso ? "on" : ""}"></i>`).join("")}</div><small>Paso ${paso} de 3</small><h3>${esc(tit)}</h3>${chips ? `<div class="pasos-chips">${chips}</div>` : ""}`;
+  $("#pasoAtras").style.visibility = paso > 1 ? "visible" : "hidden";
+  $$("[data-chip]").forEach(b => b.addEventListener("click", () => elegirLugar($("#f-to"), b.dataset.chip)));
+}
+function pasoListo(n) {
+  const v = V[prod];
+  if (n === 1) { const f = P[prod].fields.find(x => !["date", "time"].includes(x.type) && !(x.hide && x.hide(v)) && !v[x.id]); if (f) { $("#f-" + f.id)?.focus(); return false; } }
+  if (n === 2) { const f2 = P[prod].fields.find(x => x.after === "d1" && x.type === "date"), need2 = f2 && !(f2.hide && f2.hide(v)); if (!v.d1 || (need2 && !v[f2.id])) { $("#f-range")?.click(); return false; } }
+  return true;
+}
+$("#pasoSig").addEventListener("click", () => { if (!pasoListo(paso)) return; paso = Math.min(3, paso + 1); pintarPaso(); setTimeout(() => (paso === 3 ? $("#wPhone") : $("#f-range") || $("#passMain input"))?.focus(), 30); });
+$("#pasoAtras").addEventListener("click", () => { paso = Math.max(1, paso - 1); pintarPaso(); });
+// Escribe un lugar en un campo con sugerencias y elige la primera opción cuando llegan
+function elegirLugar(input, texto) {
+  if (!input) return Promise.resolve();
+  input.value = texto; input.dispatchEvent(new Event("input", { bubbles: true })); input.focus(); input.value = texto;
+  input.dispatchEvent(new Event("input", { bubbles: true }));
+  return new Promise(ok => setTimeout(() => { const l = $("#" + input.id + "-list"); if (l && !l.hidden && l.querySelector("li")) input.dispatchEvent(new KeyboardEvent("keydown", { key: "Enter", bubbles: true })); ok(); }, 1400));
+}
+const NUM = { un: 1, una: 1, uno: 1, dos: 2, tres: 3, cuatro: 4, cinco: 5, seis: 6, siete: 7, ocho: 8, nueve: 9, diez: 10 };
+const MESES = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"];
+function leerVoz(texto) {
+  const t = " " + norm(texto).replace(/[.,;!?¿¡]/g, " ").replace(/\s+/g, " ") + " ", r = {}, n = w => +w || NUM[w] || 0, W = "(\\d+|un|una|uno|dos|tres|cuatro|cinco|seis|siete|ocho|nueve|diez)";
+  r.prod = /vuelo|volar|tiquete|aereo/.test(t) ? "vuelos" : /traslado|transfer/.test(t) ? "traslados" : /asistencia|seguro/.test(t) ? "asistencia" : /tour|actividad|excursion|paseo/.test(t) ? "actividades" : /hotel|alojar|hosped|habitacion/.test(t) ? "hoteles" : "";
+  let m;
+  if ((m = t.match(new RegExp(W + " (adultos?|personas?|viajeros?|pasajeros?)")))) r.adults = n(m[1]);
+  else if ((m = t.match(new RegExp("somos " + W + " ")))) r.adults = n(m[1]);
+  else if (/ pareja | mi esposa | mi esposo /.test(t)) r.adults = 2;
+  if ((m = t.match(new RegExp(W + " (ninos?|ninas?|menores)")))) r.kids = n(m[1]);
+  if ((m = t.match(new RegExp(W + " habitacion")))) r.rooms = n(m[1]);
+  const mes = w => MESES.indexOf(w), fecha = (d, mi) => { const y = new Date().getFullYear(); let f = `${y}-${String(mi + 1).padStart(2, "0")}-${String(d).padStart(2, "0")}`; if (f < today) f = `${y + 1}${f.slice(4)}`; return f; };
+  if ((m = t.match(/(?:del|desde el|el) (\d{1,2})(?: de (\w+))? (?:al|hasta el|y el) (\d{1,2}) de (\w+)/)) && mes(m[4]) >= 0) {
+    const m2 = mes(m[4]), m1 = m[2] && mes(m[2]) >= 0 ? mes(m[2]) : m2; r.d1 = fecha(+m[1], m1); r.d2 = fecha(+m[3], m2); if (r.d2 < r.d1) r.d2 = fecha(+m[3], m2).replace(/^\d{4}/, y => +y + 1);
+  } else if ((m = t.match(/(?:el|para el|desde el) (\d{1,2}) de (\w+)/)) && mes(m[2]) >= 0) r.d1 = fecha(+m[1], mes(m[2]));
+  const STOP = new Set(["del", "el", "la", "los", "las", "desde", "con", "somos", "para", "en", "y", "al", "un", "una", "de", "por", "hasta", "este", "esta", "proximo", "que", "quiero", "vamos", "adulto", "adultos", "persona", "personas", "nino", "ninos", "nina", "ninas", "viajeros", "pasajeros", "noche", "noches", "dias", "semana", "habitacion", "habitaciones", "familia", "pareja", "hacia", "rumbo", "a"]);
+  const lugar = re => { const k = t.match(re); if (!k) return ""; const out = []; for (const w of k[1].split(" ")) { if (!w || STOP.has(w) || /\d/.test(w) || NUM[w] || MESES.includes(w)) { if (out.length) break; else continue; } out.push(w); if (out.length === 3) break; } return out.join(" ").replace(/\b\w/g, c => c.toUpperCase()); };
+  r.from = lugar(/ (?:desde|saliendo de|sale de) (.*)/);
+  r.to = lugar(/ (?:ir a|viajar a|volar a|vuelo a|alojarme en|hospedarme en|hotel en|hoteles en|conocer|visitar|hacia|destino|para ir a) (.*)/) || lugar(/ (?:a|en|para) ([a-z]+(?: [a-z]+)*)/);
+  return r;
+}
+async function aplicarVoz(texto) {
+  const r = leerVoz(texto);
+  if (r.prod && prodOn(r.prod) && r.prod !== prod) setProd(r.prod);
+  const v = V[prod], p = P[prod];
+  const pon = (k, x) => { if (x && p.opts.includes(k) && OPTS[k].list.some(([a]) => a === String(x))) v[k] = String(x); };
+  pon("adults", r.adults); pon("kids", r.kids); pon("rooms", r.rooms);
+  for (const k of ["people", "pax", "travelers"]) pon(k, (r.adults || 0) + (r.kids || 0));
+  if (r.d1 && r.d1 >= today) { v.d1 = r.d1; const f2 = p.fields.find(f => f.after === "d1" && f.type === "date"); if (f2) v[f2.id] = r.d2 && r.d2 > r.d1 ? r.d2 : f2.auto ? addDays(r.d1, f2.auto) : ""; }
+  if (prod === "asistencia" && r.to) { const g = REGIONS.find(x => norm(x).includes(norm(r.to)) || norm(r.to).includes(norm(x))); if (g) v.region = g; }
+  renderPanel(); update();
+  if (r.from && $("#f-from")?.dataset.remote) await elegirLugar($("#f-from"), r.from);
+  if (r.to && $("#f-to")) { const el = $("#f-to"); if (el.dataset.remote) await elegirLugar(el, r.to); else if (el.dataset.place) { el.value = r.to; el.dispatchEvent(new Event("input", { bubbles: true })); el.focus(); } }
+}
+function escuchar() {
+  const b = $("#micBtn"), msg = $("#vozMsg");
+  if (vozRec) { vozRec.stop(); return; }
+  const rec = new SR(); vozRec = rec; rec.lang = "es-CO"; rec.interimResults = true; rec.maxAlternatives = 1;
+  let final = "";
+  b.setAttribute("aria-pressed", "true"); msg.textContent = "Te escucho…";
+  rec.onresult = e => { let txt = ""; for (const x of e.results) txt += x[0].transcript; final = txt; msg.innerHTML = `Escuché: <q>${esc(txt)}</q>`; };
+  rec.onerror = e => { msg.textContent = e.error === "not-allowed" ? "Permite el micrófono en tu navegador para dictar la búsqueda." : "No te escuché bien. Toca el micrófono e inténtalo otra vez."; };
+  rec.onend = async () => { vozRec = null; const bb = $("#micBtn"); bb?.setAttribute("aria-pressed", "false"); if (final) { await aplicarVoz(final); const m = $("#vozMsg"); if (m) m.innerHTML = `Escuché: <q>${esc(final)}</q>. Revisa los datos y busca.`; } };
+  try { rec.start(); } catch { vozRec = null; b.setAttribute("aria-pressed", "false"); }
 }
 /* Nosotros: postales de los destinos visibles que rotan solas, y cinta con sus nombres */
 const REASON_ICONS = [
@@ -3404,6 +3599,8 @@ function admDiseno() {
   const mname = k => MODS.find(m => m[0] === k);
   $("#admBody").innerHTML = `<div class="panel"><h2>Banner inicial</h2><p class="help" style="margin:-4px 0 12px">Cómo se ve la parte de arriba del inicio. El título y la foto de la portada se editan en <a href="#" data-go="portada">Portada y textos</a>.</p>
     <div class="choices">${BANNERS.map(([k, n, t, m]) => `<button type="button" class="choice" data-ban="${k}" aria-pressed="${d.banner === k}"><span class="mini">${m}</span><b>${n}</b><small>${t}</small></button>`).join("")}</div></div>
+  <div class="panel"><h2>Buscador</h2><p class="help" style="margin:-4px 0 12px">La forma del buscador. Los productos activos y tu margen se configuran en <a href="#" data-go="tarifas">Tarifas y buscador</a>.</p>
+    <div class="choices">${BUSCADORES.map(([k, n, t, m]) => `<button type="button" class="choice" data-bus="${k}" aria-pressed="${d.buscador === k}"><span class="mini">${m}</span><b>${n}</b><small>${t}</small></button>`).join("")}</div></div>
   ${d.banner === "carrusel" ? `<div class="panel"><h2>Banners del carrusel</h2><p class="help" style="margin:-4px 0 12px">Hasta 5. Rotan cada 6 segundos y se detienen cuando el visitante pasa el mouse. Medida ideal: 1920 × 800 px, máximo 300 KB; si la foto pesa más, se recorta y se comprime sola al subirla.</p>
     <div class="slides">${d.slides.map((x, i) => `<div class="slide-ed"><header><b>Banner ${i + 1}</b><span class="row" style="gap:6px">${i ? `<button class="btn" type="button" data-sup="${i}" aria-label="Subir">↑</button>` : ""}${i < d.slides.length - 1 ? `<button class="btn" type="button" data-sdown="${i}" aria-label="Bajar">↓</button>` : ""}<button class="btn" type="button" data-sdel="${i}">Quitar</button></span></header>
       ${imgPicker("sl-" + x.id, x.img, "")}
@@ -3425,6 +3622,7 @@ function admDiseno() {
   wireDiscard();
   $$("[data-go]").forEach(a => a.addEventListener("click", e => { e.preventDefault(); guard("tab:" + a.dataset.go, () => { adm.tab = a.dataset.go; adm.draft = null; renderAdmin(); scrollTo(0, 0); }); }));
   $$("[data-ban]").forEach(b => b.addEventListener("click", () => { d.banner = b.dataset.ban; if (d.banner === "carrusel" && !d.slides.length) d.slides.push({ id: Math.random().toString(36).slice(2, 9), title: TXT.heroTitle, sub: TXT.heroSub, eyebrow: TXT.heroEyebrow, img: TXT.heroImg }); again(); }));
+  $$("[data-bus]").forEach(b => b.addEventListener("click", () => { d.buscador = b.dataset.bus; again(); }));
   $$("[data-mon]").forEach(c => c.addEventListener("change", () => { d.modulos[+c.dataset.mon].on = c.checked; again(); }));
   const mv = (arr, i, j) => { if (j < 0 || j >= arr.length) return; [arr[i], arr[j]] = [arr[j], arr[i]]; again(); };
   $$("[data-mup]").forEach(b => b.addEventListener("click", () => mv(d.modulos, +b.dataset.mup, +b.dataset.mup - 1)));
@@ -4394,7 +4592,7 @@ const NAV = [
 const NAV_TITLES = Object.fromEntries(NAV.flatMap(([, items]) => items.map(([k, l]) => [k, l])));
 const NAV_SUBS = { resumen: "Así va el sitio hoy.", solicitudes: "Cada cotización que llega desde el sitio.", prospectos: "Personas que han dejado sus datos, sin duplicados.",
   listas: "Grupos de prospectos para campañas y seguimiento.", automatizaciones: "Lo que pasa solo cuando llega una solicitud.", correos: "Plantillas y bandeja de salida.", campanas: "Promociones a tus listas de marketing, con o sin un destino del sitio.",
-  diseno: "Modelo del banner, buscador y orden de las secciones del inicio.", portada: "Portada, textos de secciones y tasa de cambio.", destinos: "Paquetes, tarifas, ofertas e información práctica.", tours: "Tours y circuitos que se pueden cotizar.",
+  diseno: "Modelo del banner, forma del buscador y orden de las secciones del inicio.", portada: "Portada, textos de secciones y tasa de cambio.", destinos: "Paquetes, tarifas, ofertas e información práctica.", tours: "Tours y circuitos que se pueden cotizar.",
   grupos: "Salidas con fecha fija.", traslados: "Tarifas de traslados por zona.", nosotros: "Historia, cifras y por qué elegirnos.", contacto: "Teléfonos, WhatsApp por zona, sedes y horario.", aliados: "Logos de cadenas hoteleras y aliados que se muestran en el inicio.", tarifas: "Productos del buscador y tu margen sobre los precios en línea.", legal: "Política de tratamiento de datos.", marca: "Nombre, logos, colores y tipografía de tu agencia.", integraciones: "Proveedores con precio en línea y tus tarifarios propios.",
   t_alojamiento: "Hoteles con tus tarifas netas por temporada. Salen en el buscador junto a LiteAPI.", t_actividad: "Tours y entradas con precio por persona por temporada.",
   t_transporte: "Traslados por trayecto, compartidos o privados.", t_circuito: "Circuitos con salidas y precio por persona." };
